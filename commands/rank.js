@@ -1,59 +1,74 @@
-// commands/rank.js — LORD DEMON
-// ✅ Classement XP avec design amélioré
+// commands/rank.js — LORD DEMON V2 (VERSION AMÉLIORÉE)
+// XP enrichi : badges, barre de progression, position hebdo
 
 import { sendMessage } from '../lib/sendMessage.js'
 import { getSenderJid, cleanNumber } from '../lib/ownerSystem.js'
-import { getUserProfile, loadV2Db } from '../lib/groupConfig.js'
-
-function getLevel(xp) { return Math.floor(Math.sqrt((xp || 0) / 10)) + 1 }
-
-function getXpBar(xp) {
-  const level    = getLevel(xp)
-  const xpForLvl = ((level - 1) ** 2) * 10
-  const xpNext   = (level ** 2) * 10
-  const progress = xpNext === xpForLvl ? 10 : Math.min(Math.round(((xp - xpForLvl) / (xpNext - xpForLvl)) * 10), 10)
-  return '▓'.repeat(progress) + '░'.repeat(10 - progress)
-}
-
-function getRankEmoji(pos) {
-  return ['🥇', '🥈', '🥉'][pos] || `${pos + 1}.`
-}
+import { userDb, getLevel, getXpBar, getXpForLevel, getLevelEmoji, formatProfile } from '../lib/xpSystem.js'
 
 export default async function rank(sock, sender, args, msg, ctx = {}) {
   try {
-    const jid  = ctx.senderJid || getSenderJid(msg, sock)
-    const p    = getUserProfile(jid)
-    const xp   = p.xp || 0
-    const lvl  = getLevel(xp)
-    const xpNext = (lvl ** 2) * 10
+    const userId = ctx.senderJid || getSenderJid(msg, sock)
 
-    // Calculer position dans le classement global
-    const db   = loadV2Db()
-    const all  = Object.entries(db.users || {}).sort((a, b) => (b[1].xp || 0) - (a[1].xp || 0))
-    const pos  = all.findIndex(([j]) => j === jid)
+    // Cible : mention, reply, numéro ou soi-même
+    const mentions = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
+    let targetJid = userId
+    if (mentions?.length) targetJid = mentions[0]
+    else if (msg.message?.extendedTextMessage?.contextInfo?.participant) {
+      targetJid = msg.message.extendedTextMessage.contextInfo.participant
+    } else if (args[0]) {
+      const num = args[0].replace(/[^0-9]/g, '')
+      if (num.length >= 8) targetJid = num + '@s.whatsapp.net'
+    }
+
+    const user = userDb.get(targetJid)
+    const xp   = user?.xp || 0
+    const lvl  = getLevel(xp)
+
+    // Position dans le classement global
+    const all  = userDb.leaderboard(1000)
+    const pos  = all.findIndex(u => u.jid === targetJid)
     const rank = pos >= 0 ? pos + 1 : '?'
+    const next = pos > 0 ? all[pos - 1] : null
+
+    // Position hebdo
+    const weekly    = userDb.weeklyLeaderboard(1000)
+    const weeklyPos = weekly.findIndex(u => u.jid === targetJid)
+
+    const xpNext = getXpForLevel(lvl + 1)
+    const lvlEmoji = getLevelEmoji(lvl)
+    const badges = JSON.parse(user?.badges || '[]')
+
+    const isSelf = targetJid === userId
 
     await sendMessage(sock, sender,
-      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-      `⛧   🏆  CLASSEMENT XP            ☩\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-      `☩━━━〔 👤 *VOTRE RANG* 〕━━━☩\n✝\n` +
-      `☠  📱 @${cleanNumber(jid)}\n⛧\n` +
-      `☩  ${pos >= 0 ? getRankEmoji(pos) : '❓'} *Position :* #${rank} sur ${all.length}\n` +
-      `✝  ⭐ *Niveau :* ${lvl}\n` +
-      `☠  ✨ *XP :* ${xp} / ${xpNext}\n` +
-      `⛧  ${getXpBar(xp)}  → Niv.${lvl + 1}\n☩\n` +
-      (pos > 0 && all[pos - 1]
-        ? `✝  🎯 *Prochain :* @${cleanNumber(all[pos - 1][0])}\n☠      (${(all[pos - 1][1].xp || 0) - xp} XP d'écart)\n⛧\n`
-        : `☩  👑 *Vous êtes #1 ! Bravo !*\n✝\n`
+      `╭━━━〔 🏆 *CLASSEMENT XP* 〕━━━╮\n\n` +
+      `┃ ${lvlEmoji} *@${cleanNumber(targetJid)}*\n` +
+      `┃\n` +
+      `┃ 🌟 *Niveau :* ${lvl} ${lvlEmoji}\n` +
+      `┃ ✨ *XP :* ${xp.toLocaleString()} / ${xpNext.toLocaleString()}\n` +
+      `┃ ${getXpBar(xp)} → Niv.${lvl + 1}\n` +
+      `┃\n` +
+      `┃ 🌍 *Rang global :* #${rank} / ${all.length}\n` +
+      `┃ 📅 *Rang hebdo :* ${weeklyPos >= 0 ? '#' + (weeklyPos + 1) : '?'}\n` +
+      `┃ 💬 *Messages :* ${(user?.msg_count || 0).toLocaleString()}\n` +
+      `┃\n` +
+      (badges.length
+        ? `┃ 🏅 *Badges :* ${badges.slice(0, 4).join(' ')}${badges.length > 4 ? ` +${badges.length - 4}` : ''}\n┃\n`
+        : `┃ 🏅 *Badges :* _aucun pour l'instant_\n┃\n`
       ) +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-      `_💡 \`.leaderboard\` → Top 10 global_`,
-      { mentions: [jid] }
+      (next && pos > 0
+        ? `┃ 🎯 *Prochain :* @${cleanNumber(next.jid)} (+${((next.xp || 0) - xp).toLocaleString()} XP)\n┃\n`
+        : pos === 0
+          ? `┃ 👑 *Leader mondial — Nul ne te dépasse !*\n┃\n`
+          : ''
+      ) +
+      `┃ _💡 .badge voir${isSelf ? '' : ' @user'} • .leaderboard_\n\n` +
+      `╰━━━━━━━━━━━━━━━━━━━━━━╯`,
+      { mentions: [targetJid, ...(next ? [next.jid] : [])] }
     )
 
   } catch (e) {
     console.error('❌ rank.js:', e)
-    await sendMessage(sock, sender, `☠ rituel échoué rank: ${e.message}`)
+    await sendMessage(sock, sender, `☠ Rituel échoué rank: ${e.message}`)
   }
 }
