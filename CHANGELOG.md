@@ -1,3 +1,60 @@
+## v3.2.0 — 8 Nouvelles commandes (2026-06-08)
+
+### 🎮 Nouveaux Mini-Jeux
+
+#### 🃏 Blackjack (`.blackjack`)
+- Jeu complet contre le Démon : tirer, rester, blackjack naturel
+- Détection bust, victoire/défaite/égalité, système de mise
+- Commandes: `.blackjack tirer` | `.blackjack rester` | `.blackjack stop`
+
+#### 🎭 Pendu (`.pendu`)
+- 200+ mots français par catégorie (animaux, pays, sports, technologie...)
+- 6 tentatives avec dessin ASCII du pendu étape par étape
+- Système d'indices (révèle une lettre, -1 vie), deviner le mot entier
+- Commandes: `.pendu <lettre>` | `.pendu mot <mot>` | `.pendu indice` | `.pendu stop`
+
+#### 🎰 Machine à Sous (`.slot`)
+- 9 symboles démoniaques avec poids différents (💀 Crâne jackpot x100)
+- Système de streak/combo, cooldown 15 secondes
+- Animations avec édition du message, barre de progression
+
+#### ⚔️ Défis (`.defi`)
+- 25+ questions (mathématiques, culture générale, vitesse/traduction)
+- Timer 30 secondes, scores personnels, ratio victoires/défaites
+- Commandes: `.defi` | `.defi score` | `.defi stop`
+
+#### ✅ Vrai ou Faux (`.vraifaux`)
+- 15 affirmations vraies/fausses avec explications détaillées
+- Thèmes variés: sciences, géographie, histoire, animaux, technologie
+- Commandes: `.vraifaux vrai` | `.vraifaux faux`
+
+#### ⚡ Maths Rapides (`.mathrapide`)
+- Calculs contre la montre (20 secondes) avec 3 niveaux: facile, moyen, difficile
+- Système de streaks et meilleur score personnel
+- Commandes: `.mathrapide [facile|moyen|difficile]` | `.mathrapide score`
+
+#### 🔤 Anagramme (`.anagramme`)
+- 20 mots thématiques (monde démoniaque) à reconstituer depuis les lettres mélangées
+- Système d'indices avec description, jamais le même ordre
+- Commandes: `.anagramme <réponse>` | `.anagramme indice` | `.anagramme stop`
+
+### 🔢 Nouvelle Commande Utilitaire
+
+#### 🔢 Convertisseur Universel (`.convertir`)
+- Longueur: km, m, cm, mm, mile, ft, inch
+- Poids: kg, g, mg, tonne, lb, oz
+- Température: °C, °F, Kelvin
+- Vitesse: km/h, mph, m/s, nœuds
+- Données: b, kb, mb, gb, tb
+- Temps: sec, min, heure, jour, semaine, mois, an
+- Usage: `.convertir 10 km en miles` | `.convertir 100 c en f`
+
+### 📝 Enregistrement
+- Toutes les nouvelles commandes enregistrées dans `lib/commandRegistry.js`
+- Catégorie "Jeux" mise à jour (+7 jeux)
+- Catégorie "Utilitaires" mise à jour (+1 outil)
+
+
 # 📋 CHANGELOG — LORD DEMON V2
 
 ## v3.1.0 — Mise à jour majeure (Non-AI)
