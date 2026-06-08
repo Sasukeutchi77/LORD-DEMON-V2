@@ -1,65 +1,82 @@
-// commands/leaderboard.js — LORD DEMON
-// ✅ Classement Top 10 avec design amélioré
+// commands/leaderboard.js — LORD DEMON V2 (VERSION AMÉLIORÉE)
+// Classement global + hebdomadaire
 
 import { sendMessage } from '../lib/sendMessage.js'
 import { getSenderJid, cleanNumber } from '../lib/ownerSystem.js'
-import { loadV2Db } from '../lib/groupConfig.js'
-
-function getLevel(xp) { return Math.floor(Math.sqrt((xp || 0) / 10)) + 1 }
+import { userDb, getLevel, getLevelEmoji, formatLeaderboard } from '../lib/xpSystem.js'
 
 export default async function leaderboard(sock, sender, args, msg, ctx = {}) {
   try {
-    const db   = loadV2Db()
-    const myJid = ctx.senderJid || getSenderJid(msg, sock)
-    const top  = Object.entries(db.users || {})
-      .sort((a, b) => (b[1].xp || 0) - (a[1].xp || 0))
-      .slice(0, 10)
+    const userId = ctx.senderJid || getSenderJid(msg, sock)
+    const mode   = args[0]?.toLowerCase()
 
-    if (top.length === 0) {
+    // ── CLASSEMENT HEBDOMADAIRE ──────────────────
+    if (mode === 'week' || mode === 'hebdo' || mode === 'semaine') {
+      const top     = userDb.weeklyLeaderboard(10)
+      const pos     = top.findIndex(u => u.jid === userId)
+      const medals  = ['🥇', '🥈', '🥉']
+
+      if (!top.length) {
+        return await sendMessage(sock, sender,
+          `╭━━━〔 📅 *TOP HEBDO* 〕━━━╮\n\n┃ _Aucune activité cette semaine._\n\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        )
+      }
+
+      let text = `╭━━━〔 📅 *TOP 10 HEBDOMADAIRE* 〕━━━╮\n\n`
+      top.forEach((u, i) => {
+        const lvl    = getLevel(u.xp || 0)
+        const emoji  = medals[i] || `${i + 1}.`
+        const isSelf = u.jid === userId
+        text += `┃ ${emoji} ${isSelf ? '👉' : ''} @${cleanNumber(u.jid)}\n`
+        text += `┃    ${getLevelEmoji(lvl)} Niv.${lvl} • ${(u.xp || 0).toLocaleString()} XP\n`
+        if (i < top.length - 1) text += `┃\n`
+      })
+
+      text += `\n`
+      if (pos >= 0) text += `┃ 📊 Votre position cette semaine : *#${pos + 1}*\n`
+      text += `┃ _💡 .leaderboard pour le classement global_\n\n`
+      text += `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+
+      const mentions = top.map(u => u.jid)
+      return await sendMessage(sock, sender, text, { mentions })
+    }
+
+    // ── CLASSEMENT GLOBAL (défaut) ───────────────
+    const limit  = Math.min(parseInt(args[0]) || 10, 20)
+    const top    = userDb.leaderboard(limit)
+    const posAll = userDb.leaderboard(1000)
+    const myPos  = posAll.findIndex(u => u.jid === userId)
+    const medals = ['🥇', '🥈', '🥉']
+
+    if (!top.length) {
       return await sendMessage(sock, sender,
-        `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-        `⛧   🥇  CLASSEMENT XP            ☩\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-        `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-        `✝  📭 Aucun classement disponible.\n☠  Faites \`.daily\` pour commencer !\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+        `╭━━━〔 🏆 *CLASSEMENT* 〕━━━╮\n\n┃ _Aucun joueur enregistré._\n\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
       )
     }
 
-    const medals   = ['🥇', '🥈', '🥉']
-    const mentions = top.map(([jid]) => jid)
-    const myPos    = Object.entries(db.users || {})
-      .sort((a, b) => (b[1].xp || 0) - (a[1].xp || 0))
-      .findIndex(([j]) => j === myJid)
-
-    let text =
-      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-      `⛧   🥇  CLASSEMENT TOP 10 XP     ☩\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-      `☩━━━〔 🏆 *TOP ÂMES* 〕━━━☩\n✝\n`
-
-    top.forEach(([jid, p], i) => {
-      const medal  = medals[i] || `${i + 1}.`
-      const xp     = p.xp || 0
-      const lvl    = getLevel(xp)
-      const isMe   = jid === myJid
-      text += `☠  ${medal} @${cleanNumber(jid)}${isMe ? ' 👈' : ''}\n⛧      Niv.${lvl}  ✨ ${xp} XP\n☩\n`
+    let text = `╭━━━〔 🏆 *TOP ${limit} GLOBAL* 〕━━━╮\n\n`
+    top.forEach((u, i) => {
+      const lvl    = getLevel(u.xp || 0)
+      const emoji  = medals[i] || `${i + 1}.`
+      const isSelf = u.jid === userId
+      const badges = JSON.parse(u.badges || '[]')
+      text += `┃ ${emoji} ${isSelf ? '👉 ' : ''}@${cleanNumber(u.jid)}\n`
+      text += `┃    ${getLevelEmoji(lvl)} Niv.${lvl} • ${(u.xp || 0).toLocaleString()} XP`
+      if (badges.length) text += ` • ${badges[0]}`
+      text += `\n`
+      if (i < top.length - 1) text += `┃\n`
     })
 
-    text +=
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n`
+    text += `\n`
+    if (myPos >= 0 && myPos >= limit) text += `┃ 📊 Votre position : *#${myPos + 1}* / ${posAll.length}\n`
+    text += `┃ _💡 .leaderboard hebdo → Classement semaine_\n\n`
+    text += `╰━━━━━━━━━━━━━━━━━━━━━━╯`
 
-    if (myPos >= 0) {
-      text += `\n†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n`
-      text += `✝  📍 *Votre position :* #${myPos + 1}\n`
-      text += `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n`
-    }
-
-    text += `\n_💡 \`.daily\` → +50 XP par jour | \`.rank\` → Votre rang_`
-
-    await sendMessage(sock, sender, text, { mentions })
+    const mentions = top.map(u => u.jid)
+    return await sendMessage(sock, sender, text, { mentions })
 
   } catch (e) {
     console.error('❌ leaderboard.js:', e)
-    await sendMessage(sock, sender, `☠ rituel échoué leaderboard: ${e.message}`)
+    await sendMessage(sock, sender, `☠ Rituel échoué leaderboard: ${e.message}`)
   }
 }
