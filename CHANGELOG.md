@@ -1,3 +1,99 @@
+## v3.3.0 — Mise à jour MASSIVE (2026-06-08)
+
+### 🪙 Système d'Économie Complet
+#### `.coins` — Portefeuille
+- Voir votre solde en poche et en banque
+- Affichage inventaire et métier actuel
+
+#### `.bank depot|retrait <montant>` — Banque
+- Déposer et retirer des coins (capacité max: 5000)
+- `depot tout` pour tout déposer d'un coup
+
+#### `.shop [liste|acheter|inventaire]` — Boutique
+- 8 objets: Bouclier (anti-vol), Amulette XP, Extension banque, Pack cartes...
+- Système d'inventaire persistant par joueur
+
+#### `.job [liste|choisir|travailler]` — Métiers
+- 8 métiers: Mineur, Marchand, Assassin, Sorcier, Forgeron, Chasseur, Alchimiste, Gladiateur
+- Gains basés sur cooldown + XP du métier (bonus jusqu'à +100%)
+
+#### `.pay @mention <montant>` — Paiement
+- Transfert direct de coins entre joueurs
+
+#### `.rob @mention` — Vol
+- 55% chance de succès, 10-30% des coins volés
+- Bouclier protège contre le vol
+- Cooldown 3h, pénalité si échec
+
+### ⚔️ RPG Textuel Complet
+#### `.rpg creer <nom> <classe>` — Créer un héros
+- 6 classes: Guerrier, Mage, Assassin, Paladin, Archer, Nécromancien
+- Stats uniques par classe (HP, ATK, DEF, Mana)
+
+#### `.rpg donjon` — Explorer
+- 5 donjons progressifs (niveaux 1 → 40+)
+- Ennemis: Gobelin, Zombie, Vampire, Golem, Liche...
+- 3 boss légendaires: Dragon Rouge, Seigneur Démon, AZRAEL
+
+#### Système de combat
+- Coups critiques selon la classe
+- Contre-attaques ennemies
+- Mort → respawn à 30% HP
+- `.rpg attaquer` | `.rpg fuir` | `.rpg soigner`
+- Gain XP + or + Level Up avec amélioration des stats
+
+#### `.rpg classement` — Top 10 héros
+
+### 🏰 Guildes
+#### `.guild creer|rejoindre|quitter|membres|liste`
+- Créer sa guilde avec nom + tag unique
+- Classement par XP
+- Rôles: chef / membre
+
+### 💒 Mariage
+#### `.mariage proposer|accepter|refuser|divorcer`
+- Demandes en mariage avec @mention
+- Expire après 5 minutes
+- Affiche durée du mariage
+
+### 🐾 Animaux Virtuels
+#### `.pet adopter|nourrir|jouer`
+- 8 espèces: Loup, Dragon, Faucon, Serpent, Lion, Renard, Licorne...
+- Statistiques: Faim, Bonheur, Santé (décroissance naturelle)
+- XP et niveaux pour l'animal
+
+### 🃏 Cartes à Collectionner
+#### `.card [tirer|collection]`
+- 14 cartes (Communes 60% / Rares 30% / Épiques 8% / Légendaires 2%)
+- ⛧ LORD DEMON et 💀 AZRAEL en légendaires
+- Cooldown 30min par tirage gratuit
+- Packs achetables en boutique
+
+### 🔍 Recherche Intégrée
+#### `.google <recherche>` — DuckDuckGo
+- Réponse directe + résultats liés
+- Liens directs
+- Fonctionne sans API key
+
+#### `.stackoverflow <question>` — StackOverflow
+- 3 résultats les plus votés
+- Indique si la question est répondue
+- Liens directs
+
+### 🎱 Bingo Démoniaque
+#### `.bingo [tirer|stop]`
+- Grille B-I-N-G-O 5x5 générée aléatoirement
+- Case FREE centrale
+- Détection victoire: lignes, colonnes, diagonales
+- Affichage visuel ASCII avec ✅ et 🟢
+
+### 📊 Stats
+- **+15 nouvelles commandes** (total: ~160 commandes)
+- **+2 nouvelles libs** (economySystem.js, rpgSystem.js)
+- **+3 nouvelles catégories** (Économie, RPG, Social)
+- Toutes les nouvelles tables SQLite dans `data/demon.db`
+
+
 ## v3.2.0 — 8 Nouvelles commandes (2026-06-08)
 
 ### 🎮 Nouveaux Mini-Jeux
