@@ -1,65 +1,50 @@
-// commands/profile.js — LORD DEMON
-// ✅ Profil utilisateur avec design amélioré
+// commands/profile.js — LORD DEMON V2 (VERSION AMÉLIORÉE)
+// Profil enrichi avec XP, badges, stats complètes
 
 import { sendMessage } from '../lib/sendMessage.js'
-import { getSenderJid, cleanNumber, isDeployer, isSudo, isPremium, isBanned } from '../lib/ownerSystem.js'
-import { getUserProfile } from '../lib/groupConfig.js'
-
-function getLevel(xp) {
-  return Math.floor(Math.sqrt((xp || 0) / 10)) + 1
-}
-
-function getXpBar(xp) {
-  const level    = getLevel(xp)
-  const xpForLvl = ((level - 1) ** 2) * 10
-  const xpNext   = (level ** 2) * 10
-  const progress = Math.min(Math.round(((xp - xpForLvl) / (xpNext - xpForLvl)) * 10), 10)
-  return '▓'.repeat(progress) + '░'.repeat(10 - progress)
-}
-
-function getRole(jid) {
-  if (isDeployer(jid)) return { label: 'DÉPLOYEUR', emoji: '👑' }
-  if (isSudo(jid))     return { label: 'SUDO', emoji: '🔐' }
-  if (isPremium(jid))  return { label: 'PREMIUM', emoji: '💎' }
-  if (isBanned(jid))   return { label: 'BANNI', emoji: '🚫' }
-  return                      { label: 'MEMBRE', emoji: '👤' }
-}
+import { getSenderJid, cleanNumber } from '../lib/ownerSystem.js'
+import { userDb, formatProfile, checkAndAwardBadges } from '../lib/xpSystem.js'
 
 export default async function profile(sock, sender, args, msg, ctx = {}) {
   try {
-    const jid  = ctx.senderJid || getSenderJid(msg, sock)
-    const p    = getUserProfile(jid)
-    const role = getRole(jid)
-    const xp   = p.xp || 0
-    const lvl  = getLevel(xp)
-    const xpNext = (lvl ** 2) * 10
-    const streak = p.dailyStreak || 0
+    const userId = ctx.senderJid || getSenderJid(msg, sock)
 
-    await sendMessage(sock, sender,
-      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-      `⛧   👤  PROFIL UTILISATEUR       ☩\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-      `☩━━━〔 🪪 *IDENTITÉ* 〕━━━☩\n✝\n` +
-      `☠  ${role.emoji} *Rôle :* ${role.label}\n` +
-      `⛧  📱 *Numéro :* +${cleanNumber(jid)}\n☩\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-      `☩━━━〔 🏆 *PROGRESSION* 〕━━━☩\n✝\n` +
-      `☠  ⭐ *Niveau :* ${lvl}\n` +
-      `⛧  ✨ *XP :* ${xp} / ${xpNext}\n` +
-      `☩  ${getXpBar(xp)}  Niv.${lvl + 1}\n✝\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-      `☩━━━〔 📊 *ACTIVITÉ* 〕━━━☩\n☠\n` +
-      `⛧  💬 *Messages :* ${p.messages || 0}\n` +
-      `☩  ⚡ *sorts :* ${p.commands || 0}\n` +
-      `✝  🔥 *Streak daily :* ${streak} jour(s)\n` +
-      `☠  ${streak >= 7 ? '🔥 Série active !' : streak >= 3 ? '⚡ Bonne série !' : '💡 Faites \`.daily\` chaque jour !'}\n⛧\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-      `_💡 \`.daily\` → +50 XP chaque jour_`,
-      { mentions: [jid] }
-    )
+    // Cible
+    const mentions = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
+    let targetJid = userId
+    if (mentions?.length) targetJid = mentions[0]
+    else if (msg.message?.extendedTextMessage?.contextInfo?.participant) {
+      targetJid = msg.message.extendedTextMessage.contextInfo.participant
+    } else if (args[0]) {
+      const num = args[0].replace(/[^0-9]/g, '')
+      if (num.length >= 8) targetJid = num + '@s.whatsapp.net'
+    }
+
+    // Vérifier et attribuer les badges non encore accordés
+    const user = userDb.get(targetJid)
+    if (user) checkAndAwardBadges(targetJid, user)
+
+    // Rafraîchir après attribution éventuelle
+    const updatedUser = userDb.get(targetJid)
+
+    // Position dans le classement
+    const allUsers = userDb.leaderboard(1000)
+    const pos      = allUsers.findIndex(u => u.jid === targetJid)
+
+    let profileText = formatProfile(targetJid, updatedUser)
+
+    // Ajouter la position
+    if (pos >= 0) {
+      profileText = profileText.replace(
+        '╰━━━━━━━━━━━━━━━━━━━━━━╯',
+        `┃\n┃ 🌍 *Rang global :* #${pos + 1} / ${allUsers.length}\n\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+      )
+    }
+
+    await sendMessage(sock, sender, profileText, { mentions: [targetJid] })
 
   } catch (e) {
     console.error('❌ profile.js:', e)
-    await sendMessage(sock, sender, `☠ rituel échoué profile: ${e.message}`)
+    await sendMessage(sock, sender, `☠ Rituel échoué profile: ${e.message}`)
   }
 }
