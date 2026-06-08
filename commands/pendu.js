@@ -1,161 +1,216 @@
-// commands/pendu.js — JEU DU PENDU 🎭
-// ✅ 200+ mots français par catégorie
-// ✅ 6 tentatives, dessin ASCII du pendu
-// ✅ Indices disponibles
+// commands/pendu.js — LORD DEMON
+// ╔══════════════════════════════════════════════════════╗
+// ║  JEU DU PENDU EN GROUPE — Interactif                ║
+// ║  Catégories: pays, animaux, tech, sport, nourriture ║
+// ║  Une partie par groupe, lettres en message simple   ║
+// ╚══════════════════════════════════════════════════════╝
 
 import { sendMessage } from '../lib/sendMessage.js'
+import { cleanNumber } from '../lib/ownerSystem.js'
 
-const MOTS = [
-    // Animaux
-    'elephant','girafe','rhinoceros','crocodile','hippopotame','panthère','guepard','perroquet','dauphin','baleine',
-    // Pays
-    'france','espagne','portugal','allemagne','japon','australie','bresil','mexique','canada','egypte',
-    // Sports
-    'football','basketball','natation','cyclisme','athletisme','volleyball','handball','karate','judo','escrime',
-    // Nourriture
-    'chocolat','croissant','baguette','fromage','camembert','brioche','macaron','eclair','madeleine','crepe',
-    // Technologie
-    'ordinateur','internet','telephone','satellite','robotique','intelligence','algorithme','programme','serveur','reseau',
-    // Nature
-    'montagne','volcano','tornade','tsunami','avalanche','cascade','foret','desert','prairie','archipel',
-    // Métiers
-    'architecte','chirurgien','ingenieur','journaliste','photographe','compositeur','philosophe','astronaute','diplomate','entrepreneur',
-    // Objets
-    'bibliotheque','parapluie','microscope','telescope','thermometre','calculatrice','dictionnaire','encyclopedie','horloge','boussole'
-]
-
-const ETAPES = [
-    '```\n  ___\n |   |\n |\n |\n |\n_|_\n```',
-    '```\n  ___\n |   |\n |   O\n |\n |\n_|_\n```',
-    '```\n  ___\n |   |\n |   O\n |   |\n |\n_|_\n```',
-    '```\n  ___\n |   |\n |   O\n |  /|\n |\n_|_\n```',
-    '```\n  ___\n |   |\n |   O\n |  /|\\\n |\n_|_\n```',
-    '```\n  ___\n |   |\n |   O\n |  /|\\\n |  /\n_|_\n```',
-    '```\n  ___\n |   |\n |   O\n |  /|\\\n |  / \\\n_|_\n```'
-]
-
-const sessions = new Map()
-
-function motCache(mot, trouves) {
-    return mot.split('').map(l => trouves.has(l) ? l.toUpperCase() : '_').join(' ')
+// ── Banque de mots par catégorie ─────────────────────────
+const WORDS = {
+  pays:       ['FRANCE','MAROC','ALGERIE','SENEGAL','CAMEROUN','COTE IVOIRE','BRESIL','ESPAGNE','PORTUGAL','JAPON','CHINE','EGYPTE','GHANA','NIGERIA','KENYA','ANGOLA','TUNISIE','MALI','GABON','TOGO'],
+  animaux:    ['LION','ELEPHANT','GIRAFE','CROCODILE','GORILLE','PANTHÈRE','COBRA','AIGLE','DAUPHIN','BALEINE','JAGUAR','RENARD','LOUP','TIGRE','RHINOCÉROS','HIPPOPOTAME','ZÈBRE','FLAMANT','PANDA','KOALA'],
+  tech:       ['ORDINATEUR','SMARTPHONE','JAVASCRIPT','ALGORITHME','BLOCKCHAIN','INTELLIGENCE','SERVEUR','RÉSEAU','CRYPTAGE','PYTHON','DATABASE','KUBERNETES','BITCOIN','ELECTRON','PROCESSEUR'],
+  sport:      ['FOOTBALL','BASKETBALL','TENNIS','NATATION','CYCLISME','ATHLETISME','HANDBALL','VOLLEYBALL','BOXE','JUDO','KARATE','RUGBY','CRICKET','BASEBALL','GOLF','BADMINTON'],
+  nourriture: ['PIZZA','CROISSANT','CHOCOLAT','FROMAGE','SPAGHETTI','HAMBURGER','SUSHI','COUSCOUS','POULET','THIÉBOUDIENNE','ALLOCO','FUFU','JOLLOF','MANDAZI','SAMOSA','ATTIÉKÉ'],
+  rap:        ['DRAKE','KENDRICK','EMINEM','BOOBA','NINHO','DAMSO','PLK','GRADUR','LACRIM','SOOLKING','MAES','NEKFEU','ORELSAN','VALD','SCH'],
 }
 
-function renderPendu(s) {
-    const reste = s.mot.length - [...s.mot].filter(l => s.trouves.has(l)).length
-    return (
-        `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-        `☠   🎭 *JEU DU PENDU*             ⛧\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-        `${ETAPES[s.erreurs]}\n\n` +
-        `📝 Mot: \`${motCache(s.mot, s.trouves)}\`  (${s.mot.length} lettres)\n` +
-        `💡 Lettres essayées: ${[...s.essais].join(', ') || '—'}\n` +
-        `❤️ Vies restantes: ${6 - s.erreurs}/6\n` +
-        `🔤 Lettres manquantes: ${reste}\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-        `▶️ \`.pendu <lettre>\` — Proposer une lettre\n` +
-        `💬 \`.pendu mot <mot>\` — Deviner le mot\n` +
-        `💡 \`.pendu indice\`   — Obtenir un indice (-1 vie)\n` +
-        `🛑 \`.pendu stop\`    — Abandonner`
+// ── Dessins du pendu ─────────────────────────────────────
+const HANGMAN = [
+  '```\n  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========```',
+  '```\n  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========```',
+  '```\n  +---+\n  |   |\n  O   |\n  |   |\n      |\n      |\n=========```',
+  '```\n  +---+\n  |   |\n  O   |\n /|   |\n      |\n      |\n=========```',
+  '```\n  +---+\n  |   |\n  O   |\n /|\\  |\n      |\n      |\n=========```',
+  '```\n  +---+\n  |   |\n  O   |\n /|\\  |\n /    |\n      |\n=========```',
+  '```\n  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n      |\n=========```',
+]
+
+// ── Store des parties en cours ───────────────────────────
+// { [groupId]: { word, masked, guessed, errors, maxErrors, category, starter, startTime } }
+const games = new Map()
+
+function maskWord(word, guessed) {
+  return word.split('').map(c => c === ' ' ? ' ' : (guessed.has(c) ? c : '_')).join(' ')
+}
+
+function buildStatus(game) {
+  const masked = maskWord(game.word, game.guessed)
+  const errors = game.errors
+  const remaining = game.maxErrors - errors
+  const lettersUsed = [...game.guessed].sort().join(' ') || '–'
+
+  return (
+    `☩━━━〔 🎮 *PENDU DÉMON* 〕━━━☩\n` +
+    `☠\n` +
+    `${HANGMAN[errors]}\n` +
+    `☠\n` +
+    `⛧  📂 *Catégorie:* ${game.category.toUpperCase()}\n` +
+    `☠\n` +
+    `✝  🔤 *Mot:* \`${masked}\`\n` +
+    `☠  (${game.word.replace(/ /g, '').length} lettres)\n` +
+    `☠\n` +
+    `⛧  ❌ *Erreurs:* ${errors}/${game.maxErrors}  |  💔 Vies: ${remaining}\n` +
+    `☩  🔡 *Lettres testées:* ${lettersUsed}\n` +
+    `☠\n` +
+    `✝  Envoie une lettre pour jouer!\n` +
+    `☠  Ex: A  •  B  •  E  •  R\n` +
+    `⛧  Ou ${process.env.PREFIX || '.'}pendu stop pour arrêter\n` +
+    `☠\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  )
+}
+
+// ── Traitement des lettres (appelé depuis messageHandler) ─
+export async function checkPenduGuess(sock, groupId, senderJid, text) {
+  if (!games.has(groupId)) return false
+  const clean = text.trim().toUpperCase()
+  if (!/^[A-ZÀÂÄÉÈÊËÎÏÔÖÙÛÜŸŒÆÇ]$/.test(clean)) return false
+
+  const game = games.get(groupId)
+  if (game.guessed.has(clean)) {
+    await sock.sendMessage(groupId, {
+      text: `☠ *${clean}* déjà testé ! Essaie une autre lettre.`
+    }).catch(() => {})
+    return true
+  }
+
+  game.guessed.add(clean)
+  const found = game.word.includes(clean)
+  if (!found) game.errors++
+
+  const masked   = maskWord(game.word, game.guessed)
+  const isWon    = !masked.includes('_')
+  const isLost   = game.errors >= game.maxErrors
+
+  if (isWon) {
+    games.delete(groupId)
+    await sock.sendMessage(groupId, {
+      text:
+        `☩━━━〔 🏆 *VICTOIRE !* 〕━━━☩\n` +
+        `☠\n` +
+        `⛧  🎉 @${cleanNumber(senderJid)} a trouvé la dernière lettre!\n` +
+        `☠\n` +
+        `✝  🔤 *Le mot était:* *${game.word}*\n` +
+        `☠  🎊 Félicitations !\n` +
+        `☠\n` +
+        `⛧  💡 ${process.env.PREFIX || '.'}pendu <catégorie> pour rejouer\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
+      mentions: [senderJid]
+    }).catch(() => {})
+    return true
+  }
+
+  if (isLost) {
+    games.delete(groupId)
+    await sock.sendMessage(groupId, {
+      text:
+        `☩━━━〔 💀 *DÉFAITE !* 〕━━━☩\n` +
+        `☠\n` +
+        `${HANGMAN[game.maxErrors]}\n` +
+        `☠\n` +
+        `⛧  😭 Le pendu est mort...\n` +
+        `✝  🔤 *Le mot était:* *${game.word}*\n` +
+        `☠\n` +
+        `☩  💡 ${process.env.PREFIX || '.'}pendu <catégorie> pour réessayer\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    }).catch(() => {})
+    return true
+  }
+
+  const reaction = found
+    ? `✅ *${clean}* est dans le mot !`
+    : `❌ *${clean}* n'est pas dans le mot !`
+
+  await sock.sendMessage(groupId, {
+    text: reaction + '\n\n' + buildStatus(game)
+  }).catch(() => {})
+  return true
+}
+
+// ── Commande principale ──────────────────────────────────
+export default async function pendu(sock, sender, args, msg, ctx) {
+  const senderJid = ctx?.senderJid || msg.key.participant || msg.key.remoteJid
+  const prefix    = process.env.PREFIX || '.'
+  const sub       = args[0]?.toLowerCase()
+
+  // Stop
+  if (sub === 'stop' || sub === 'fin' || sub === 'arrêter') {
+    if (games.has(sender)) {
+      const g = games.get(sender)
+      games.delete(sender)
+      return await sendMessage(sock, sender,
+        `☩━━━〔 🛑 *PARTIE ARRÊTÉE* 〕━━━☩\n☠\n⛧  🔤 Le mot était: *${g.word}*\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+      )
+    }
+    return await sendMessage(sock, sender, `☠ Aucune partie en cours.`)
+  }
+
+  // Partie déjà en cours
+  if (games.has(sender)) {
+    return await sendMessage(sock, sender,
+      `☩━━━〔 ⚠️ *PARTIE EN COURS* 〕━━━☩\n` +
+      `☠\n` +
+      `⛧  Une partie est déjà en cours!\n` +
+      `☩  Envoie une lettre pour jouer.\n` +
+      `✝  Ou ${prefix}pendu stop pour arrêter.\n` +
+      `☠\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
     )
-}
+  }
 
-export default async function pendu(sock, sender, args, msg) {
-    const sub = args[0]?.toLowerCase()
+  // Aide
+  if (!sub || sub === 'help' || sub === 'aide') {
+    return await sendMessage(sock, sender,
+      `☩━━━〔 🎮 *PENDU DÉMON* 〕━━━☩\n` +
+      `☠\n` +
+      `⛧  💡 *Usage:* ${prefix}pendu <catégorie>\n` +
+      `☠\n` +
+      `✝  📋 *Catégories:*\n` +
+      `☠  🌍 pays     |  🐾 animaux\n` +
+      `⛧  💻 tech     |  ⚽ sport\n` +
+      `☩  🍕 nourriture | 🎤 rap\n` +
+      `☠\n` +
+      `✝  📌 *Exemples:*\n` +
+      `☠  ${prefix}pendu pays\n` +
+      `⛧  ${prefix}pendu tech\n` +
+      `☩  ${prefix}pendu animaux\n` +
+      `☠\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 
-    if (sub === 'stop') {
-        if (sessions.has(sender)) {
-            const s = sessions.get(sender)
-            sessions.delete(sender)
-            return sendMessage(sock, sender, `🛑 Partie abandonnée. Le mot était: *${s.mot.toUpperCase()}*`)
-        }
-        return sendMessage(sock, sender, `☠ Aucune partie en cours.`)
-    }
+  const wordList = WORDS[sub]
+  if (!wordList) {
+    return await sendMessage(sock, sender,
+      `☩━━━〔 ☠ *CATÉGORIE INCONNUE* 〕━━━☩\n` +
+      `☠\n⛧  "${sub}" non reconnue.\n☠  ${prefix}pendu help pour la liste.\n☠\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 
-    if (sub === 'indice' && sessions.has(sender)) {
-        const s = sessions.get(sender)
-        s.erreurs = Math.min(6, s.erreurs + 1)
-        // Révéler une lettre aléatoire non trouvée
-        const inconnues = [...s.mot].filter(l => !s.trouves.has(l))
-        if (inconnues.length > 0) {
-            const lettre = inconnues[Math.floor(Math.random() * inconnues.length)]
-            s.trouves.add(lettre)
-            await sendMessage(sock, sender, `💡 Indice: la lettre *${lettre.toUpperCase()}* (-1 vie)`)
-        }
-        if (s.erreurs >= 6) {
-            sessions.delete(sender)
-            return sendMessage(sock, sender, `☠ Trop d'erreurs ! Le mot était: *${s.mot.toUpperCase()}*`)
-        }
-        return sendMessage(sock, sender, renderPendu(s))
-    }
+  const word = wordList[Math.floor(Math.random() * wordList.length)]
+  const game = {
+    word,
+    masked:    maskWord(word, new Set()),
+    guessed:   new Set(),
+    errors:    0,
+    maxErrors: 6,
+    category:  sub,
+    starter:   senderJid,
+    startTime: Date.now(),
+  }
+  games.set(sender, game)
 
-    // Deviner le mot entier
-    if (sub === 'mot' && sessions.has(sender)) {
-        const s = sessions.get(sender)
-        const tentative = args.slice(1).join('').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        if (tentative === s.mot) {
-            sessions.delete(sender)
-            return sendMessage(sock, sender,
-                `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-                `🎉   ✅ *BRAVO ! MOT TROUVÉ !*       🏆\n` +
-                `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-                `📝 Le mot était: *${s.mot.toUpperCase()}*\n` +
-                `❤️ Vies restantes: ${6 - s.erreurs}/6\n\n` +
-                `💡 Rejoue: \`.pendu\``
-            )
-        } else {
-            s.erreurs = Math.min(6, s.erreurs + 2)
-            if (s.erreurs >= 6) {
-                sessions.delete(sender)
-                return sendMessage(sock, sender, `☠ Mauvaise réponse ! Le mot était: *${s.mot.toUpperCase()}*`)
-            }
-            await sendMessage(sock, sender, `❌ Mauvais mot ! -2 vies`)
-            return sendMessage(sock, sender, renderPendu(s))
-        }
-    }
-
-    // Proposer une lettre
-    if (sessions.has(sender) && sub && sub.length === 1) {
-        const s = sessions.get(sender)
-        const lettre = sub.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        if (s.essais.has(lettre)) {
-            return sendMessage(sock, sender, `⚠️ Tu as déjà essayé la lettre *${lettre.toUpperCase()}* !`)
-        }
-        s.essais.add(lettre)
-        if (s.mot.includes(lettre)) {
-            s.trouves.add(lettre)
-            const gagne = [...s.mot].every(l => s.trouves.has(l))
-            if (gagne) {
-                sessions.delete(sender)
-                return sendMessage(sock, sender,
-                    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-                    `🎉   ✅ *BRAVO ! TU AS GAGNÉ !*     🏆\n` +
-                    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-                    `📝 Mot: *${s.mot.toUpperCase()}*\n` +
-                    `❤️ Vies restantes: ${6 - s.erreurs}/6\n\n` +
-                    `💡 Rejoue: \`.pendu\``
-                )
-            }
-            await sendMessage(sock, sender, `✅ Bonne lettre ! *${lettre.toUpperCase()}* est dans le mot !`)
-        } else {
-            s.erreurs++
-            if (s.erreurs >= 6) {
-                sessions.delete(sender)
-                return sendMessage(sock, sender,
-                    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-                    `☠   💀 *PERDU ! LE PENDU EST MORT* 💀  ⛧\n` +
-                    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-                    `${ETAPES[6]}\n\n` +
-                    `📝 Le mot était: *${s.mot.toUpperCase()}*\n\n` +
-                    `💡 Rejoue: \`.pendu\``
-                )
-            }
-            await sendMessage(sock, sender, `❌ Mauvaise lettre ! *${lettre.toUpperCase()}* n'est pas dans le mot.`)
-        }
-        return sendMessage(sock, sender, renderPendu(s))
-    }
-
-    // Nouvelle partie
-    const mot = MOTS[Math.floor(Math.random() * MOTS.length)]
-    sessions.set(sender, { mot, trouves: new Set(), essais: new Set(), erreurs: 0 })
-    await sendMessage(sock, sender, renderPendu(sessions.get(sender)))
+  await sendMessage(sock, sender,
+    `☩━━━〔 🎮 *PENDU DÉMON — DÉBUT* 〕━━━☩\n` +
+    `☠\n` +
+    `⛧  🎯 Catégorie: *${sub.toUpperCase()}*\n` +
+    `☩  Lancé par: @${cleanNumber(senderJid)}\n` +
+    `☠\n` +
+    buildStatus(game)
+  )
 }
