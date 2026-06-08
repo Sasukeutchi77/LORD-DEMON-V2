@@ -1,15 +1,18 @@
 // commands/menubtn.js — LORD DEMON V2
-// Menu interactif avec List Messages + Button Messages Baileys
-// Quand l'utilisateur tape sur une option → le bot exécute la commande directement
+// ══════════════════════════════════════════════════════════════
+// MENU INTERACTIF INTELLIGENT — v3.0
+// ══════════════════════════════════════════════════════════════
 //
-// Utilisation :
-//   .menubtn          → Menu principal (liste de catégories)
-//   .menubtn <cat>    → Sous-menu d'une catégorie avec ses commandes
-//   .menubtn quick    → 3 boutons rapides (rank, leaderboard, quiz)
+// Chaque commande a un TYPE qui détermine son comportement :
 //
-// Fonctionnement :
-//   Les rowId/buttonId sont des commandes bot (ex: ".rank", ".menubtn xp")
-//   → messageHandler.js les intercepte et les exécute automatiquement
+//   'exec'    → Exécute directement, sans argument
+//   'arg'     → Affiche un panneau d'aide avec exemple d'utilisation
+//   'toggle'  → Affiche 3 boutons : ✅ ON / ❌ OFF / 📊 Status
+//   'danger'  → Affiche une confirmation ⚠️ avant d'exécuter
+//   'media'   → Affiche 2 boutons : ⚡ Exécuter + ℹ️ Aide
+//
+// Le messageHandler intercepte les buttonId/rowId comme commandes tapées
+// → ".antilink on" s'exécute comme si l'utilisateur l'avait tapé
 
 import { config } from '../config.js'
 import fs from 'fs'
@@ -19,131 +22,161 @@ import { fileURLToPath } from 'url'
 const __dirname    = path.dirname(fileURLToPath(import.meta.url))
 const COMMANDS_DIR = __dirname
 
-// ══════════════════════════════════════════════════
-// CATÉGORIES DU MENU INTERACTIF
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// BASE DE DONNÉES DES COMMANDES — type + méta
+// ══════════════════════════════════════════════════════════════
+
+const CMD_META = {
+  // ── GÉNÉRAL ───────────────────────────────────────────────
+  menu:        { type: 'exec',   icon: '📋', label: 'Menu complet',       desc: 'Voir tout le grimoire en texte' },
+  help:        { type: 'arg',    icon: '☩',  label: 'Aide commande',      desc: 'Aide détaillée', example: '.help rank' },
+  ping:        { type: 'exec',   icon: '⚡',  label: 'Ping',              desc: 'Tester la latence du démon' },
+  info:        { type: 'exec',   icon: '🜏',  label: 'Infos système',     desc: 'Voir les infos du bot' },
+  uptime:      { type: 'exec',   icon: '⏱️',  label: 'Uptime',            desc: 'Temps d\'activité' },
+  whoami:      { type: 'exec',   icon: '🔍',  label: 'Qui suis-je ?',     desc: 'Ton rang & permissions' },
+  // ── XP & CLASSEMENT ────────────────────────────────────────
+  rank:        { type: 'exec',   icon: '📊',  label: 'Mon rang XP',       desc: 'Ton niveau, XP et progression' },
+  leaderboard: { type: 'exec',   icon: '🏆',  label: 'Classement global', desc: 'Top 10 du groupe' },
+  profile:     { type: 'exec',   icon: '👤',  label: 'Mon profil',        desc: 'Profil complet + badges' },
+  badge:       { type: 'exec',   icon: '🏅',  label: 'Mes badges',        desc: 'Voir et gérer tes badges' },
+  daily:       { type: 'exec',   icon: '🎁',  label: 'Daily XP',          desc: 'Bonus quotidien d\'XP' },
+  cmdinfo:     { type: 'arg',    icon: '📝',  label: 'Info commande',     desc: 'Stats d\'usage', example: '.cmdinfo rank' },
+  // ── MÉDIAS ─────────────────────────────────────────────────
+  song:        { type: 'arg',    icon: '🎵',  label: 'Télécharger musique',desc: 'Télécharger un MP3', example: '.song Eminem Lose Yourself' },
+  ytmp4:       { type: 'arg',    icon: '🎬',  label: 'Vidéo YouTube',     desc: 'Télécharger une vidéo', example: '.ytmp4 https://youtu.be/...' },
+  sticker:     { type: 'media',  icon: '🎭',  label: 'Créer un sticker',  desc: 'Envoie une image puis .sticker', example: 'Envoie une image + .sticker' },
+  image:       { type: 'arg',    icon: '🖼️',  label: 'Chercher image',    desc: 'Recherche d\'images HD', example: '.image paysage montagne' },
+  tts:         { type: 'arg',    icon: '🔊',  label: 'Texte en vocal',    desc: 'Convertir texte en voix', example: '.tts Bonjour tout le monde' },
+  lyrics:      { type: 'arg',    icon: '🎤',  label: 'Paroles',           desc: 'Paroles synchronisées', example: '.lyrics Stromae Papaoutai' },
+  download:    { type: 'arg',    icon: '⬇️',  label: 'Télécharger URL',   desc: 'Télécharger depuis une URL', example: '.download https://...' },
+  // ── UTILITAIRES ────────────────────────────────────────────
+  weather:     { type: 'arg',    icon: '🌦️',  label: 'Météo',             desc: 'Météo en temps réel', example: '.weather Paris' },
+  translate:   { type: 'arg',    icon: '🌍',  label: 'Traduction',        desc: 'Traduire un texte', example: '.translate en Bonjour' },
+  calc:        { type: 'arg',    icon: '🧮',  label: 'Calculatrice',      desc: 'Calcul scientifique', example: '.calc 2 * (3+4) ^ 2' },
+  qrcode:      { type: 'arg',    icon: '🔳',  label: 'QR Code',           desc: 'Générer un QR Code', example: '.qrcode https://google.com' },
+  poll:        { type: 'arg',    icon: '📊',  label: 'Sondage',           desc: 'Créer un vote', example: '.poll Couleur?|Rouge|Bleu|Vert' },
+  remind:      { type: 'arg',    icon: '⏰',  label: 'Rappel',            desc: 'Rappel programmable', example: '.remind 30m Réunion importante' },
+  schedule:    { type: 'arg',    icon: '📆',  label: 'Planifier',         desc: 'Message planifié', example: '.schedule 08:00 Bonjour !' },
+  quote:       { type: 'exec',   icon: '💬',  label: 'Citation',          desc: 'Citation inspirante du démon' },
+  joke:        { type: 'exec',   icon: '💀',  label: 'Blague',            desc: 'Blague aléatoire premium' },
+  horoscope:   { type: 'arg',    icon: '⭐',  label: 'Horoscope',         desc: 'Horoscope détaillé', example: '.horoscope scorpion' },
+  // ── JEUX ──────────────────────────────────────────────────
+  quiz:        { type: 'exec',   icon: '🧠',  label: 'Quiz',              desc: 'Question culture générale' },
+  tictactoe:   { type: 'arg',    icon: '☠️',  label: 'Morpion',           desc: 'Jouer contre quelqu\'un', example: '.tictactoe @joueur' },
+  rps:         { type: 'arg',    icon: '✊',  label: 'Pierre Feuille',    desc: 'Choisir une option', example: '.rps pierre' },
+  coinflip:    { type: 'exec',   icon: '🪙',  label: 'Pile ou face',      desc: 'Lancer une pièce animée' },
+  dare:        { type: 'exec',   icon: '🎲',  label: 'Défi du démon',     desc: 'Défi aléatoire' },
+  ship:        { type: 'arg',    icon: '🔥',  label: 'Ship amour',        desc: 'Compatibilité entre 2 membres', example: '.ship @user1 @user2' },
+  tournament:  { type: 'arg',    icon: '🏆',  label: 'Tournoi',           desc: 'Créer un tournoi', example: '.tournament create MonTournoi' },
+  // ── GROUPE ─────────────────────────────────────────────────
+  kick:        { type: 'danger', icon: '⚰️',  label: 'Expulser membre',   desc: 'Expulser @membre du groupe', example: '.kick @membre', confirm: 'Expulser ce membre ?' },
+  ban:         { type: 'danger', icon: '🚫',  label: 'Bannir membre',     desc: 'Bannir @membre définitivement', example: '.ban @membre', confirm: 'Bannir ce membre ?' },
+  kickall:     { type: 'danger', icon: '💥',  label: 'Expulser TOUS',     desc: 'Expulser tous les membres ⚠️', example: '.kickall', confirm: '⚠️ EXPULSER TOUS LES MEMBRES ?' },
+  mute:        { type: 'toggle', icon: '🔇',  label: 'Fermer groupe',     desc: 'Seuls les admins peuvent parler', toggle: 'mute' },
+  unmute:      { type: 'exec',   icon: '🔊',  label: 'Ouvrir groupe',     desc: 'Tout le monde peut parler' },
+  tagall:      { type: 'arg',    icon: '📢',  label: 'Tag All',           desc: 'Mentionner tous les membres', example: '.tagall Message important !' },
+  hidetag:     { type: 'arg',    icon: '👻',  label: 'Hidetag',           desc: 'Mention discrète', example: '.hidetag Message secret' },
+  welcome:     { type: 'toggle', icon: '🕯️',  label: 'Message bienvenue', desc: 'Activer/désactiver les welcomes', toggle: 'welcome' },
+  goodbye:     { type: 'toggle', icon: '⚰️',  label: 'Message au revoir', desc: 'Activer/désactiver les goodbyes', toggle: 'goodbye' },
+  rules:       { type: 'arg',    icon: '📜',  label: 'Règles',            desc: 'Voir/définir les règles', example: '.rules' },
+  warn:        { type: 'arg',    icon: '⚠️',  label: 'Avertir',           desc: 'Donner un avertissement', example: '.warn @membre Raison' },
+  unwarn:      { type: 'arg',    icon: '🩸',  label: 'Retirer warn',      desc: 'Retirer un avertissement', example: '.unwarn @membre' },
+  warnlist:    { type: 'exec',   icon: '📋',  label: 'Liste warns',       desc: 'Voir tous les avertissements' },
+  promote:     { type: 'arg',    icon: '⬆️',  label: 'Promouvoir admin',  desc: 'Promouvoir en administrateur', example: '.promote @membre' },
+  demote:      { type: 'arg',    icon: '⬇️',  label: 'Rétrograder admin', desc: 'Rétrograder un administrateur', example: '.demote @membre' },
+  add:         { type: 'arg',    icon: '➕',  label: 'Ajouter membre',    desc: 'Ajouter quelqu\'un au groupe', example: '.add 2250700000000' },
+  // ── PROTECTIONS ────────────────────────────────────────────
+  antilink:    { type: 'toggle', icon: '🔗',  label: 'Anti-liens',        desc: 'Bloquer les liens automatiquement', toggle: 'antilink' },
+  antispam:    { type: 'toggle', icon: '📵',  label: 'Anti-spam',         desc: 'Bloquer le spam intelligent', toggle: 'antispam' },
+  antiflood:   { type: 'toggle', icon: '🌊',  label: 'Anti-flood',        desc: 'Bloquer les floods de messages', toggle: 'antiflood' },
+  antimention: { type: 'toggle', icon: '📵',  label: 'Anti-mention',      desc: 'Bloquer les mentions abusives', toggle: 'antimention' },
+  antiword:    { type: 'toggle', icon: '🚫',  label: 'Anti-mots',         desc: 'Filtrer les mots bannis', toggle: 'antiword' },
+  antichannel: { type: 'toggle', icon: '📡',  label: 'Anti-chaîne',       desc: 'Bloquer transferts de chaînes', toggle: 'antichannel' },
+  antidemote:  { type: 'toggle', icon: '⛧',  label: 'Anti-démotion',     desc: 'Empêcher dégradation admins', toggle: 'antidemote' },
+  automod:     { type: 'toggle', icon: '🤖',  label: 'Auto-modération',   desc: 'Modération automatique IA', toggle: 'automod' },
+  ticket:      { type: 'arg',    icon: '🎫',  label: 'Tickets support',   desc: 'Système de tickets', example: '.ticket new Problème de connexion' },
+  webhook:     { type: 'arg',    icon: '📡',  label: 'Webhooks',          desc: 'Notifs vers Discord etc.', example: '.webhook add https://...' },
+  // ── OWNER ──────────────────────────────────────────────────
+  broadcast:   { type: 'arg',    icon: '📡',  label: 'Broadcast',         desc: 'Diffusion vers tous les groupes', example: '.broadcast Message important' },
+  plugin:      { type: 'arg',    icon: '🔌',  label: 'Plugins',           desc: 'Gérer les plugins', example: '.plugin list' },
+  backup:      { type: 'exec',   icon: '💾',  label: 'Backup données',    desc: 'Sauvegarder toutes les données' },
+  reload:      { type: 'exec',   icon: '♻️',  label: 'Recharger cmds',    desc: 'Recharger toutes les commandes' },
+  restart:     { type: 'danger', icon: '🔄',  label: 'Redémarrer bot',    desc: 'Redémarrage complet du système', confirm: 'Redémarrer le bot ?' },
+  eval:        { type: 'arg',    icon: '💻',  label: 'Eval JavaScript',   desc: 'Exécuter du code JS', example: '.eval console.log("test")' },
+  addpremium:  { type: 'arg',    icon: '💎',  label: 'Ajouter premium',   desc: 'Donner le statut premium', example: '.addpremium @membre' },
+  stats:       { type: 'exec',   icon: '📈',  label: 'Statistiques bot',  desc: 'Stats globales du bot' },
+  logs:        { type: 'exec',   icon: '📓',  label: 'Logs actions',      desc: 'Journal des actions admin' },
+}
+
+// ══════════════════════════════════════════════════════════════
+// CATÉGORIES DU MENU
+// ══════════════════════════════════════════════════════════════
 
 const MENU_CATEGORIES = [
   {
     id: 'general',
-    title: 'Général',
+    title: 'GÉNÉRAL',
     icon: '☩',
-    desc: 'Menu, aide, ping, infos bot',
-    commands: [
-      { id: 'menu',      label: '📋 Menu complet',        desc: 'Tout le grimoire en texte' },
-      { id: 'help',      label: '☩ Aide commande',        desc: '.help <commande>' },
-      { id: 'ping',      label: '⚡ Ping',                 desc: 'Latence du démon' },
-      { id: 'info',      label: '🜏 Infos bot',            desc: 'Informations système' },
-      { id: 'uptime',    label: '⏱️ Uptime',               desc: 'Temps d\'activité' },
-      { id: 'whoami',    label: '🔍 Qui suis-je',         desc: 'Ton rang & pouvoirs' },
-    ]
+    desc: 'Menu, aide, ping, infos',
+    cmds: ['menu', 'help', 'ping', 'info', 'uptime', 'whoami']
   },
   {
     id: 'xp',
-    title: 'XP & Classement',
+    title: 'XP & RANG',
     icon: '⭐',
     desc: 'Niveaux, badges, classements',
-    commands: [
-      { id: 'rank',        label: '📊 Mon rang XP',        desc: 'Ton niveau et XP' },
-      { id: 'leaderboard', label: '🏆 Classement global',  desc: 'Top 10 joueurs' },
-      { id: 'profile',     label: '👤 Mon profil',         desc: 'Profil complet' },
-      { id: 'badge',       label: '🏅 Mes badges',         desc: 'Voir tes badges' },
-      { id: 'daily',       label: '🎁 Daily XP',           desc: 'Bonus quotidien' },
-    ]
+    cmds: ['rank', 'leaderboard', 'profile', 'badge', 'daily', 'cmdinfo']
   },
   {
     id: 'media',
-    title: 'Médias',
+    title: 'MÉDIAS',
     icon: '🎵',
     desc: 'Musique, vidéo, stickers',
-    commands: [
-      { id: 'song',      label: '🎵 Télécharger musique', desc: '.song <titre>' },
-      { id: 'ytmp4',     label: '🎬 Vidéo YouTube',       desc: '.ytmp4 <url>' },
-      { id: 'sticker',   label: '🎭 Créer sticker',       desc: 'Envoie image + .sticker' },
-      { id: 'image',     label: '🖼️ Chercher image',      desc: '.image <mot clé>' },
-      { id: 'tts',       label: '🔊 Texte en vocal',      desc: '.tts <texte>' },
-      { id: 'lyrics',    label: '🎤 Paroles chanson',     desc: '.lyrics <titre>' },
-    ]
+    cmds: ['song', 'ytmp4', 'sticker', 'image', 'tts', 'lyrics', 'download']
   },
   {
     id: 'utils',
-    title: 'Utilitaires',
+    title: 'UTILITAIRES',
     icon: '🔧',
-    desc: 'Météo, traduction, calcul',
-    commands: [
-      { id: 'weather',   label: '🌦️ Météo',               desc: '.weather <ville>' },
-      { id: 'translate', label: '🌍 Traduction',          desc: '.translate fr <texte>' },
-      { id: 'calc',      label: '🧮 Calculatrice',        desc: '.calc <expression>' },
-      { id: 'qrcode',    label: '🔳 QR Code',             desc: '.qrcode <texte>' },
-      { id: 'poll',      label: '📊 Sondage',             desc: '.poll Q|A|B|C' },
-      { id: 'remind',    label: '⏰ Rappel',               desc: '.remind 10m <texte>' },
-    ]
+    desc: 'Météo, traduction, calcul...',
+    cmds: ['weather', 'translate', 'calc', 'qrcode', 'poll', 'remind', 'quote', 'joke', 'horoscope']
   },
   {
     id: 'games',
-    title: 'Jeux',
+    title: 'JEUX',
     icon: '🎮',
-    desc: 'Jeux & divertissement',
-    commands: [
-      { id: 'quiz',        label: '🧠 Quiz',               desc: 'Question culture générale' },
-      { id: 'tictactoe',   label: '☠️ Morpion',            desc: '.tictactoe @joueur' },
-      { id: 'rps',         label: '✊ Pierre Feuille',     desc: '.rps pierre/feuille/ciseaux' },
-      { id: 'coinflip',    label: '🪙 Pile ou face',       desc: 'Lancer une pièce' },
-      { id: 'tournament',  label: '🏆 Tournoi',            desc: 'Créer un tournoi' },
-      { id: 'dare',        label: '🎲 Défi démon',         desc: 'Défi aléatoire' },
-    ]
+    desc: 'Quiz, morpion, tournoi...',
+    cmds: ['quiz', 'tictactoe', 'rps', 'coinflip', 'dare', 'ship', 'tournament']
   },
   {
     id: 'group',
-    title: 'Groupe',
+    title: 'GROUPE',
     icon: '👥',
     desc: 'Gestion & modération groupe',
-    commands: [
-      { id: 'kick',      label: '⚰️ Expulser',            desc: '.kick @membre' },
-      { id: 'ban',       label: '🚫 Bannir',              desc: '.ban @membre' },
-      { id: 'warn',      label: '⚠️ Avertir',             desc: '.warn @membre' },
-      { id: 'mute',      label: '🔇 Fermer groupe',       desc: 'Seuls admins parlent' },
-      { id: 'tagall',    label: '📢 Taguer tous',         desc: 'Mentionner tous les membres' },
-      { id: 'welcome',   label: '🕯️ Bienvenue',           desc: '.welcome on/off' },
-    ]
+    cmds: ['kick', 'ban', 'mute', 'unmute', 'tagall', 'hidetag', 'welcome', 'goodbye', 'warn', 'unwarn', 'warnlist', 'promote', 'demote', 'add', 'rules']
   },
   {
     id: 'protection',
-    title: 'Protections',
+    title: 'PROTECTIONS',
     icon: '🛡️',
-    desc: 'Anti-raid, spam, liens',
-    commands: [
-      { id: 'automod',   label: '🤖 Auto-modération',     desc: '.automod on/off' },
-      { id: 'antilink',  label: '🔗 Anti-liens',          desc: '.antilink on/off' },
-      { id: 'antispam',  label: '📵 Anti-spam',           desc: '.antispam on/off' },
-      { id: 'antiflood', label: '🌊 Anti-flood',          desc: '.antiflood on/off' },
-      { id: 'ticket',    label: '🎫 Tickets support',     desc: 'Système de support' },
-      { id: 'webhook',   label: '📡 Webhooks',            desc: 'Notifs externes' },
-    ]
+    desc: 'Anti-raid, spam, liens...',
+    cmds: ['antilink', 'antispam', 'antiflood', 'antimention', 'antiword', 'antichannel', 'antidemote', 'automod', 'ticket', 'webhook']
   },
   {
     id: 'owner',
-    title: 'Owner',
+    title: 'OWNER',
     icon: '👑',
-    desc: 'Commandes réservées Owner',
-    commands: [
-      { id: 'broadcast', label: '📡 Broadcast',           desc: 'Diffusion globale' },
-      { id: 'plugin',    label: '🔌 Plugins',             desc: 'Gérer les plugins' },
-      { id: 'backup',    label: '💾 Backup',              desc: 'Sauvegarder les données' },
-      { id: 'reload',    label: '♻️ Recharger cmds',      desc: 'Recharger les commandes' },
-      { id: 'restart',   label: '🔄 Redémarrer',         desc: 'Redémarrer le bot' },
-      { id: 'eval',      label: '💻 Eval JavaScript',     desc: 'Exécuter du JS' },
-    ]
+    desc: 'Commandes réservées',
+    cmds: ['broadcast', 'plugin', 'backup', 'reload', 'restart', 'eval', 'addpremium', 'stats', 'logs']
   }
 ]
 
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 // UTILITAIRES
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 
 function trunc(str, max) {
-  if (!str) return ''
-  return str.length > max ? str.slice(0, max - 1) + '…' : str
+  return str && str.length > max ? str.slice(0, max - 1) + '…' : (str || '')
 }
 
 function getCommandFiles() {
@@ -156,116 +189,139 @@ function getCommandFiles() {
   } catch { return new Set() }
 }
 
-// ══════════════════════════════════════════════════
-// MENU PRINCIPAL — Liste de toutes les catégories
-// L'utilisateur choisit une catégorie → le bot envoie
-// le sous-menu de cette catégorie avec ses commandes
-// ══════════════════════════════════════════════════
+function getMeta(cmdId) {
+  return CMD_META[cmdId] || { type: 'exec', icon: '⛧', label: cmdId, desc: 'Commande bot' }
+}
 
-async function sendMainMenu(sock, sender) {
+// ══════════════════════════════════════════════════════════════
+// MENU PRINCIPAL — Liste des catégories
+// ══════════════════════════════════════════════════════════════
+
+async function sendMainMenu(sock, sender, ctx) {
   const prefix   = config.prefix || '.'
   const botName  = config.botName || '𝐋𝐎𝐑𝐃 𝐃𝐄𝐌𝐎𝐍'
   const cmdFiles = getCommandFiles()
+
   const totalCmds = MENU_CATEGORIES.reduce(
-    (n, c) => n + c.commands.filter(cmd => cmdFiles.has(cmd.id)).length, 0
+    (n, cat) => n + cat.cmds.filter(c => cmdFiles.has(c)).length, 0
   )
 
-  // Diviser les catégories en 2 sections pour plus de clarté
-  const secFun = {
-    title: '⚡ Commandes & divertissement',
-    rows: MENU_CATEGORIES.slice(0, 4).map(cat => ({
-      title:       trunc(`${cat.icon} ${cat.title}`, 24),
-      description: trunc(cat.desc, 72),
-      rowId:       `${prefix}menubtn ${cat.id}`
-    }))
+  // Groupe 1 : fun/utilisateur
+  const sec1 = {
+    title: '🎮 Commandes & divertissement',
+    rows: MENU_CATEGORIES.slice(0, 4).map(cat => {
+      const avail = cat.cmds.filter(c => cmdFiles.has(c)).length
+      return {
+        title:       trunc(`${cat.icon} ${cat.title}`, 24),
+        description: trunc(`${cat.desc} (${avail} sorts)`, 72),
+        rowId:       `${prefix}menubtn ${cat.id}`
+      }
+    })
   }
 
-  const secAdmin = {
+  // Groupe 2 : admin/owner
+  const sec2 = {
     title: '⚙️ Administration & système',
     rows: [
-      ...MENU_CATEGORIES.slice(4).map(cat => ({
-        title:       trunc(`${cat.icon} ${cat.title}`, 24),
-        description: trunc(cat.desc, 72),
-        rowId:       `${prefix}menubtn ${cat.id}`
-      })),
+      ...MENU_CATEGORIES.slice(4).map(cat => {
+        const avail = cat.cmds.filter(c => cmdFiles.has(c)).length
+        return {
+          title:       trunc(`${cat.icon} ${cat.title}`, 24),
+          description: trunc(`${cat.desc} (${avail} sorts)`, 72),
+          rowId:       `${prefix}menubtn ${cat.id}`
+        }
+      }),
       {
         title:       '⚡ Accès rapide',
-        description: 'Boutons vers les commandes populaires',
+        description: 'Top commandes en 1 tap',
         rowId:       `${prefix}menubtn quick`
-      },
-      {
-        title:       '📜 Grimoire complet',
-        description: 'Voir toutes les commandes en texte',
-        rowId:       `${prefix}menu`
       }
     ]
   }
 
+  const headerText =
+    `╔══〔 ☠ *${botName}* ☠ 〕══╗\n\n` +
+    `┃ 🩸 *${totalCmds}* commandes invoquées\n` +
+    `┃ 📋 *${MENU_CATEGORIES.length}* cercles du grimoire\n\n` +
+    `┃ *Comment utiliser :*\n` +
+    `┃  ① Appuie sur *🩸 Ouvrir le Grimoire* ↓\n` +
+    `┃  ② Sélectionne une catégorie\n` +
+    `┃  ③ Choisis une commande\n` +
+    `┃  ④ Elle s'exécute immédiatement ✅\n\n` +
+    `╚══════════════════════════╝`
+
   try {
     await sock.sendMessage(sender, {
-      text:
-        `╭━━━〔 ⛧ *${botName}* 〕━━━╮\n\n` +
-        `┃ 🩸 *${totalCmds} commandes disponibles*\n` +
-        `┃ 📋 *Comment utiliser :*\n` +
-        `┃  1. Appuie sur le bouton ↓\n` +
-        `┃  2. Choisis une catégorie\n` +
-        `┃  3. Appuie sur une commande\n` +
-        `┃  4. La commande s'exécute ! ✅\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`,
-      footer: `${botName} — Grimoire Interactif v2`,
+      text: headerText,
+      footer: `⛧ LORD-DEMON Technology — Grimoire v3`,
       title: `☠ GRIMOIRE INTERACTIF`,
-      buttonText: `🩸 Choisir une catégorie`,
-      sections: [secFun, secAdmin],
+      buttonText: `🩸 Ouvrir le Grimoire`,
+      sections: [sec1, sec2],
       listType: 1
     })
   } catch {
-    await sendFallbackMenu(sock, sender, prefix, botName)
+    await sendFallback(sock, sender, prefix, botName)
   }
 }
 
-// ══════════════════════════════════════════════════
-// SOUS-MENU CATÉGORIE — Liste des commandes
-// Chaque ligne = une commande → rowId = ".commande"
-// messageHandler.js intercepte et exécute
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// SOUS-MENU CATÉGORIE — Liste des commandes avec type visible
+// ══════════════════════════════════════════════════════════════
 
-async function sendCategoryMenu(sock, sender, catId) {
+async function sendCategoryMenu(sock, sender, catId, ctx) {
   const prefix   = config.prefix || '.'
   const botName  = config.botName || '𝐋𝐎𝐑𝐃 𝐃𝐄𝐌𝐎𝐍'
   const cat      = MENU_CATEGORIES.find(c => c.id === catId)
   const cmdFiles = getCommandFiles()
 
-  if (!cat) return sendMainMenu(sock, sender)
+  if (!cat) return sendMainMenu(sock, sender, ctx)
 
-  const availCmds = cat.commands.filter(cmd => cmdFiles.has(cmd.id))
+  const availCmds = cat.cmds.filter(c => cmdFiles.has(c))
   if (!availCmds.length) {
-    return await sock.sendMessage(sender, {
-      text: `❌ Aucune commande disponible dans *${cat.title}*.`
-    })
+    return sock.sendMessage(sender, { text: `❌ Aucune commande disponible dans *${cat.title}*.` })
   }
 
-  const rows = [
-    ...availCmds.map(cmd => ({
-      title:       trunc(cmd.label, 24),
-      description: trunc(cmd.desc, 72),
-      rowId:       `${prefix}${cmd.id}`   // ← commande directe
-    })),
-    {
-      title:       '← Retour au menu',
-      description: 'Revenir aux catégories',
-      rowId:       `${prefix}menubtn`
+  // Type badge pour la description
+  const typeTag = {
+    exec:   '⚡',  // Exécution directe
+    arg:    '✏️',  // Besoin d'arguments
+    toggle: '🔄',  // ON/OFF
+    danger: '⚠️',  // Confirmation requise
+    media:  '🖼️',  // Média requis
+  }
+
+  const rows = availCmds.map(cmdId => {
+    const meta = getMeta(cmdId)
+    const tag  = typeTag[meta.type] || '⚡'
+    return {
+      title:       trunc(`${meta.icon} ${meta.label}`, 24),
+      description: trunc(`${tag} ${meta.desc}`, 72),
+      rowId:       `${prefix}menubtn cmd ${cmdId}`   // → panneau commande
     }
-  ]
+  })
+
+  // Ligne retour
+  rows.push({
+    title:       '← Retour aux catégories',
+    description: 'Revenir au menu principal',
+    rowId:       `${prefix}menubtn`
+  })
+
+  const legendText =
+    `╔══〔 ${cat.icon} *${cat.title}* 〕══╗\n\n` +
+    `┃ *${availCmds.length} commandes disponibles*\n` +
+    `┃ 💡 Appuie sur une commande :\n` +
+    `┃  ⚡ Exécution directe\n` +
+    `┃  ✏️ Demande un argument → affiche l'aide\n` +
+    `┃  🔄 Toggle → boutons ON/OFF\n` +
+    `┃  ⚠️ Danger → demande confirmation\n\n` +
+    `╚══════════════════════════╝`
 
   try {
     await sock.sendMessage(sender, {
-      text:
-        `╭━━━〔 ${cat.icon} *${cat.title.toUpperCase()}* 〕━━━╮\n\n` +
-        `┃ *${availCmds.length} commandes disponibles*\n` +
-        `┃ 💡 Appuie sur une commande pour l'exécuter !\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`,
+      text: legendText,
       footer: `${botName} — ${cat.desc}`,
-      title:  `${cat.icon} ${cat.title}`,
+      title: `${cat.icon} ${cat.title}`,
       buttonText: `⚡ Choisir une commande`,
       sections: [{
         title: `${cat.icon} ${cat.title} (${availCmds.length})`,
@@ -274,36 +330,202 @@ async function sendCategoryMenu(sock, sender, catId) {
       listType: 1
     })
   } catch {
-    // Fallback : boutons classiques (max 3) + texte pour le reste
+    // Fallback boutons (3 max) + texte
     const btn3 = availCmds.slice(0, 3)
     try {
       await sock.sendMessage(sender, {
         text:
-          `╭━━━〔 ${cat.icon} *${cat.title}* 〕━━━╮\n\n` +
-          availCmds.map(c => `┃ *${prefix}${c.id}* — ${c.desc}`).join('\n') +
-          `\n\n╰━━━━━━━━━━━━━━━━━━━━━━╯`,
+          `╔══〔 ${cat.icon} *${cat.title}* 〕══╗\n\n` +
+          availCmds.map(id => {
+            const m = getMeta(id)
+            return `┃ ${m.icon} *${prefix}${id}* — ${m.desc}`
+          }).join('\n') +
+          `\n\n╚══════════════════════════╝`,
         footer: `Boutons rapides ↓`,
-        buttons: btn3.map(c => ({
-          buttonId: `${prefix}${c.id}`,
-          buttonText: { displayText: c.label },
-          type: 1
-        })),
+        buttons: btn3.map(id => {
+          const m = getMeta(id)
+          return { buttonId: `${prefix}menubtn cmd ${id}`, buttonText: { displayText: `${m.icon} ${m.label}` }, type: 1 }
+        }),
         headerType: 1
       })
     } catch {
       await sock.sendMessage(sender, {
         text:
-          `╭━━━〔 ${cat.icon} *${cat.title}* 〕━━━╮\n\n` +
-          availCmds.map(c => `┃ *${prefix}${c.id}* — ${c.desc}`).join('\n') +
-          `\n\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+          `╔══〔 ${cat.icon} *${cat.title}* 〕══╗\n\n` +
+          availCmds.map(id => {
+            const m = getMeta(id)
+            return `┃ ${m.icon} *${prefix}${id}* — ${m.desc}`
+          }).join('\n') +
+          `\n\n╚══════════════════════════╝`
       })
     }
   }
 }
 
-// ══════════════════════════════════════════════════
-// ACCÈS RAPIDE — 3 boutons vers commandes populaires
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// PANNEAU COMMANDE — Comportement selon le TYPE
+// ══════════════════════════════════════════════════════════════
+
+async function sendCommandPanel(sock, sender, cmdId, ctx) {
+  const prefix  = config.prefix || '.'
+  const botName = config.botName || '𝐋𝐎𝐑𝐃 𝐃𝐄𝐌𝐎𝐍'
+  const meta    = getMeta(cmdId)
+
+  switch (meta.type) {
+
+    // ── EXEC : exécution directe ─────────────────────────────
+    case 'exec': {
+      await sock.sendMessage(sender, {
+        text:
+          `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
+          `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+          `┃ 📝 *Sortilège :* ${meta.desc}\n\n` +
+          `┃ ⚡ Lancement en cours...\n\n` +
+          `╚══════════════════════════╝`,
+        footer: `${botName}`
+      })
+      // Exécution directe → injecter la commande
+      await _execCommand(sock, sender, cmdId, [], ctx)
+      break
+    }
+
+    // ── ARG : affiche l'aide + bouton .help ──────────────────
+    case 'arg': {
+      try {
+        await sock.sendMessage(sender, {
+          text:
+            `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
+            `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+            `┃ 📝 *Sortilège :* ${meta.desc}\n\n` +
+            `┃ ✏️ *Cette commande demande des arguments.*\n` +
+            `┃ 📖 *Exemple :*\n` +
+            `┃   \`${meta.example || prefix + cmdId + ' <argument>'}\`\n\n` +
+            `┃ Tape la commande dans le chat ↑\n\n` +
+            `╚══════════════════════════╝`,
+          footer: `${botName}`,
+          buttons: [
+            { buttonId: `${prefix}help ${cmdId}`, buttonText: { displayText: `📖 Aide complète` }, type: 1 },
+            { buttonId: `${prefix}menubtn`,       buttonText: { displayText: `← Retour menu` },    type: 1 },
+          ],
+          headerType: 1
+        })
+      } catch {
+        await sock.sendMessage(sender, {
+          text:
+            `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
+            `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+            `┃ 📝 ${meta.desc}\n` +
+            `┃ 📖 *Exemple :* \`${meta.example || prefix + cmdId + ' <argument>'}\`\n\n` +
+            `┃ 💡 Aide : *${prefix}help ${cmdId}*\n\n` +
+            `╚══════════════════════════╝`
+        })
+      }
+      break
+    }
+
+    // ── MEDIA : média requis ──────────────────────────────────
+    case 'media': {
+      try {
+        await sock.sendMessage(sender, {
+          text:
+            `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
+            `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+            `┃ 📝 *Sortilège :* ${meta.desc}\n\n` +
+            `┃ 🖼️ *Utilisation :*\n` +
+            `┃   ${meta.example || 'Envoie un média + commande'}\n\n` +
+            `╚══════════════════════════╝`,
+          footer: `${botName}`,
+          buttons: [
+            { buttonId: `${prefix}help ${cmdId}`, buttonText: { displayText: `📖 Aide complète` }, type: 1 },
+            { buttonId: `${prefix}menubtn`,       buttonText: { displayText: `← Retour menu` },    type: 1 },
+          ],
+          headerType: 1
+        })
+      } catch {
+        await sock.sendMessage(sender, {
+          text:
+            `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
+            `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+            `┃ 📝 ${meta.desc}\n` +
+            `┃ 🖼️ *Usage :* ${meta.example || 'Envoie un média + commande'}\n\n` +
+            `╚══════════════════════════╝`
+        })
+      }
+      break
+    }
+
+    // ── TOGGLE : boutons ON / OFF / STATUS ───────────────────
+    case 'toggle': {
+      try {
+        await sock.sendMessage(sender, {
+          text:
+            `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
+            `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+            `┃ 📝 *Sortilège :* ${meta.desc}\n\n` +
+            `┃ 🔄 *Choisis une action :*\n` +
+            `┃  ✅ ON  → Active la protection\n` +
+            `┃  ❌ OFF → Désactive la protection\n\n` +
+            `╚══════════════════════════╝`,
+          footer: `${botName}`,
+          buttons: [
+            { buttonId: `${prefix}${cmdId} on`,  buttonText: { displayText: `✅ Activer` },  type: 1 },
+            { buttonId: `${prefix}${cmdId} off`, buttonText: { displayText: `❌ Désactiver` }, type: 1 },
+            { buttonId: `${prefix}menubtn`,      buttonText: { displayText: `← Retour` },     type: 1 },
+          ],
+          headerType: 1
+        })
+      } catch {
+        await sock.sendMessage(sender, {
+          text:
+            `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
+            `┃ ✅ *${prefix}${cmdId} on*  → Activer\n` +
+            `┃ ❌ *${prefix}${cmdId} off* → Désactiver\n\n` +
+            `╚══════════════════════════╝`
+        })
+      }
+      break
+    }
+
+    // ── DANGER : confirmation avant exécution ────────────────
+    case 'danger': {
+      const confirmText = meta.confirm || `Exécuter ${prefix}${cmdId} ?`
+      try {
+        await sock.sendMessage(sender, {
+          text:
+            `╔══〔 ⚠️ *CONFIRMATION REQUISE* ⚠️ 〕══╗\n\n` +
+            `┃ ${meta.icon} *${meta.label.toUpperCase()}*\n` +
+            `┃ 📝 ${meta.desc}\n\n` +
+            `┃ ⚠️ *${confirmText}*\n` +
+            `┃ ℹ️ Cette action peut être irréversible.\n\n` +
+            `╚══════════════════════════╝`,
+          footer: `${botName}`,
+          buttons: [
+            { buttonId: `${prefix}${cmdId}`, buttonText: { displayText: `⚡ CONFIRMER` },  type: 1 },
+            { buttonId: `${prefix}menubtn`,  buttonText: { displayText: `❌ Annuler` },    type: 1 },
+          ],
+          headerType: 1
+        })
+      } catch {
+        await sock.sendMessage(sender, {
+          text:
+            `╔══〔 ⚠️ *CONFIRMATION* 〕══╗\n\n` +
+            `┃ ${meta.icon} *${meta.label}*\n` +
+            `┃ ⚠️ *${confirmText}*\n` +
+            `┃ Tape : *${prefix}${cmdId}* pour confirmer\n\n` +
+            `╚══════════════════════════╝`
+        })
+      }
+      break
+    }
+
+    default:
+      await _execCommand(sock, sender, cmdId, [], ctx)
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// ACCÈS RAPIDE — Boutons vers les commandes populaires
+// ══════════════════════════════════════════════════════════════
 
 async function sendQuickMenu(sock, sender) {
   const prefix  = config.prefix || '.'
@@ -312,26 +534,41 @@ async function sendQuickMenu(sock, sender) {
   try {
     await sock.sendMessage(sender, {
       text:
-        `╭━━━〔 ⚡ *ACCÈS RAPIDE* 〕━━━╮\n\n` +
-        `┃ Commandes populaires.\n` +
-        `┃ Appuie sur un bouton pour l'exécuter ! ✅\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`,
+        `╔══〔 ⚡ *ACCÈS RAPIDE* ⚡ 〕══╗\n\n` +
+        `┃ 🏆 *Stats & Classement*\n\n` +
+        `╚══════════════════════════╝`,
       footer: `${botName}`,
       buttons: [
-        { buttonId: `${prefix}rank`,        buttonText: { displayText: '📊 Mon Rang XP' },   type: 1 },
-        { buttonId: `${prefix}leaderboard`, buttonText: { displayText: '🏆 Classement' },     type: 1 },
-        { buttonId: `${prefix}menubtn`,     buttonText: { displayText: '📋 Menu Complet' },   type: 1 },
+        { buttonId: `${prefix}menubtn cmd rank`,        buttonText: { displayText: `📊 Mon rang XP` },   type: 1 },
+        { buttonId: `${prefix}menubtn cmd leaderboard`, buttonText: { displayText: `🏆 Classement` },    type: 1 },
+        { buttonId: `${prefix}menubtn cmd profile`,     buttonText: { displayText: `👤 Mon profil` },    type: 1 },
       ],
       headerType: 1
     })
 
     await sock.sendMessage(sender, {
-      text: `┃ Commandes groupe :`,
+      text:
+        `╔══〔 🎮 *JEUX RAPIDES* 〕══╗\n\n` +
+        `┃ Lance un jeu en 1 tap !\n\n` +
+        `╚══════════════════════════╝`,
       footer: `${botName}`,
       buttons: [
-        { buttonId: `${prefix}tagall`, buttonText: { displayText: '📢 Tag All' },   type: 1 },
-        { buttonId: `${prefix}poll`,   buttonText: { displayText: '📊 Sondage' },   type: 1 },
-        { buttonId: `${prefix}quiz`,   buttonText: { displayText: '🧠 Quiz' },      type: 1 },
+        { buttonId: `${prefix}menubtn cmd quiz`,      buttonText: { displayText: `🧠 Quiz` },         type: 1 },
+        { buttonId: `${prefix}menubtn cmd coinflip`,  buttonText: { displayText: `🪙 Pile ou face` }, type: 1 },
+        { buttonId: `${prefix}menubtn cmd dare`,      buttonText: { displayText: `🎲 Défi démon` },   type: 1 },
+      ],
+      headerType: 1
+    })
+
+    await sock.sendMessage(sender, {
+      text:
+        `╔══〔 📋 *NAVIGATION* 〕══╗\n\n` +
+        `╚══════════════════════════╝`,
+      footer: `${botName}`,
+      buttons: [
+        { buttonId: `${prefix}menubtn`,        buttonText: { displayText: `📋 Menu principal` }, type: 1 },
+        { buttonId: `${prefix}menubtn group`,   buttonText: { displayText: `👥 Groupe` },         type: 1 },
+        { buttonId: `${prefix}menubtn protection`, buttonText: { displayText: `🛡️ Protections` }, type: 1 },
       ],
       headerType: 1
     })
@@ -339,69 +576,92 @@ async function sendQuickMenu(sock, sender) {
   } catch {
     await sock.sendMessage(sender, {
       text:
-        `╭━━━〔 ⚡ *ACCÈS RAPIDE* 〕━━━╮\n\n` +
-        `┃ *${prefix}rank* — Mon rang XP\n` +
-        `┃ *${prefix}leaderboard* — Classement\n` +
-        `┃ *${prefix}tagall* — Tag All\n` +
-        `┃ *${prefix}poll* — Sondage\n` +
-        `┃ *${prefix}quiz* — Quiz\n\n` +
-        `┃ 💡 Utilisez *${prefix}menubtn* pour le menu interactif.\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `╔══〔 ⚡ *ACCÈS RAPIDE* 〕══╗\n\n` +
+        `┃ *${prefix}rank* → Mon rang\n` +
+        `┃ *${prefix}leaderboard* → Classement\n` +
+        `┃ *${prefix}quiz* → Quiz\n` +
+        `┃ *${prefix}coinflip* → Pile ou face\n` +
+        `┃ *${prefix}tagall* → Tag All\n` +
+        `┃ *${prefix}menubtn* → Menu complet\n\n` +
+        `╚══════════════════════════╝`
     })
   }
 }
 
-// ══════════════════════════════════════════════════
-// FALLBACK texte pur (WhatsApp trop vieux)
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// EXÉCUTION INTERNE D'UNE COMMANDE (pour le type 'exec')
+// ══════════════════════════════════════════════════════════════
 
-async function sendFallbackMenu(sock, sender, prefix, botName) {
+async function _execCommand(sock, sender, cmdId, args, ctx) {
+  try {
+    const filePath = path.join(COMMANDS_DIR, cmdId + '.js')
+    if (!fs.existsSync(filePath)) return
+    const mod = await import(filePath + '?v=' + Date.now())
+    if (typeof mod.default === 'function') {
+      await mod.default(sock, sender, args, null, ctx)
+    }
+  } catch (e) {
+    console.error(`❌ menubtn._execCommand [${cmdId}]:`, e.message)
+    await sock.sendMessage(sender, { text: `❌ Erreur lors de l'invocation de *${cmdId}*: ${e.message.slice(0, 80)}` })
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// FALLBACK TEXTE PUR
+// ══════════════════════════════════════════════════════════════
+
+async function sendFallback(sock, sender, prefix, botName) {
   const cmdFiles = getCommandFiles()
-  let text = `╭━━━〔 ⛧ *${botName}* 〕━━━╮\n\n`
-  text += `┃ ℹ️ _Boutons interactifs non supportés._\n`
-  text += `┃ Utilise *${prefix}menu* pour le menu complet.\n\n`
-  text += `┃ 📋 *Catégories rapides :*\n`
-  MENU_CATEGORIES.slice(0, 4).forEach(cat => {
-    const cmds = cat.commands.filter(c => cmdFiles.has(c.id))
+  let text = `╔══〔 ⛧ *${botName}* ⛧ 〕══╗\n\n`
+  text += `┃ ℹ️ _Mode texte (boutons non supportés)_\n`
+  text += `┃ → *${prefix}menu* pour le grimoire complet\n\n`
+  MENU_CATEGORIES.slice(0, 3).forEach(cat => {
+    const cmds = cat.cmds.filter(c => cmdFiles.has(c))
     if (!cmds.length) return
-    text += `┃\n┃ ${cat.icon} *${cat.title}*\n`
-    cmds.slice(0, 3).forEach(c => { text += `┃  • *${prefix}${c.id}*\n` })
+    text += `┃ ${cat.icon} *${cat.title}*\n`
+    cmds.slice(0, 4).forEach(c => { text += `┃  • *${prefix}${c}*\n` })
+    text += `┃\n`
   })
-  text += `\n┃ *${prefix}menubtn <cat>* — Sous-menu\n`
-  text += `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+  text += `┃ *${prefix}menubtn <cat>* — Sous-menu\n`
+  text += `╚══════════════════════════╝`
   await sock.sendMessage(sender, { text })
 }
 
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 // HANDLER PRINCIPAL
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 
 export default async function menubtn(sock, sender, args, msg, ctx = {}) {
   try {
-    const arg = args[0]?.toLowerCase()
+    const arg0 = args[0]?.toLowerCase()
+    const arg1 = args[1]?.toLowerCase()
 
-    // Sans argument → menu principal (liste de catégories)
-    if (!arg) return await sendMainMenu(sock, sender)
+    // .menubtn → menu principal
+    if (!arg0) return await sendMainMenu(sock, sender, ctx)
 
-    // .menubtn quick → boutons rapides
-    if (arg === 'quick' || arg === 'rapide') return await sendQuickMenu(sock, sender)
+    // .menubtn quick / rapide → accès rapide
+    if (arg0 === 'quick' || arg0 === 'rapide') return await sendQuickMenu(sock, sender)
 
-    // .menubtn <catId> → sous-menu d'une catégorie
+    // .menubtn cmd <cmdId> → panneau intelligent pour la commande
+    if (arg0 === 'cmd' && arg1) {
+      return await sendCommandPanel(sock, sender, arg1, ctx)
+    }
+
+    // .menubtn <catId> → sous-menu catégorie
     const cat = MENU_CATEGORIES.find(c =>
-      c.id === arg ||
-      c.title.toLowerCase().includes(arg)
+      c.id === arg0 || c.title.toLowerCase().includes(arg0)
     )
-    if (cat) return await sendCategoryMenu(sock, sender, cat.id)
+    if (cat) return await sendCategoryMenu(sock, sender, cat.id, ctx)
 
-    // Catégorie inconnue → liste des catégories dispo
+    // Inconnu → liste des catégories
     const prefix = config.prefix || '.'
     await sock.sendMessage(sender, {
       text:
-        `╭━━━〔 📋 *CATÉGORIES DISPONIBLES* 〕━━━╮\n\n` +
+        `╔══〔 📋 *CATÉGORIES* 〕══╗\n\n` +
         MENU_CATEGORIES.map(c => `┃ ${c.icon} *${prefix}menubtn ${c.id}* — ${c.desc}`).join('\n') +
         `\n\n┃ ⚡ *${prefix}menubtn quick* — Accès rapide\n` +
-        `┃ 📜 *${prefix}menu* — Menu texte complet\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `┃ 📜 *${prefix}menu* — Grimoire texte\n\n` +
+        `╚══════════════════════════╝`
     })
 
   } catch (e) {
