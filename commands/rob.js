@@ -1,102 +1,66 @@
-// commands/rob.js — LORD DEMON
+// commands/rob.js — VOLER QUELQU'UN 🥷
 import { sendMessage } from '../lib/sendMessage.js'
-import { showProgressLoader, deleteLoader } from '../lib/animLoader.js'
-import { ecoDb, ECONOMY } from '../lib/economySystem.js'
-import { cleanNumber } from '../lib/ownerSystem.js'
+import { economyDb } from '../lib/economySystem.js'
+import { getSenderJid } from '../lib/ownerSystem.js'
+import Database from 'better-sqlite3'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const ROB_FAILS = [
-  '🚓 La police t\'a attrapé ! Tu as perdu des coins.',
-  '🐕 Un chien de garde t\'a mordu. Mission échouée.',
-  '📸 Une caméra t\'a filmé. Tu t\'es enfui les mains vides.',
-  '🔫 La cible était armée ! Tu es parti en courant.',
-  '🕵️ C\'était un piège ! Tu as perdu des coins.',
-  '😤 La cible t\'a reconnu et appelé ses amis.',
-  '🧱 Tu as trébuché et déclenché l\'alarme.',
-  '💀 Mauvais timing — la cible venait de partir.',
-]
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const _db = new Database(path.join(__dirname, '..', 'data', 'demon.db'))
 
-export default async function rob(sock, sender, args, msg, ctx) {
-  const senderJid = ctx?.senderJid || msg.key.participant || msg.key.remoteJid
-  const prefix    = process.env.PREFIX || '.'
-  const robber    = ecoDb.ensure(senderJid)
-  const now       = Date.now()
+const ROB_COOLDOWN = 3 * 3600 * 1000
 
-  // Cooldown
-  if (now - (robber.last_rob || 0) < ECONOMY.ROB_COOLDOWN) {
-    const remaining = ECONOMY.ROB_COOLDOWN - (now - robber.last_rob)
-    const m = Math.floor(remaining / 60000)
-    return await sendMessage(sock, sender,
-      `☩━━━〔 🔫 *VOL* 〕━━━☩\n☠\n⛧  😤 Tu es trop connu des flics !\n☠  ⏳ Attends encore: *${m} min*\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+export default async function rob(sock, sender, args, msg, ctx = {}) {
+  const jid = ctx.senderJid || getSenderJid(msg, sock)
+  const now = Date.now()
+  const thief = economyDb.ensure(jid)
+
+  if (thief.last_rob && (now - thief.last_rob) < ROB_COOLDOWN) {
+    const reste = Math.ceil((ROB_COOLDOWN - (now - thief.last_rob)) / 60000)
+    return sendMessage(sock, sender,
+      `☩━━━〔 ⏳ *COOLDOWN VOL* 〕━━━☩\n⛧ Encore *${reste} minutes* avant de re-voler !\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
     )
   }
 
-  // Cible
-  const mentions = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
-  const quoted   = msg.message?.extendedTextMessage?.contextInfo?.participant
-  let targetJid  = mentions?.[0] || quoted
-  if (!targetJid && args[0]) {
-    const num = cleanNumber(args[0])
-    if (num) targetJid = `${num}@s.whatsapp.net`
+  const quoted = msg.message?.extendedTextMessage?.contextInfo?.participant
+  const mentioned = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+  const targetJid = quoted || mentioned
+  if (!targetJid) return sendMessage(sock, sender, `☠ Mentionnez la cible !`)
+  if (targetJid === jid) return sendMessage(sock, sender, `☠ Impossible de se voler soi-même !`)
+
+  const victim = economyDb.ensure(targetJid)
+  const victimCoins = victim.coins || 0
+
+  _db.prepare(`UPDATE economy SET last_rob = ? WHERE jid = ?`).run(now, jid)
+
+  if (victimCoins < 50) {
+    return sendMessage(sock, sender, `☠ Trop pauvre pour être volé ! (< 50 🪙)`)
   }
-  if (!targetJid) {
-    return await sendMessage(sock, sender,
-      `☩━━━〔 🔫 *VOL — USAGE* 〕━━━☩\n☠\n⛧  ${prefix}rob @user\n☠  (ou reply sur son message)\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+
+  const victimInv = economyDb.getInventory(targetJid)
+  if (victimInv.bouclier > 0) {
+    economyDb.removeItem(targetJid, 'bouclier')
+    return sendMessage(sock, sender,
+      `⛧━━━〔 🛡️ *VOL BLOQUÉ !* 〕━━━⛧\n☠ La victime avait un *Bouclier* ! Il s'est brisé.\n✝ Votre tentative a été repoussée !\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
     )
   }
-  if (targetJid === senderJid) return await sendMessage(sock, sender, `☠ Tu ne peux pas te voler toi-même. 🤦`)
 
-  const victim = ecoDb.ensure(targetJid)
+  const success = Math.random() < 0.55
 
-  if (victim.coins < ECONOMY.ROB_MIN_WALLET) {
-    return await sendMessage(sock, sender,
-      `☩━━━〔 🔫 *VOL ANNULÉ* 〕━━━☩\n☠\n⛧  💸 @${cleanNumber(targetJid)} n'a pas assez de coins en poche.\n☠  (minimum ${ECONOMY.ROB_MIN_WALLET} ${ECONOMY.SYMBOL} requis)\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  if (success) {
+    const stolen = Math.floor(victimCoins * (0.10 + Math.random() * 0.20))
+    economyDb.removeCoins(targetJid, stolen)
+    economyDb.addCoins(jid, stolen)
+    return sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   🥷 *VOL RÉUSSI !*              ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💰 Volé *${stolen} 🪙* à @${targetJid.split('@')[0]} !\n🪙 Nouveau solde: *${economyDb.get(jid).coins} 🪙*\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
+      { mentions: [targetJid] }
     )
-  }
-
-  let loadKey = null
-  try {
-    loadKey = await showProgressLoader(sock, sender, '🔫 VOL EN COURS...')
-    ecoDb.setRob(senderJid)
-    const success = Math.random() < ECONOMY.ROB_SUCCESS_RATE
-
-    await deleteLoader(sock, sender, loadKey); loadKey = null
-
-    if (success) {
-      const pct    = 0.10 + Math.random() * 0.20
-      const stolen = Math.floor(victim.coins * pct)
-      ecoDb.removeCoins(targetJid, stolen, `robbed by ${senderJid}`)
-      ecoDb.addCoins(senderJid, stolen, `robbed ${targetJid}`)
-      const u2 = ecoDb.get(senderJid)
-      await sendMessage(sock, sender,
-        `☩━━━〔 🔫 *VOL RÉUSSI !* 〕━━━☩\n` +
-        `☠\n` +
-        `⛧  😈 *Succès !* Tu as volé @${cleanNumber(targetJid)}\n` +
-        `☠\n` +
-        `☩  💰 *Volé:* +${stolen} ${ECONOMY.SYMBOL} (${Math.round(pct*100)}%)\n` +
-        `✝  💰 *Poche:* ${u2.coins} ${ECONOMY.SYMBOL}\n` +
-        `☠\n` +
-        `⛧  ⏰ Tu dois te cacher pendant 1h\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
-    } else {
-      const penalty = Math.floor(robber.coins * (0.05 + Math.random() * 0.10))
-      const failMsg = ROB_FAILS[Math.floor(Math.random() * ROB_FAILS.length)]
-      if (penalty > 0) ecoDb.removeCoins(senderJid, penalty, 'rob failed penalty')
-      const u2 = ecoDb.get(senderJid)
-      await sendMessage(sock, sender,
-        `☩━━━〔 🔫 *VOL RATÉ !* 〕━━━☩\n` +
-        `☠\n` +
-        `⛧  ${failMsg}\n` +
-        `☠\n` +
-        `☩  💸 *Pénalité:* -${penalty} ${ECONOMY.SYMBOL}\n` +
-        `✝  💰 *Poche:* ${u2.coins} ${ECONOMY.SYMBOL}\n` +
-        `☠\n` +
-        `⛧  ⏰ Tu dois te cacher pendant 1h\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
-    }
-  } catch(e) {
-    if (loadKey) await deleteLoader(sock, sender, loadKey)
-    await sendMessage(sock, sender, `☠ Erreur rob: ${e.message.slice(0,100)}`)
+  } else {
+    const penalty = Math.min(Math.floor(50 + Math.random() * 100), thief.coins || 0)
+    economyDb.removeCoins(jid, penalty)
+    return sendMessage(sock, sender,
+      `☩━━━〔 🚨 *VOL ÉCHOUÉ !* 〕━━━☩\n⛧ Vous avez été *attrapé* !\n☠ Amende: *${penalty} 🪙*\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
   }
 }
