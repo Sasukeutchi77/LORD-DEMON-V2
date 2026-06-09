@@ -1,11 +1,13 @@
-// commands/charcount.js
 import { sendMessage } from '../lib/sendMessage.js'
-import { getSenderJid } from '../lib/ownerSystem.js'
-
-export default async function cmd_charcount(sock, sender, args, msg, ctx = {}) {
-  const jid = ctx.senderJid || getSenderJid(msg, sock)
-  const text=args.join(' '); const words=text.trim().split(/\s+/).filter(Boolean); const result='Caracteres: '+text.length+'\nMots: '+words.length+'\nLignes: '+text.split('\n').length
-  await sendMessage(sock, sender,
-    'X┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈X\n⛧   COMPTEUR   ☩\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' + result + '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-  )
+export default async function charcount(sock, sender, args, msg, ctx = {}) {
+  const text = args.join(' ')
+  if (!text) return sendMessage(sock, sender, `☠ Usage: .charcount <texte>`)
+  const words = text.trim().split(/\s+/).filter(Boolean)
+  const out =
+    `☩━━━〔 📊 *COMPTEUR DE TEXTE* 〕━━━☩\n\n` +
+    `☠  📝 *Caractères:* ${text.length}\n` +
+    `⛧  💬 *Mots:* ${words.length}\n` +
+    `✝  📄 *Lignes:* ${text.split('\n').length}\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, out)
 }
