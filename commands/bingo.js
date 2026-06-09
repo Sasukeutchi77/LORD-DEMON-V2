@@ -1,93 +1,46 @@
-// commands/bingo.js — BINGO 🎱
 import { sendMessage } from '../lib/sendMessage.js'
-
-const sessions = new Map() // jid -> { card, called, won }
-
+const sessions = new Map()
 function makeCard() {
-  const card = []
-  const cols = [[1,15],[16,30],[31,45],[46,60],[61,75]]
-  for (let c = 0; c < 5; c++) {
-    const col = []
-    const [min, max] = cols[c]
-    const nums = []
-    while (nums.length < 5) {
-      const n = min + Math.floor(Math.random() * (max - min + 1))
-      if (!nums.includes(n)) nums.push(n)
-    }
-    card.push(nums.sort((a, b) => a - b))
-  }
-  card[2][2] = 'FREE'
-  return card
+  const nums = Array.from({length:25}, (_,i)=>i+1).sort(()=>Math.random()-0.5)
+  return nums.slice(0,25)
 }
-
 function renderCard(card, called) {
-  const header = `B  I  N  G  O`
-  const rows = []
-  for (let r = 0; r < 5; r++) {
-    const row = card.map((col, c) => {
-      const val = col[r]
-      if (val === 'FREE') return '🟢'
-      return called.has(val) ? '✅' : String(val).padStart(2)
-    }).join('  ')
-    rows.push(row)
-  }
-  return '```\n' + header + '\n' + rows.join('\n') + '\n```'
-}
-
-function checkWin(card, called) {
-  // Lignes
-  for (let r = 0; r < 5; r++) {
-    if (card.every((col, c) => col[r] === 'FREE' || called.has(col[r]))) return true
-  }
-  // Colonnes
-  for (let c = 0; c < 5; c++) {
-    if (card[c].every(v => v === 'FREE' || called.has(v))) return true
-  }
-  // Diagonales
-  if ([0,1,2,3,4].every(i => card[i][i] === 'FREE' || called.has(card[i][i]))) return true
-  if ([0,1,2,3,4].every(i => card[4-i][i] === 'FREE' || called.has(card[4-i][i]))) return true
-  return false
-}
-
-export default async function bingo(sock, sender, args, msg) {
-  const sub = args[0]?.toLowerCase()
-
-  if (sub === 'stop') {
-    sessions.delete(sender)
-    return sendMessage(sock, sender, `🛑 Bingo arrêté.`)
-  }
-
-  // Tirer un numéro
-  if (sessions.has(sender) && (sub === 'tirer' || sub === 'next' || sub === 'n')) {
-    const s = sessions.get(sender)
-    if (s.won) return sendMessage(sock, sender, `🎉 Vous avez déjà gagné ! \`.bingo\` pour une nouvelle partie.`)
-    let num
-    do { num = 1 + Math.floor(Math.random() * 75) } while (s.called.has(num))
-    s.called.add(num)
-    const letter = ['B','I','N','G','O'][Math.floor((num - 1) / 15)]
-    const win = checkWin(s.card, s.called)
-    if (win) {
-      s.won = true
-      sessions.delete(sender)
-      return sendMessage(sock, sender,
-        `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n🎉   🎱 *BINGO ! VOUS AVEZ GAGNÉ !* 🎉\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-        `📢 Tirage: *${letter}${num}*\n\n${renderCard(s.card, s.called)}\n\n🏆 Bravo ! Partie terminée en ${s.called.size} tirages !`
-      )
+  let rows = []
+  for (let i=0;i<5;i++) {
+    let row = []
+    for (let j=0;j<5;j++) {
+      const n = card[i*5+j]
+      const center = i===2&&j===2
+      row.push(center ? '🌟' : called.includes(n) ? '✅' : String(n).padStart(2,'0'))
     }
-    return sendMessage(sock, sender,
-      `🎱 *Tirage:* ${letter}${num}\n\n${renderCard(s.card, s.called)}\n\n` +
-      `📊 ${s.called.size} numéros tirés\n▶️ \`.bingo tirer\` pour le prochain`
-    )
+    rows.push(row.join(' '))
   }
-
-  // Nouvelle partie
-  const card = makeCard()
-  sessions.set(sender, { card, called: new Set(['FREE']), won: false })
+  return rows.join('\n')
+}
+export default async function bingo(sock, sender, args, msg, ctx = {}) {
+  const sub = args[0]?.toLowerCase()
+  if (!sub || sub==='start') {
+    const card = makeCard()
+    sessions.set(sender, { card, called: [], won: false })
+    return sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+      `⛧   🎱 *BINGO DÉMONIAQUE*   ☩\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+      `☠  Carte générée ! Tape .bingo <1-25> pour cocher.\n\n` +
+      `${renderCard(card, [])}\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+  }
+  const n = parseInt(args[0])
+  if (isNaN(n)) return sendMessage(sock, sender, `☠ Usage: .bingo <nombre>`)
+  if (!sessions.has(sender)) return sendMessage(sock, sender, `☠ Tape .bingo start pour commencer.`)
+  const s = sessions.get(sender)
+  if (!s.called.includes(n) && s.card.includes(n)) s.called.push(n)
+  const card = renderCard(s.card, s.called)
   await sendMessage(sock, sender,
-    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   🎱 *BINGO DÉMONIAQUE*          ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-    `${renderCard(card, new Set(['FREE']))}\n\n` +
-    `🟢 = Case gratuite (centre)\n✅ = Numéro sorti\n\n` +
-    `▶️ \`.bingo tirer\` — Tirer un numéro\n🛑 \`.bingo stop\`  — Arrêter\n` +
-    `🎯 Objectif: compléter une ligne/colonne/diagonale !`
-  )
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   🎱 *BINGO*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `${card}\n\n` +
+    `☠  ✅ Cochés: ${s.called.length}/24\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
 }
