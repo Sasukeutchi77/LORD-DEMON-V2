@@ -1,6 +1,22 @@
 import { sendMessage } from '../lib/sendMessage.js'
-const DATA = ["🦕 T-Rex — 12m, 9 tonnes, morsure 35 000N, vision mouvement","🦖 Diplodocus — 25m, 12t, mangeur de plantes, cou 8m","🦎 Vélociraptor — 1.8m, plumes, chasse en meute coopérative","🦕 Brachiosaure — 26m, 58t, cou de 9m, nourrit constamment","🐉 Ptérosaure — Envergure 12m, Quetzalcoatlus, pas vraiment dino","🦷 Triceratops — 3 cornes, crête de 1m, contre T-Rex 8 tonnes","🥚 Ankylosaure — Armure osseuse totale, queue-masse 45kg","⚔️ Stégosaure — Plaques dorsales thermiques, queue épines","🦎 Spinosaure — 18m, le plus long, semi-aquatique, Afrique N","🌍 Extinction — 66M ans, météorite + volcanisme, froid mondial"]
-export default async function dinosaure2(sock, sender, args, msg, ctx) {
-  const item = DATA[Math.floor(Math.random()*DATA.length)]
-  await sendMessage(sock, sender, `☩━━━〔 🦕 *DINOSAURE2* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+const DINOS = [
+  { nom: "T-Rex", emoji: "🦕", fact: "12m de long, 9 tonnes, morsure de 35 000N — plus forte de l'histoire", epoque: "Crétacé supérieur" },
+  { nom: "Diplodocus", emoji: "🦕", fact: "25m de long, 12t, herbivore, cou de 8m pour atteindre les cimes", epoque: "Jurassique" },
+  { nom: "Vélociraptor", emoji: "🦎", fact: "1.8m, couvert de plumes, chassait en meute avec une intelligence redoutable", epoque: "Crétacé" },
+  { nom: "Brachiosaure", emoji: "🦕", fact: "26m, 58 tonnes, cou de 9m, se nourrissait continuellement", epoque: "Jurassique supérieur" },
+  { nom: "Triceratops", emoji: "🦷", fact: "3 cornes redoutables, crête osseuse d'1m, combattait le T-Rex", epoque: "Crétacé supérieur" },
+  { nom: "Ankylosaure", emoji: "🥚", fact: "Armure osseuse totale, queue-massue de 45kg — tank vivant", epoque: "Crétacé" },
+  { nom: "Spinosaure", emoji: "🦎", fact: "18m — le plus long dinosaure connu, semi-aquatique, Afrique du Nord", epoque: "Crétacé moyen" },
+]
+export default async function dinosaure2(sock, sender, args, msg, ctx = {}) {
+  const d = DINOS[Math.floor(Math.random() * DINOS.length)]
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   🦕 *DINOSAURES*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  ${d.emoji} *${d.nom}*\n` +
+    `⛧  📅 *Époque:* ${d.epoque}\n` +
+    `✝  📖 _${d.fact}_\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text)
 }
