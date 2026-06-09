@@ -1,31 +1,26 @@
-// commands/challenge2.js — LORD DEMON
 import { sendMessage } from '../lib/sendMessage.js'
-
-const challenges = [
-  "🏃 Fais 30 pompes maintenant et envoie la preuve !",
-  "🎯 Apprends 5 nouveaux mots en anglais aujourd'hui",
-  "🧘 Médite 10 minutes les yeux fermés",
-  "📚 Lis 20 pages d'un livre ce soir",
-  "🌊 Bois 2 litres d'eau aujourd'hui",
-  "📵 N'utilise pas les réseaux sociaux pendant 2 heures",
-  "🎵 Écoute une musique que tu n'as jamais entendue",
-  "✍️ Écris tes 3 objectifs de la semaine",
-  "🌙 Couche-toi avant 23h ce soir",
-  "🤝 Complimente sincèrement quelqu'un aujourd'hui",
-  "🍎 Mange 3 fruits ou légumes aujourd'hui",
-  "💆 Déconnecte-toi du téléphone 1 heure",
+import { getSenderJid } from '../lib/ownerSystem.js'
+const CHALLENGES = [
+  { defi: "Fais 30 pompes maintenant et envoie la preuve !", cat: "💪 Physique", diff: "⭐⭐⭐" },
+  { defi: "Apprends 5 nouveaux mots en anglais aujourd'hui", cat: "📚 Savoir", diff: "⭐⭐" },
+  { defi: "Bois 2 litres d'eau aujourd'hui sans exception", cat: "🥤 Santé", diff: "⭐" },
+  { defi: "Envoie un message encourageant à quelqu'un que tu n'as pas contacté depuis 1 mois", cat: "❤️ Social", diff: "⭐⭐" },
+  { defi: "Fais 10 minutes de méditation ou respiration profonde", cat: "🧘 Mental", diff: "⭐⭐" },
+  { defi: "Lis 20 pages d'un livre avant de dormir", cat: "📖 Culture", diff: "⭐⭐" },
+  { defi: "Jeûne numérique 1h : pas de réseaux sociaux !", cat: "🔕 Détox", diff: "⭐⭐⭐" },
+  { defi: "Cuisine quelque chose que tu n'as jamais fait", cat: "🍳 Créativité", diff: "⭐⭐⭐" },
 ]
-
-export default async function challenge2(sock, sender, args, msg) {
-  const name = msg?.pushName || 'Guerrier'
-  const ch = challenges[Math.floor(Math.random() * challenges.length)]
+export default async function challenge2(sock, sender, args, msg, ctx = {}) {
+  const jid = ctx.senderJid || getSenderJid(msg, sock)
+  const c = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)]
   const text =
-    `☩━━━〔 🎯 *CHALLENGE DÉMONIAQUE* 〕━━━☩\n\n` +
-    `☠  👤 *${name}*, ton défi d'aujourd'hui :\n\n` +
-    `⛧  *${ch}*\n\n` +
-    `✝  ⏰ *Durée:* Aujourd'hui\n` +
-    `☩  🏆 *Récompense:* Fierté & progression !\n\n` +
-    `☠  _Relève le défi ou reste dans l'ombre..._\n\n` +
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   🎯 *DÉFI DU JOUR*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  🏷️ *Catégorie:* ${c.cat}\n` +
+    `⛧  ⚡ *Difficulté:* ${c.diff}\n\n` +
+    `✝  🎯 _"${c.defi}"_\n\n` +
+    `☩  💪 _Es-tu prêt à relever ce défi ?_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
 }
