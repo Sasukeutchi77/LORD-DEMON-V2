@@ -1,19 +1,30 @@
-// commands/contrat.js — LORD DEMON
 import { sendMessage } from '../lib/sendMessage.js'
-const clauses = [
+import { getSenderJid } from '../lib/ownerSystem.js'
+const CLAUSES = [
   "Tu céderas 1 an de ta vie en échange du pouvoir absolu",
-  "Tes rêves seront hanté par des visions du futur",
-  "Ta voix sera entendue de tous, mais personne ne te croira jamais",
-  "Tu obtiendras la richesse, mais la solitude sera ton prix",
-  "Ton ennemi disparaîtra, mais un nouveau, plus puissant, prendra sa place",
-  "Tu vivras 200 ans, mais sans pouvoir aimer",
-  "Ta force sera décuplée, mais ton âme appartiendra aux Ténèbres",
+  "Tes ennemis disparaissent — mais tu perds ta voix pour toujours",
+  "Tu deviens invincible — mais seul pour l'éternité",
+  "Richesse infinie — au prix de ta mémoire des proches",
+  "Connaissance totale de l'univers — mais tu ne peux rien faire",
+  "Le don de guérison — mais tu absorbes toutes les douleurs",
+  "Immortalité — mais tu regardes tous mourir autour de toi",
+  "Succès garanti — mais quelqu'un que tu aimes souffre",
 ]
-export default async function contrat(sock, sender, args, msg) {
-  const name = msg?.pushName || 'Âme contractante'
-  const clause = clauses[Math.floor(Math.random() * clauses.length)]
-  const id = Math.random().toString(36).substr(2, 8).toUpperCase()
-  const now = new Date().toLocaleDateString('fr-FR')
-  const text = `☩━━━〔 📜 *CONTRAT DÉMONIAQUE* 〕━━━☩\n\n☠  📜 *PACTE AVEC LE DÉMON*\n⛧  N° ${id} — ${now}\n\n✝  ─────────────────\n☩  Le soussigné *${name}*\n☠  accepte les termes suivants :\n\n⛧  _"${clause}"_\n\n✝  ─────────────────\n☩  🩸 *Signé en sang*\n☠  _Ce contrat est irrévocable._\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-  await sendMessage(sock, sender, text)
+const TEMOINS = ["⛧ Le Démon Primordial","☩ L'Oracle Éternel","☠ La Faucheuse","✝ L'Ange Déchu","🔮 Le Cristal des Âmes"]
+export default async function contrat(sock, sender, args, msg, ctx = {}) {
+  const jid = ctx.senderJid || getSenderJid(msg, sock)
+  const clause = CLAUSES[Math.floor(Math.random() * CLAUSES.length)]
+  const temoin = TEMOINS[Math.floor(Math.random() * TEMOINS.length)]
+  const id = Date.now().toString(36).toUpperCase()
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   📜 *CONTRAT DÉMONIAQUE*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  🖊️ *Signataire:* @${jid.split('@')[0]}\n` +
+    `⛧  📋 *Clause:* _${clause}_\n` +
+    `✝  👁️ *Témoin:* ${temoin}\n` +
+    `☩  🔢 *Réf:* #${id}\n\n` +
+    `☠  ⚠️ _Ce contrat lie l'âme pour l'éternité._\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text, { mentions: [jid] })
 }
