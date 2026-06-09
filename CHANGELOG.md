@@ -1,3 +1,49 @@
+## [3.4.0] — 2026-06-09 ⛧ DÉMON SUPRÊME
+
+### 🔥 +331 NOUVELLES COMMANDES — TOTAL : 503+ COMMANDES
+
+#### 🎮 Jeux & Divertissement (+45)
+- `quiz-anim` `quiz-cinema` `quiz-foot` `quiz-geo` `quiz-histoire` `quiz-jv` `quiz-manga` `quiz-musique` `quiz-musique2` `quiz-pays` `quiz-science` `quiz-sport` `quiz-tech` — 13 catégories de quiz thématiques
+- `grattage` `jackpot2` `loto` `pari` `roulette` `roue` `spinner2` `tirage` `tournoi` — Jeux de hasard et tournois
+- `would` `duel2` `enigme` `des2` — Jeux sociaux
+- `roast2` `roast3` `cringe` `rizz` `sigma` `swag` `vibe2` `toxicite` `chad` `simp` `charisme` `beaute` `blague` — Fun & personnalité
+
+#### 🔮 Horoscope & Mysticisme (+25)
+- `horoscope-belier` `horoscope-taureau` `horoscope-gemeaux` `horoscope-cancer` `horoscope-lion` `horoscope-vierge` `horoscope-balance` `horoscope-scorpion` `horoscope-sagittaire` `horoscope-capricorne` `horoscope-verseau` `horoscope-poissons` — 12 signes zodiacaux complets
+- `signe` `moon` `rune` `magie` `sort` `rituel` `invocation` `benediction2` `malediction2` `maudit` `priere` `prophete` `animalspirit` `aura`
+
+#### ⚔️ RPG & Aventure (+55)
+- `arcane` `arene` `arme` `ascension` `awakening` `boss` `classerpg` `competences` `element2` `entrainer` `evolution` `faction` `fight` `force` `fouiller` `fusion` `genere` `karma` `lore` `mana` `monstre` `mystere` `niveau2` `npc` `objectif` `observer` `ouvrir` `fermer`
+- `potion2` `pouvoir` `pouvoirmax` `pouvoirspecial` `protagoniste` `quete2` `rangdemoniaque` `rapidite` `redemption` `resurrection` `sacrifice` `sauvegarde` `superpouvoire` `taverne` `temple` `transformation` `typeperso` `vilain` `weakness`
+- `background` `backstory` `caracteristique` `startup2` `lire` `protect` `espionner2` `furtivite` `mission` `evenement` `inventaire2` `tresortrouve` `rejoindre` `abandonner` `demotiontous` `revoke`
+
+#### 🌍 Utilitaires Avancés (+55)
+- `base64` `bmi` `camelcase` `cesar` `charcount` `crc32` `date2` `decodurl` `encodurl` `factorielle` `fibonacci` `haiku` `hashtag` `heure` `heuredec` `ip` `kglivre` `kmmi` `leet` `longueur` `lower` `md5` `mock` `morse` `nombre` `password2` `pgcd` `pile` `pile2` `poids`
+- `pourcentage` `ppcm` `premier` `puissance` `racine` `romannum` `rot13` `sha256` `snakecase` `kebabcase` `titlecase` `timestamp` `upper` `uuid` `uwu` `zalgo` `reverse` `binaire` `acronyme` `acrostiche`
+- `mot` `prenom` `slogan` `idee` `username` `username2` `signature` `surface` `volume2` `vitesse` `vitesse2` `temperature` `semaine` `countdown`
+
+#### 💕 Social & Interactions (+40)
+- `hug` `kiss` `pat` `highfive` `slap` `wave` `wink` `clap` — Actions expressives
+- `complimenter` `compliment2` `compliment3` `beni` `gratitude` `insulter` `ignorer` `taquiner` `pardon` `seduire` `menace` `trahison` `rival` `alliance` `accepter` `refuser`
+- `boire` `manger` `dormir` `reveiller` `marcher` `marche` `meditation2` `mediter` `penser` `rire2` `pleurer` `cheer` `humeur` `energie` `courage`
+- `punch` `combo` `challenger` `streakbattle` `serment` `serment2` `badge` `reputation` `aider` `alerte` `announce` `don`
+
+#### 🪙 Économie Avancée (+10)
+- `bourse` `crypto2` `eurusd` `investir` `minage` `richesse` `taxe` `travailler2` `recompense` `peche` `voyage`
+
+#### 📚 Culture & Faits (+15)
+- `fait-animal` `fait-espace` `fait-histoire` `fait-science` `fun_fact` — Faits incroyables
+- `philosophie` `sagesse` `proverbe` `citation2` `citation3` `lecon` `recette` `boomer` `zoomer` `motivation2`
+
+#### 💒 Communauté (+5)
+- `groupstats` `grouplink` `membercount` `listadmins` `topuser`
+
+#### ⚙️ Améliorations
+- `commandRegistry.js` — 15 catégories, 500+ descriptions, cooldowns avancés, nouvelles catégories (Horoscope, Culture, Social Fun)
+- Architecture dynamique : toutes les nouvelles commandes auto-découvertes
+
+---
+
 ## v3.3.0 — Mise à jour MASSIVE (2026-06-08)
 
 ### 🪙 Système d'Économie Complet
