@@ -1,0 +1,6 @@
+import { sendMessage } from '../lib/sendMessage.js'
+const DATA = ["😄 Pourquoi les plongeurs plongent-ils toujours en arrière? Parce que sinon ils tomberaient dans le bateau!","😂 J'ai demandé à mon chien ce que 2-2 faisait. Il m'a rien dit. Les chiens ne font pas de maths.","🤣 Un homme entre dans une bibliothèque: \"Un steak s'il vous plaît!\" La bibliothécaire: \"C'est une bibliothèque!\" Il murmure: \"Désolé. Un steak s'il vous plaît.\"","😄 Pourquoi les squelettes ne se battent jamais? Ils n'ont pas le cran!","😂 Mon chat m'a réveillé à 3h du matin. Je lui ai dit \"Pourquoi?\" Il m'a regardé. Il sait exactement ce qu'il fait.","🤣 Un livre vient de tomber sur ma tête. Je n'ai à m'en prendre qu'à moi-même.","😄 Qu'est-ce qu'un canif? Un petit fien!","😂 Comment appelle-t-on un chat tombé dans un pot de peinture le jour de Noël? Un chat-peint de Noël!"]
+export default async function blague2(sock, sender, args, msg, ctx) {
+  const item = DATA[Math.floor(Math.random()*DATA.length)]
+  await sendMessage(sock, sender, `☩━━━〔 😂 *BLAGUE2* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+}
