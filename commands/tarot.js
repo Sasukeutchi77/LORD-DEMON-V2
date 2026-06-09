@@ -1,44 +1,36 @@
+// commands/tarot.js — LORD DEMON
 import { sendMessage } from '../lib/sendMessage.js'
-const CARDS = [
-  {name:'Le Fou',emoji:'🃏',upright:'Liberté, nouveau départ, aventure',reversed:'Imprudence, folie, manque de direction'},
-  {name:'Le Magicien',emoji:'✨',upright:'Volonté, talent, créativité',reversed:'Tromperie, manipulation, talents gâchés'},
-  {name:'La Papesse',emoji:'📚',upright:'Intuition, sagesse, mystère',reversed:'Secrets, ignorance, manque de discernement'},
-  {name:'L\'Impératrice',emoji:'🌺',upright:'Fertilité, abondance, nature',reversed:'Dépendance, stagnation, excès'},
-  {name:'L\'Empereur',emoji:'👑',upright:'Autorité, structure, protection',reversed:'Domination, rigidité, tyrannie'},
-  {name:'Le Pape',emoji:'⛪',upright:'Tradition, spiritualité, conseils',reversed:'Dogme, conformisme, désinformation'},
-  {name:'L\'Amoureux',emoji:'💕',upright:'Amour, choix, harmonie',reversed:'Déséquilibre, mauvais choix, infidélité'},
-  {name:'Le Chariot',emoji:'🏆',upright:'Succès, maîtrise, volonté',reversed:'Agression, manque de contrôle, défaite'},
-  {name:'La Force',emoji:'🦁',upright:'Courage, patience, compassion',reversed:'Doute, faiblesse, lâcheté'},
-  {name:'L\'Hermite',emoji:'🕯️',upright:'Introspection, guidance, solitude',reversed:'Isolement, paranoïa, solitude excessive'},
-  {name:'La Roue de Fortune',emoji:'🎡',upright:'Chance, cycles, destin',reversed:'Malchance, résistance au changement'},
-  {name:'La Justice',emoji:'⚖️',upright:'Équilibre, vérité, cause et effet',reversed:'Injustice, manque d\'honnêteté'},
-  {name:'Le Pendu',emoji:'🔄',upright:'Suspension, sacrifice, attente',reversed:'Stagnation, désintérêt, résistance'},
-  {name:'La Mort',emoji:'💀',upright:'Transformation, fin, renouveau',reversed:'Résistance au changement, stagnation'},
-  {name:'La Tempérance',emoji:'⚗️',upright:'Équilibre, modération, patience',reversed:'Excès, manque d\'harmonie'},
-  {name:'Le Diable',emoji:'😈',upright:'Attachement, ambition, ombre',reversed:'Libération, indépendance'},
-  {name:'La Tour',emoji:'⚡',upright:'Chaos, révélation, disruption',reversed:'Évitement de catastrophe'},
-  {name:'L\'Étoile',emoji:'⭐',upright:'Espoir, inspiration, sérénité',reversed:'Désespoir, manque de foi'},
-  {name:'La Lune',emoji:'🌙',upright:'Illusion, intuition, subconscient',reversed:'Confusion, peur, distorsion'},
-  {name:'Le Soleil',emoji:'☀️',upright:'Joie, succès, vitalité',reversed:'Pessimisme, dépression'},
-  {name:'Le Jugement',emoji:'📯',upright:'Réveil, rédemption, absolution',reversed:'Doute, auto-critique sévère'},
-  {name:'Le Monde',emoji:'🌍',upright:'Accomplissement, intégration, voyage',reversed:'Quête inachevée, stagnation'},
+
+const cartes = [
+  { nom: "Le Mat", num: "0", sens: "Liberté, nouveau départ, innocence", inv: "Imprudence, fuite, irresponsabilité" },
+  { nom: "Le Bateleur", num: "I", sens: "Habileté, volonté, action", inv: "Duperie, manque de volonté" },
+  { nom: "La Papesse", num: "II", sens: "Sagesse intérieure, secret, intuition", inv: "Ignorance, secrets cachés" },
+  { nom: "L'Impératrice", num: "III", sens: "Abondance, fertilité, créativité", inv: "Stagnation, blocage créatif" },
+  { nom: "L'Empereur", num: "IV", sens: "Autorité, stabilité, puissance", inv: "Tyrannie, rigidité" },
+  { nom: "Le Pape", num: "V", sens: "Tradition, spiritualité, sagesse", inv: "Dogmatisme, hypocrisie" },
+  { nom: "L'Amoureux", num: "VI", sens: "Amour, choix, harmonie", inv: "Indécision, désaccord" },
+  { nom: "Le Chariot", num: "VII", sens: "Triomphe, maîtrise, succès", inv: "Échec, désorientation" },
+  { nom: "La Justice", num: "VIII", sens: "Équité, vérité, loi", inv: "Injustice, déséquilibre" },
+  { nom: "L'Ermite", num: "IX", sens: "Sagesse, solitude, introspection", inv: "Isolement, peur" },
+  { nom: "La Roue de Fortune", num: "X", sens: "Chance, cycles, destin", inv: "Malchance, résistance au changement" },
+  { nom: "La Force", num: "XI", sens: "Courage, maîtrise, patience", inv: "Faiblesse, doute" },
+  { nom: "Le Pendu", num: "XII", sens: "Sacrifice, lâcher-prise, nouvelle perspective", inv: "Stagnation, résistance" },
+  { nom: "La Mort", num: "XIII", sens: "Transformation, fin de cycle, renouveau", inv: "Résistance au changement" },
+  { nom: "La Lune", num: "XVIII", sens: "Illusion, mystère, rêves", inv: "Confusion, peur irrationnelle" },
+  { nom: "Le Soleil", num: "XIX", sens: "Joie, succès, vitalité", inv: "Arrogance, excès d'optimisme" },
+  { nom: "Le Jugement", num: "XX", sens: "Réveil, absolution, transformation", inv: "Stagnation, refus d'évoluer" },
+  { nom: "Le Monde", num: "XXI", sens: "Accomplissement, plénitude, succès total", inv: "Inachèvement, retards" }
 ]
-export default async function tarot(sock, sender, args, msg, ctx) {
-  const num = Math.min(3, Math.max(1, parseInt(args[0]) || 1))
-  const drawn = []
-  const deck = [...CARDS]
-  for (let i = 0; i < num; i++) {
-    const idx = Math.floor(Math.random()*deck.length)
-    const card = deck.splice(idx,1)[0]
-    const reversed = Math.random() > 0.7
-    drawn.push({ ...card, reversed })
-  }
-  let text = `☩━━━〔 🎴 *TIRAGE TAROT* 〕━━━☩\n☠\n`
-  const positions = ['Passé','Présent','Futur']
-  drawn.forEach((c,i) => {
-    text += `⛧  ${num>1?`*${positions[i]}* — `:''}${c.emoji} *${c.name}* ${c.reversed?'(inversé)':''}\n`
-    text += `☩  ${c.reversed ? c.reversed : c.upright}\n☠\n`
-  })
-  text += `✝  _(Tirage aléatoire — divertissement uniquement)_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+
+export default async function tarot(sock, sender, args) {
+  const carte = cartes[Math.floor(Math.random() * cartes.length)]
+  const inverse = Math.random() < 0.3
+  const text =
+    `☩━━━〔 🃏 *TAROT DÉMONIAQUE* 〕━━━☩\n\n` +
+    `☠  🃏 *Carte:* ${carte.nom} (${carte.num})\n` +
+    `⛧  ${inverse ? '🔄 *Position:* Inversée' : '✅ *Position:* Droite'}\n\n` +
+    `✝  📖 *Message:*\n` +
+    `☩  _${inverse ? carte.inv : carte.sens}_\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
 }

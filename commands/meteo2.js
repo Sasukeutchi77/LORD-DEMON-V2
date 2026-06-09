@@ -1,6 +1,22 @@
+// commands/meteo2.js — LORD DEMON
 import { sendMessage } from '../lib/sendMessage.js'
-const DATA = ["⛈️ Ouragan — Vents > 118 km/h, catégorie 1-5, cyclone tropical","🌪️ Tornade — Entonnoir 500 km/h, EF5 = destructeur total","❄️ Blizzard — Neige + vent > 56 km/h, visibilité < 400m","🌊 Tsunami — Onde sismique, 800 km/h océan, 30m côte","⚡ Foudre — 300 000 km/s, 30 000°C, 5x plus chaud Soleil","🌧️ Mousson — Saison pluies Asie, 70% eau annuelle Inde","🌡️ El Niño — Réchauffement Pacifique, perturbe météo mondiale","🌈 Arc-en-ciel — Réfraction lumière dans gouttes eau, 42°","☁️ Cumulonimbus — Nuage orage, jusqu'à 18km hauteur, grêle","❄️ Verglas — Pluie gelée, route -0.5°C, danger maximum"]
-export default async function meteo2(sock, sender, args, msg, ctx) {
-  const item = DATA[Math.floor(Math.random()*DATA.length)]
-  await sendMessage(sock, sender, `☩━━━〔 ⛈️ *METEO2* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+const conditions = ["⛈️ Orageux", "☀️ Ensoleillé", "🌧️ Pluvieux", "❄️ Neigeux", "🌫️ Brumeux", "⛅ Nuageux", "🌪️ Tempête", "🌈 Après pluie"]
+
+export default async function meteo2(sock, sender, args) {
+  if (!args.length) return await sendMessage(sock, sender, `☩━━━〔 🌍 *MÉTÉO V2* 〕━━━☩\n\n✝  💡 Usage: *.meteo2 <ville>*\n⛧  Exemple: *.meteo2 Paris*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+  const ville = args.join(' ')
+  const temp = Math.floor(Math.random() * 40) - 5
+  const cond = conditions[Math.floor(Math.random() * conditions.length)]
+  const hum = Math.floor(Math.random() * 60) + 30
+  const vent = Math.floor(Math.random() * 80) + 5
+  const text =
+    `☩━━━〔 🌍 *MÉTÉO DÉMONIAQUE* 〕━━━☩\n\n` +
+    `☠  📍 *Ville:* ${ville}\n` +
+    `⛧  ${cond}\n` +
+    `✝  🌡️ *Température:* ${temp}°C\n` +
+    `☩  💧 *Humidité:* ${hum}%\n` +
+    `☠  🌬️ *Vent:* ${vent} km/h\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text)
 }

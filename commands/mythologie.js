@@ -1,7 +1,25 @@
+// commands/mythologie.js — LORD DEMON
 import { sendMessage } from '../lib/sendMessage.js'
-const MYTHES = [{god:'Zeus',myth:'grec',role:'Dieu des dieux, du ciel et du tonnerre',symbol:'⚡ Foudre, aigle, chêne'},{god:'Anubis',myth:'égyptien',role:'Dieu des morts et de l\'embaumement',symbol:'🐺 Tête de chacal, balance'},{god:'Thor',myth:'nordique',role:'Dieu du tonnerre et de la force',symbol:'🔨 Marteau Mjöllnir'},{god:'Anansi',myth:'africain (Akan)',role:'Dieu des histoires et de la sagesse',symbol:'🕷️ Araignée'},{god:'Shiva',myth:'hindou',role:'Dieu de la destruction et de la transformation',symbol:'🔱 Trident, croissant de lune'},{god:'Quetzalcoatl',myth:'aztèque',role:'Dieu du vent, de la sagesse',symbol:'🐍 Serpent à plumes'},{god:'Oya',myth:'yoruba',role:'Déesse des vents, tempêtes et transformations',symbol:'🌪️ Vent, buffle'},{god:'Loki',myth:'nordique',role:'Dieu espiègle de la ruse et du chaos',symbol:'🔥 Feu, serpent'},{god:'Osiris',myth:'égyptien',role:'Dieu de l\'au-delà et de la résurrection',symbol:'🌿 Crosse et fléau'},{god:'Athéna',myth:'grec',role:'Déesse de la sagesse et de la guerre',symbol:'🦉 Chouette, olivier'}]
-export default async function mythologie(sock, sender, args, msg, ctx) {
-  const m = MYTHES[Math.floor(Math.random()*MYTHES.length)]
-  await sendMessage(sock, sender,
-    `☩━━━〔 ⚡ *MYTHOLOGIE* 〕━━━☩\n☠\n⛧  🏛️ *${m.god}* — Mythologie *${m.myth}*\n☠\n☩  📜 *Rôle:*\n✝  ${m.role}\n☠\n⛧  🔱 *Symboles:*\n☠  ${m.symbol}\n☠\n✝  _Connais-tu d'autres dieux? .mythologie_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+const mythes = [
+  { dieu: "⚡ Zeus", origine: "Grèce", domaine: "Tonnerre & Ciel", symbole: "Foudre, Aigle", mythe: "Roi de l'Olympe, il régnait sur dieux et mortels depuis le Mont Olympe." },
+  { dieu: "🌊 Poséidon", origine: "Grèce", domaine: "Mers & Tremblements de terre", symbole: "Trident, Cheval", mythe: "Maître des océans, il provoquait tempêtes et raz-de-marée de son trident." },
+  { dieu: "🌑 Anubis", origine: "Égypte", domaine: "Mort & Momification", symbole: "Tête de chacal", mythe: "Gardien des morts, il pesait les âmes avec une plume de Maât." },
+  { dieu: "🔥 Loki", origine: "Norrois", domaine: "Ruse & Magie", symbole: "Flammes, Serpent", mythe: "Dieu espiègle et trompeur qui causait autant de problèmes qu'il en résolvait." },
+  { dieu: "☀️ Ra", origine: "Égypte", domaine: "Soleil & Création", symbole: "Disque solaire, Faucon", mythe: "Dieu solaire suprême, il traversait le ciel chaque jour dans sa barque dorée." },
+  { dieu: "⚔️ Ares", origine: "Grèce", domaine: "Guerre & Violence", symbole: "Épée, Lance, Casque", mythe: "Dieu de la guerre brutale, redouté même des autres dieux olympiens." },
+]
+
+export default async function mythologie(sock, sender, args) {
+  const m = mythes[Math.floor(Math.random() * mythes.length)]
+  const text =
+    `☩━━━〔 🏛️ *MYTHOLOGIE DÉMONIAQUE* 〕━━━☩\n\n` +
+    `☠  ${m.dieu}\n` +
+    `⛧  🌍 *Origine:* ${m.origine}\n` +
+    `✝  ⚡ *Domaine:* ${m.domaine}\n` +
+    `☩  🔱 *Symboles:* ${m.symbole}\n\n` +
+    `☠  📖 *Mythe:*\n` +
+    `⛧  _${m.mythe}_\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text)
 }
