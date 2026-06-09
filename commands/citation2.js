@@ -1,11 +1,22 @@
-// commands/citation2.js
 import { sendMessage } from '../lib/sendMessage.js'
-
-const FACTS = ["💭 *\"La vie c'est comme une bicyclette, il faut avancer pour ne pas perdre l'équilibre.\"* — Albert Einstein","💭 *\"Le seul moyen de faire du bon travail est d'aimer ce que vous faites.\"* — Steve Jobs","💭 *\"L'ignorance mène à la peur, la peur mène à la haine.\"* — Aristote","💭 *\"Sois le changement que tu veux voir dans le monde.\"* — Gandhi","💭 *\"La connaissance s'acquiert par l'expérience.\"* — Albert Einstein","💭 *\"Le succès c'est tomber sept fois, se relever huit.\"* — Proverbe japonais","💭 *\"Agis comme si ce que tu fais fait une différence. C'est le cas.\"* — William James","💭 *\"La vie est brève, l'art est long.\"* — Hippocrate","💭 *\"La meilleure façon de prédire l'avenir est de le créer.\"* — Peter Drucker","💭 *\"Le monde est un livre, et ceux qui ne voyagent pas n'en lisent qu'une page.\"* — Saint Augustin"]
-
-export default async function citation2(sock, sender, args, msg) {
-  const fact = FACTS[Math.floor(Math.random() * FACTS.length)]
-  await sendMessage(sock, sender,
-    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   💭 CITATION DU MOMENT   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n${fact}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-  )
+const CITATIONS = [
+  { texte: "La vie c'est comme une bicyclette, il faut avancer pour ne pas perdre l'équilibre.", auteur: "Albert Einstein" },
+  { texte: "Ce n'est pas la destination qui compte, c'est le voyage.", auteur: "Robert Louis Stevenson" },
+  { texte: "L'imagination est plus importante que le savoir.", auteur: "Albert Einstein" },
+  { texte: "La vraie générosité envers l'avenir consiste à tout donner au présent.", auteur: "Albert Camus" },
+  { texte: "Le succès c'est d'aller d'échec en échec sans perdre son enthousiasme.", auteur: "Winston Churchill" },
+  { texte: "On ne voit bien qu'avec le cœur. L'essentiel est invisible pour les yeux.", auteur: "Saint-Exupéry" },
+  { texte: "Sois le changement que tu veux voir dans le monde.", auteur: "Mahatma Gandhi" },
+  { texte: "Le seul vrai voyage, c'est d'aller vers les autres.", auteur: "Ella Maillart" },
+]
+export default async function citation2(sock, sender, args, msg, ctx = {}) {
+  const c = CITATIONS[Math.floor(Math.random() * CITATIONS.length)]
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   📜 *CITATION INSPIRANTE*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  💬 _"${c.texte}"_\n\n` +
+    `⛧  ✍️ — *${c.auteur}*\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text)
 }
