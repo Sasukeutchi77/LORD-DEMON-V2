@@ -2,6 +2,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 const M = {A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',F:'..-.',G:'--.',H:'....',I:'..',J:'.---',K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',P:'.--.',Q:'--.-',R:'.-.',S:'...',T:'-',U:'..-',V:'...-',W:'.--',X:'-..-',Y:'-.--',Z:'--..',0:'-----',1:'.----',2:'..---',3:'...--',4:'....-',5:'.....',6:'-....',7:'--...',8:'---..',9:'----.',  ' ':'/',}
 export default async function morse(sock, sender, args, msg) {
+  try {
   const text = args.join(' ').toUpperCase()
   if (!text) return sendMessage(sock, sender, '☠ Usage: .morse <texte>')
   const result = text.split('').map(c=>M[c]||c).join(' ')
@@ -9,5 +10,10 @@ export default async function morse(sock, sender, args, msg) {
 
 🔤 *Morse:*\n${result}
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

@@ -77,7 +77,6 @@ export default async function ping(sock, sender, args, msg) {
         console.error("❌ ping.js:", e)
         if (loadKey) await deleteLoader(sock, sender, loadKey)
         await sendMessage(sock, sender,
-            `☩━━━〔 ☠ *RITUEL ÉCHOUÉ PING* 〕━━━☩\n⛧  ${e.message}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-        )
+            `☩━━━〔 ☠ *RITUEL ÉCHOUÉ PING* 〕━━━☩\n⛧  ${e.message}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 }

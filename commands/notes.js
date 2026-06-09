@@ -64,8 +64,7 @@ export default async function notes(sock, sender, args, msg) {
                 `☩━━━〔 ☠ *RITUEL ÉCHOUÉ* 〕━━━☩\n\n` +
                 `⛧ Cette sort ne fonctionne\n` +
                 `☩ que dans les *cercles*.\n\n` +
-                `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-            )
+                `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
         }
 
         const action = args[0]?.toLowerCase()
@@ -82,8 +81,7 @@ export default async function notes(sock, sender, args, msg) {
                     `☩━━━〔 📝 *NOTES* 〕━━━☩\n\n` +
                     `✝ Aucune note enregistrée.\n\n` +
                     `☠ 💡 *.notes save <nom> <texte>*\n\n` +
-                    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-                )
+                    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
             }
 
             // Trier: épinglées en premier
@@ -177,8 +175,7 @@ export default async function notes(sock, sender, args, msg) {
                 `☠ 📌 *${noteName}*\n` +
                 `⛧ ${content.substring(0, 100)}${content.length > 100 ? '...' : ''}\n` +
                 `${tagsStr ? `☩${tagsStr}\n` : ''}` +
-                `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-            )
+                `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
         }
 
         // ── DELETE ──
@@ -226,8 +223,7 @@ export default async function notes(sock, sender, args, msg) {
                 return await sendMessage(sock, sender,
                     `☩━━━〔 🔍 *RECHERCHE* 〕━━━☩\n\n` +
                     `✝ Aucun résultat pour *"${keyword}"*\n\n` +
-                    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-                )
+                    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
             }
 
             const list = results.map(([name, note], i) => {
@@ -274,15 +270,13 @@ export default async function notes(sock, sender, args, msg) {
             `☠ \`.notes save règles #important texte\`\n` +
             `⛧ \`.notes search #important\`\n` +
             `☠\n` +
-            `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-        )
+            `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
 
     } catch (e) {
         console.error('❌ Erreur notes:', e)
         await sendMessage(sock, sender,
             `☩━━━〔 ☠ *RITUEL ÉCHOUÉ* 〕━━━☩\n\n` +
             `☩ ${e.message || 'rituel échoué inconnue'}\n\n` +
-            `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-        )
+            `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 }

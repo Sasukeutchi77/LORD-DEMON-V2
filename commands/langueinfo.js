@@ -5,6 +5,6 @@ export default async function langueinfo(sock, sender, args, msg, ctx = {}) {
     const l = args.join(' ').toLowerCase()
     if (!l || !LANGS[l]) return await sendMessage(sock, sender, `☠ Usage: .langueinfo <langue>\nDisponibles: ${Object.keys(LANGS).join(', ')}`)
     const i = LANGS[l]
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🗣️ *LANGUE: ${l.toUpperCase()}*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Locuteurs : *${i.loc}*\n✝ Famille : *${i.fam}*\n☠ Pays : *${i.pays}*\n⛧ Bonjour : *${i.phrase}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🗣️ *LANGUE: ${l.toUpperCase()}*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Locuteurs : *${i.loc}*\n✝ Famille : *${i.fam}*\n☠ Pays : *${i.pays}*\n⛧ Bonjour : *${i.phrase}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

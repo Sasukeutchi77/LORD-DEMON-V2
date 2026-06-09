@@ -10,6 +10,7 @@ const MINERAIS = [
 const cooldowns = new Map()
 
 export default async function minage(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const now = Date.now()
   const cd = cooldowns.get(jid) || 0
@@ -21,6 +22,10 @@ export default async function minage(sock, sender, args, msg, ctx = {}) {
   for (let i=0;i<weights.length;i++) { acc+=weights[i]; if (roll<acc){minerai=MINERAIS[i];break} }
   economyDb.addCoins(jid, minerai.pts)
   await sendMessage(sock, sender,
-    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ⛏️ MINAGE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n⛏️ Trouvé: *${minerai.nom}*\n💰 +${minerai.pts} 🪙\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-  )
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ⛏️ MINAGE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n⛏️ Trouvé: *${minerai.nom}*\n💰 +${minerai.pts} 🪙\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

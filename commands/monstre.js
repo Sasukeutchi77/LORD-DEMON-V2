@@ -2,6 +2,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 
 export default async function monstre(sock, sender, args, msg) {
+  try {
   const generate = () => {
     const prefix = ['Ombre','Sang','Feu','Nuit','Mort','Chaos','Ténèbres','Abîme']
 const type = ['Dragon','Démon','Liche','Golem','Spectre','Vampire','Loup','Araignée']
@@ -10,6 +11,10 @@ return prefix[Math.floor(Math.random()*prefix.length)]+type[Math.floor(Math.rand
   }
   const result = generate()
   await sendMessage(sock, sender,
-    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   👹 MONSTRE ALÉATOIRE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n✨ ${result}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-  )
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   👹 MONSTRE ALÉATOIRE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n✨ ${result}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

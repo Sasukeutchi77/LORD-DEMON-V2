@@ -3,6 +3,6 @@ const MOTS = [{m:'Ephémère',d:'Qui ne dure que très peu de temps',e:'La beaut
 export default async function motdujour(sock, sender, args, msg, ctx = {}) {
   try {
     const today = MOTS[new Date().getDate() % MOTS.length]
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  📚 *MOT DU JOUR*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Mot : *${today.m}*\n✝ Définition : ${today.d}\n☠ Exemple : _${today.e}_\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  📚 *MOT DU JOUR*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Mot : *${today.m}*\n✝ Définition : ${today.d}\n☠ Exemple : _${today.e}_\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

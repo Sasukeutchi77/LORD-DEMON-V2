@@ -34,6 +34,7 @@ function genQuestion(niveau) {
 }
 
 export default async function mathrapide(sock, sender, args, msg) {
+  try {
     const sub = args[0]?.toLowerCase()
     const TIMER = 20
 
@@ -43,8 +44,7 @@ export default async function mathrapide(sock, sender, args, msg) {
             `⛧━━━〔 📊 *TES SCORES MATHS* 〕━━━⛧\n` +
             `✅ Réussies: *${sc.wins}/${sc.total}*\n` +
             `🏆 Meilleur streak: *${sc.bestStreak}*\n` +
-            `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-        )
+            `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     if (sub === 'stop') { sessions.delete(sender); return sendMessage(sock, sender, '🛑 Arrêté.') }
@@ -94,6 +94,10 @@ export default async function mathrapide(sock, sender, args, msg) {
         `⏱️ Tu as *${TIMER} secondes* !\n` +
         `💬 Tape juste le nombre\n` +
         `💡 Niveaux: \`.mathrapide facile/moyen/difficile\`\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

@@ -7,5 +7,5 @@ export default async function mentionall(sock, sender, args, msg, ctx = {}) {
     const participants = meta.participants.map(p=>p.id)
     const text = args.join(' ') || '📢 Message pour tous les membres !'
     await sendMessage(sock, sender, text, { mentions: participants })
-  } catch(e) { await sendMessage(sock, sender, '☠ '+e.message) }
+  } catch(e) { await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ⚡ *MENTIONALL*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☠\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`+e.message) }
 }

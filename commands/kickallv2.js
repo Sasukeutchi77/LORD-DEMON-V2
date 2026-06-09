@@ -28,8 +28,7 @@ export default async function kickallv2(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ⛔ *ACCÈS REFUSÉ* 〕━━━☩\n\n` +
         `⛧ Seul l'*Owner principal*\n` +
         `☩ peut utiliser cette sort.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── BOT ADMIN CHECK ──────────────────────────────────────
@@ -38,8 +37,7 @@ export default async function kickallv2(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ☠ *DÉMON NON GARDIEN* 〕━━━☩\n\n` +
         `✝ Je dois être *gardien* pour\n` +
         `☠ exiler des âmes.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── CONFIRMATION OBLIGATOIRE ─────────────────────────────

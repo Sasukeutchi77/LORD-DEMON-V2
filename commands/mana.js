@@ -5,6 +5,7 @@ import { getSenderJid } from '../lib/ownerSystem.js'
 const LEVELS = ["Archimage suprême","Mage puissant","Apprenti mage","Muet magique","Magie = 0","Peut éteindre une bougie 🕯️"]
 
 export default async function mana(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || jid
   const num = Math.floor(Math.random() * 101)
@@ -16,4 +17,9 @@ export default async function mana(sock, sender, args, msg, ctx = {}) {
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   💫 MANA MAGIQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n👤 @${target.split('@')[0]}\n\n[${bar}] ${num}%\n\n✨ ${level}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
     mentions.length ? { mentions } : undefined
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

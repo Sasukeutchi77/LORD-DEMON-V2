@@ -2,6 +2,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 
 export default async function generateur(sock, sender, args) {
+  try {
   const type = args[0]?.toLowerCase()
   const prefix = process.env.PREFIX || '.'
   if (!type) return await sendMessage(sock, sender,
@@ -44,4 +45,10 @@ export default async function generateur(sock, sender, args) {
     `✝  _${result}_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

@@ -8,6 +8,6 @@ export default async function grouplink(sock, sender, args, msg, ctx = {}) {
 
 🔗 *Lien du groupe:*\nhttps://chat.whatsapp.com/${code}
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   } catch(e) { await sendMessage(sock, sender, '☠ '+e.message) }
 }

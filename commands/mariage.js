@@ -6,6 +6,7 @@ import { getSenderJid } from '../lib/ownerSystem.js'
 const proposals = new Map() // jid -> { target, expires }
 
 export default async function mariage(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const sub = args[0]?.toLowerCase()
 
@@ -20,8 +21,7 @@ export default async function mariage(sock, sender, args, msg, ctx = {}) {
         `💡 \`.mariage proposer @personne\`\n` +
         `💡 \`.mariage accepter\`\n` +
         `💡 \`.mariage divorcer\`\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
     const m = marriageDb.get(jid)
     const duration = Math.floor((Date.now() - m.married_at) / (1000 * 60 * 60 * 24))
@@ -92,4 +92,9 @@ export default async function mariage(sock, sender, args, msg, ctx = {}) {
   }
 
   await sendMessage(sock, sender, `☠ Sous-commande inconnue. Tapez \`.mariage\` pour l'aide.`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

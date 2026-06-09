@@ -6,6 +6,7 @@ import { getBotInstance, sessionExists, getAllBots } from '../lib/sessionManager
 import { loadSessionMeta, listSessionSudos } from '../lib/sessionMetaManager.js'
 
 export default async function mypair(sock, sender, args, msg, ctx) {
+  try {
   const { senderJid } = ctx
   const senderNumber = senderJid.replace('@s.whatsapp.net', '').replace(/[^0-9]/g, '')
 
@@ -65,4 +66,9 @@ export default async function mypair(sock, sender, args, msg, ctx) {
     '🔧 *.sessionsudo list* pour gérer les sudos\n' +
     '🗑️  *.stoppair* pour déconnecter'
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

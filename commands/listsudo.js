@@ -22,8 +22,7 @@ export default async function listsudo(sock, sender, args, msg) {
             await sendMessage(sock, sender,
                 `☩━━━〔 ⛔ *ACCÈS REFUSÉ* 〕━━━☩\n\n` +
                 `⛧ 🔒 Réservé aux *MAÎTRE/SUDO*.\n\n` +
-                `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-            )
+                `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
             return
         }
 

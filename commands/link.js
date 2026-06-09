@@ -15,8 +15,7 @@ export default async function link(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ☠ *RITUEL ÉCHOUÉ* 〕━━━☩\n\n` +
         `⛧ Cette sort ne fonctionne\n` +
         `☩ que dans les *cercles*.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── CTX ──────────────────────────────────────────────────
@@ -32,8 +31,7 @@ export default async function link(sock, sender, args, msg, ctx = {}) {
         `✝ 🔒 Seuls les *gardiens* du\n` +
         `☠    cercle peuvent obtenir\n` +
         `⛧    le lien d'invitation.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── BOT ADMIN CHECK ──────────────────────────────────────
@@ -46,8 +44,7 @@ export default async function link(sock, sender, args, msg, ctx = {}) {
         `☠ le lien d'invitation.\n\n` +
         `⛧ 📌 Ajoutez le Démon comme\n` +
         `☩    gardien du cercle.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── GROUP META ───────────────────────────────────────────
@@ -80,8 +77,7 @@ export default async function link(sock, sender, args, msg, ctx = {}) {
         `☠ le lien d'invitation.\n` +
         `☠\n` +
         `⛧ 📝 _${err.message}_\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     const inviteLink = `https://chat.whatsapp.com/${inviteCode}`
@@ -111,7 +107,6 @@ export default async function link(sock, sender, args, msg, ctx = {}) {
     await sendMessage(sock, sender,
       `☩━━━〔 ☠ *RITUEL ÉCHOUÉ* 〕━━━☩\n\n` +
       `✝ 📝 _${err.message || 'rituel échoué inconnue'}_\n\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 }

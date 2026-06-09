@@ -8,6 +8,7 @@ function genGrid(size, bombs) {
   return grid
 }
 export default async function mines2(sock, sender, args, msg, ctx) {
+  try {
   const senderJid = ctx?.senderJid||msg.key.participant||msg.key.remoteJid
   const prefix = process.env.PREFIX||'.'
   const sub = args[0]?.toLowerCase()
@@ -18,7 +19,7 @@ export default async function mines2(sock, sender, args, msg, ctx) {
     const prize = Math.floor(g.bet * g.mult)
     ecoDb.addCoins(senderJid, prize - g.bet, `mines cashout x${g.mult.toFixed(2)}`)
     const u2 = ecoDb.get(senderJid)
-    return await sendMessage(sock, sender, `☩━━━〔 💎 *MINES — CASHOUT* 〕━━━☩\n☠\n⛧  ✅ Encaissé à x${g.mult.toFixed(2)}\n☠  💰 +${prize - g.bet} ${ECONOMY.SYMBOL}\n✝  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    return await sendMessage(sock, sender, `☩━━━〔 💎 *MINES — CASHOUT* 〕━━━☩\n☠\n⛧  ✅ Encaissé à x${g.mult.toFixed(2)}\n☠  💰 +${prize - g.bet} ${ECONOMY.SYMBOL}\n✝  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
   if (games.has(key) && /^\d+$/.test(sub||'')) {
     const g = games.get(key)
@@ -28,19 +29,24 @@ export default async function mines2(sock, sender, args, msg, ctx) {
     if (g.grid[idx] === 1) {
       games.delete(key); ecoDb.removeCoins(senderJid, g.bet, 'mines bomb')
       const u2 = ecoDb.get(senderJid)
-      return await sendMessage(sock, sender, `☩━━━〔 💥 *MINES — BOOM !* 〕━━━☩\n☠\n⛧  💥 Mine trouvée à la case ${idx+1}!\n☠  💸 Perdu: -${g.bet} ${ECONOMY.SYMBOL}\n✝  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+      return await sendMessage(sock, sender, `☩━━━〔 💥 *MINES — BOOM !* 〕━━━☩\n☠\n⛧  💥 Mine trouvée à la case ${idx+1}!\n☠  💸 Perdu: -${g.bet} ${ECONOMY.SYMBOL}\n✝  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
     g.safe++; g.mult = 1 + g.safe * (g.bombs / (g.grid.length - g.safe))
     const prize = Math.floor(g.bet * g.mult)
     const display = g.grid.map((v,i) => g.revealed[i] ? '💎' : '🔲').join('').match(/.{1,5}/g).join('\n')
-    await sendMessage(sock, sender, `☩━━━〔 💣 *MINES* (${g.safe} safe) 〕━━━☩\n☠\n\`\`\`\n${display}\n\`\`\`\n☠\n⛧  Multiplicateur: *x${g.mult.toFixed(2)}*\n☠  Si cashout: *${prize} ${ECONOMY.SYMBOL}*\n☠\n✝  ${prefix}mines2 <case> | ${prefix}mines2 cashout\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `☩━━━〔 💣 *MINES* (${g.safe} safe) 〕━━━☩\n☠\n\`\`\`\n${display}\n\`\`\`\n☠\n⛧  Multiplicateur: *x${g.mult.toFixed(2)}*\n☠  Si cashout: *${prize} ${ECONOMY.SYMBOL}*\n☠\n✝  ${prefix}mines2 <case> | ${prefix}mines2 cashout\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     return
   }
   const bet = parseInt(args[0])
-  if (!bet||bet<10) return await sendMessage(sock, sender, `☩━━━〔 💣 *MINES* 〕━━━☩\n☠\n⛧  Usage: ${prefix}mines2 <mise>\n☠  Puis: ${prefix}mines2 <case 1-25>\n✝  Cashout: ${prefix}mines2 cashout\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+  if (!bet||bet<10) return await sendMessage(sock, sender, `☩━━━〔 💣 *MINES* 〕━━━☩\n☠\n⛧  Usage: ${prefix}mines2 <mise>\n☠  Puis: ${prefix}mines2 <case 1-25>\n✝  Cashout: ${prefix}mines2 cashout\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   const user = ecoDb.ensure(senderJid)
   if (user.coins < bet) return await sendMessage(sock, sender, `☠ Fonds insuffisants: ${user.coins} ${ECONOMY.SYMBOL}`)
   const grid = genGrid(5, 5)
   games.set(key, { grid, revealed: Array(25).fill(false), bet, mult: 1, safe: 0, bombs: 5 })
-  await sendMessage(sock, sender, `☩━━━〔 💣 *MINES — DÉBUT* 〕━━━☩\n☠\n⛧  Grille 5x5 — 5 mines cachées!\n☠  Mise: ${bet} ${ECONOMY.SYMBOL}\n☠\n\`\`\`\n${Array(25).fill('🔲').join('').match(/.{1,5}/g).join('\n')}\n\`\`\`\n☠\n✝  Choisis une case (1-25)\n☠  ${prefix}mines2 <numéro>\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+  await sendMessage(sock, sender, `☩━━━〔 💣 *MINES — DÉBUT* 〕━━━☩\n☠\n⛧  Grille 5x5 — 5 mines cachées!\n☠  Mise: ${bet} ${ECONOMY.SYMBOL}\n☠\n\`\`\`\n${Array(25).fill('🔲').join('').match(/.{1,5}/g).join('\n')}\n\`\`\`\n☠\n✝  Choisis une case (1-25)\n☠  ${prefix}mines2 <numéro>\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

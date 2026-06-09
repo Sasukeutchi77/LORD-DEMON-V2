@@ -20,11 +20,12 @@ function evalHand(hand) {
   return { name: '🃏 Carte haute', mult: 0 }
 }
 export default async function poker(sock, sender, args, msg, ctx) {
+  try {
   const senderJid = ctx?.senderJid||msg.key.participant||msg.key.remoteJid
   const prefix = process.env.PREFIX||'.'
   const bet = parseInt(args[0])
   if (!bet||bet<20) return await sendMessage(sock, sender,
-    `☩━━━〔 ♠️ *VIDEO POKER* 〕━━━☩\n☠\n⛧  Reçois 5 cartes, gagne si combinaison!\n☠  Usage: ${prefix}poker <mise> (min: 20)\n☠\n✝  Combinaisons:\n☠  Paire x1.5 | Double x2 | Brelan x3\n⛧  Suite x5 | Couleur x6 | Full x8\n☩  Carré x15 | Quinte Flush x25\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    `☩━━━〔 ♠️ *VIDEO POKER* 〕━━━☩\n☠\n⛧  Reçois 5 cartes, gagne si combinaison!\n☠  Usage: ${prefix}poker <mise> (min: 20)\n☠\n✝  Combinaisons:\n☠  Paire x1.5 | Double x2 | Brelan x3\n⛧  Suite x5 | Couleur x6 | Full x8\n☩  Carré x15 | Quinte Flush x25\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   const user = ecoDb.ensure(senderJid)
   if (user.coins < bet) return await sendMessage(sock, sender, `☠ Fonds insuffisants: ${user.coins} ${ECONOMY.SYMBOL}`)
   const deck = makeDeck()
@@ -35,5 +36,10 @@ export default async function poker(sock, sender, args, msg, ctx) {
   else ecoDb.removeCoins(senderJid, bet, 'poker loss')
   const u2 = ecoDb.get(senderJid)
   await sendMessage(sock, sender,
-    `☩━━━〔 ♠️ *VIDEO POKER* 〕━━━☩\n☠\n⛧  🃏 Main: ${hand.join(' ')}\n☠\n☩  ${result.name} (x${result.mult})\n☠\n✝  ${prize > 0 ? `✅ +${prize} ${ECONOMY.SYMBOL}` : `❌ Perdu ${bet} ${ECONOMY.SYMBOL}`}\n☠  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    `☩━━━〔 ♠️ *VIDEO POKER* 〕━━━☩\n☠\n⛧  🃏 Main: ${hand.join(' ')}\n☠\n☩  ${result.name} (x${result.mult})\n☠\n✝  ${prize > 0 ? `✅ +${prize} ${ECONOMY.SYMBOL}` : `❌ Perdu ${bet} ${ECONOMY.SYMBOL}`}\n☠  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

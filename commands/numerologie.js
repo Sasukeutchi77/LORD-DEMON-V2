@@ -14,6 +14,7 @@ const signifs = {
 }
 
 export default async function numerologie(sock, sender, args) {
+  try {
   if (!args.length) return await sendMessage(sock, sender, `☩━━━〔 🔢 *NUMÉROLOGIE* 〕━━━☩\n\n✝  Usage: *.numerologie <votre prénom>*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
   const nom = args.join(' ').toUpperCase()
   const valeurs = { A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8 }
@@ -29,4 +30,10 @@ export default async function numerologie(sock, sender, args) {
     `☩  _${signif}_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

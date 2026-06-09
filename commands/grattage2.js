@@ -1,6 +1,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 import { ecoDb, ECONOMY } from '../lib/economySystem.js'
 export default async function grattage2(sock, sender, args, msg, ctx) {
+  try {
   const senderJid = ctx?.senderJid||msg.key.participant||msg.key.remoteJid
   const prefix = process.env.PREFIX||'.'
   const bet = parseInt(args[0]) || 50
@@ -19,5 +20,10 @@ export default async function grattage2(sock, sender, args, msg, ctx) {
   const u2 = ecoDb.get(senderJid)
   const display = grid.join('').match(/.{3}/g).join('\n')
   await sendMessage(sock, sender,
-    `☩━━━〔 🎟️ *GRATTAGE* 〕━━━☩\n☠\n⛧  Grille:\n✝ \`\`\`\n${display}\n\`\`\`\n☠\n☩  ${best[1]}x ${best[0]} → x${mult}\n✝  ${prize>0?`✅ +${prize} ${ECONOMY.SYMBOL}`:`❌ Rien`}\n☠  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    `☩━━━〔 🎟️ *GRATTAGE* 〕━━━☩\n☠\n⛧  Grille:\n✝ \`\`\`\n${display}\n\`\`\`\n☠\n☩  ${best[1]}x ${best[0]} → x${mult}\n✝  ${prize>0?`✅ +${prize} ${ECONOMY.SYMBOL}`:`❌ Rien`}\n☠  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

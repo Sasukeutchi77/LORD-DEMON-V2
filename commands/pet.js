@@ -10,6 +10,7 @@ function statBar(val) {
 }
 
 export default async function pet(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const sub = args[0]?.toLowerCase()
 
@@ -24,8 +25,7 @@ export default async function pet(sock, sender, args, msg, ctx = {}) {
         `Vous n'avez pas d'animal.\n\nEspèces disponibles:\n${speciesList}\n\n` +
         `💡 \`.pet adopter <espèce> <nom>\`\n` +
         `Ex: \`.pet adopter 🐺 Loup Shadow\`\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
     petDb.decay(jid)
     const updated = petDb.get(jid)
@@ -42,8 +42,7 @@ export default async function pet(sock, sender, args, msg, ctx = {}) {
       `❤️ Santé:   ${statBar(updated.health)}\n\n` +
       `🦴 \`.pet nourrir\`  — Nourrir (+30 faim)\n` +
       `🎾 \`.pet jouer\`   — Jouer (+20 bonheur, +XP)\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 
   if (sub === 'adopter' || sub === 'adopt') {
@@ -74,4 +73,9 @@ export default async function pet(sock, sender, args, msg, ctx = {}) {
   }
 
   await sendMessage(sock, sender, `☠ Sous-commande inconnue. Tapez \`.pet\` pour l'aide.`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

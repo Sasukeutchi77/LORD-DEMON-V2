@@ -4,6 +4,7 @@ import { economyDb } from '../lib/economySystem.js'
 import { getSenderJid, cleanNumber } from '../lib/ownerSystem.js'
 
 export default async function pay(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
 
   if (args.length < 2) {
@@ -11,8 +12,7 @@ export default async function pay(sock, sender, args, msg, ctx = {}) {
       `☩━━━〔 💸 *PAYER* 〕━━━☩\n` +
       `⛧ Usage: \`.pay @mention <montant>\`\n` +
       `⛧ Ex: \`.pay @ami 100\`\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 
   const amount = parseInt(args[args.length - 1])
@@ -39,4 +39,9 @@ export default async function pay(sock, sender, args, msg, ctx = {}) {
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
     { mentions: [targetJid] }
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

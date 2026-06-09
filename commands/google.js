@@ -8,8 +8,7 @@ export default async function google(sock, sender, args, msg) {
       `☩━━━〔 🔍 *RECHERCHE WEB* 〕━━━☩\n` +
       `⛧ Usage: \`.google <recherche>\`\n` +
       `⛧ Ex: \`.google météo Paris\`\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 
   const query = args.join(' ')

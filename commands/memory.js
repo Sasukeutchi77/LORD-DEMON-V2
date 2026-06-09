@@ -4,6 +4,6 @@ export default async function memory(sock, sender, args, msg, ctx = {}) {
     const scores = [100,200,300,500,750,1000,1500,2000]
     const score = scores[Math.floor(Math.random()*scores.length)]
     const res = Math.random()>0.5 ? '🏆 *VICTOIRE!*' : '💀 *DÉFAITE!*'
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🎮 *MEMORY*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n${res}\n☩ Score : *${score} pts*\n✝ Rang : *${score>=1000?'👑 LÉGENDAIRE':score>=500?'💎 ÉLITE':'🥉 DÉBUTANT'}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🎮 *MEMORY*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n${res}\n☩ Score : *${score} pts*\n✝ Rang : *${score>=1000?'👑 LÉGENDAIRE':score>=500?'💎 ÉLITE':'🥉 DÉBUTANT'}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

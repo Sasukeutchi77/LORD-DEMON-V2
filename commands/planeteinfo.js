@@ -5,6 +5,6 @@ export default async function planeteinfo(sock, sender, args, msg, ctx = {}) {
     const p = args.join(' ').toLowerCase()
     if (!p || !PLANETES[p]) return await sendMessage(sock, sender, `☠ Usage: .planeteinfo <planète>\nDisponibles: ${Object.keys(PLANETES).join(', ')}`)
     const i = PLANETES[p]
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🪐 *${p.toUpperCase()}*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Distance du Soleil : *${i.dist}*\n✝ Diamètre : *${i.diam}*\n☠ Lunes : *${i.lune}*\n⛧ Révolution : *${i.an}*\n☩ Température : *${i.temp}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🪐 *${p.toUpperCase()}*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Distance du Soleil : *${i.dist}*\n✝ Diamètre : *${i.diam}*\n☠ Lunes : *${i.lune}*\n⛧ Révolution : *${i.an}*\n☩ Température : *${i.temp}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

@@ -5,6 +5,6 @@ export default async function fuseau(sock, sender, args, msg, ctx = {}) {
     const city = args.join('_').toLowerCase()
     if (!city || !ZONES[city]) return await sendMessage(sock, sender, `☠ Usage: .fuseau <ville>\nEx: .fuseau paris\nVilles: ${Object.keys(ZONES).join(', ')}`)
     const now = new Date().toLocaleString('fr-FR', {timeZone: ZONES[city], dateStyle: 'full', timeStyle: 'long'})
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🌍 *FUSEAU HORAIRE*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Ville : *${city.toUpperCase()}*\n✝ Heure locale : *${now}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🌍 *FUSEAU HORAIRE*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Ville : *${city.toUpperCase()}*\n✝ Heure locale : *${now}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

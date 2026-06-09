@@ -33,6 +33,7 @@ function bar(value) {
 }
 
 export default async function gay(sock, sender, args, msg) {
+  try {
   const target = resolveTarget(args, msg)
 
   if (!target) {
@@ -40,8 +41,7 @@ export default async function gay(sock, sender, args, msg) {
       `☩━━━〔 🌈 *GAY METER* 〕━━━☩\n` +
       `⛧ invocation: *.gay @âme*\n` +
       `☩ Ou réponds à un message avec *.gay*\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 
   const percent = Math.floor(Math.random() * 101)
@@ -58,4 +58,9 @@ export default async function gay(sock, sender, args, msg) {
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
     { mentions: [target] }
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

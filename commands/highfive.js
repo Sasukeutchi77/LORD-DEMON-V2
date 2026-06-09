@@ -5,6 +5,7 @@ import { getSenderJid } from '../lib/ownerSystem.js'
 const ACTIONS = ["*HIGH FIVE !* 🙌","*clap !* 🤜🤛","*tape cinq !* 🖐️","*five dans ta face* 🖐️💥"]
 
 export default async function highfive(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || msg.message?.extendedTextMessage?.contextInfo?.participant
   const action = ACTIONS[Math.floor(Math.random() * ACTIONS.length)]
@@ -14,4 +15,9 @@ export default async function highfive(sock, sender, args, msg, ctx = {}) {
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   🙏 HIGH FIVE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n@${jid.split('@')[0]} → ${targetStr}\n\n${action}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
     mentions.length ? { mentions: [jid, ...mentions] } : { mentions: [jid] }
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

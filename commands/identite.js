@@ -8,6 +8,7 @@ const professions = ['Chasseur de primes ⚔️', 'Sorcier noir 🔮', 'Assassin
 const villes = ['Nécropolys 🌑', 'Abyssoria ⛧', 'Ténèbropolis ☠️', 'Limborgh ✝', 'Sombrevil 🌙']
 
 export default async function identite(sock, sender, args, msg) {
+  try {
   const prenom = prenoms[Math.floor(Math.random() * prenoms.length)]
   const nom = noms[Math.floor(Math.random() * noms.length)]
   const age = ages()
@@ -23,4 +24,10 @@ export default async function identite(sock, sender, args, msg) {
     `⛧  _Cette identité vous a été assignée par les Ténèbres._\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

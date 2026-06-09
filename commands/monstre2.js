@@ -10,6 +10,7 @@ const monstres = [
 ]
 
 export default async function monstre2(sock, sender, args, msg) {
+  try {
   const m = monstres[Math.floor(Math.random() * monstres.length)]
   const playerAtk = Math.floor(Math.random() * 500) + 300
   const result = playerAtk >= m.def ? `✅ Victoire ! Dégâts infligés: ${playerAtk - m.def}` : `❌ Défaite ! Le monstre résiste (Défense: ${m.def})`
@@ -27,4 +28,10 @@ export default async function monstre2(sock, sender, args, msg) {
     `⛧  🏆 *XP potentiel:* ${m.xp} | 🎁 *Récompense:* ${m.reward}\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

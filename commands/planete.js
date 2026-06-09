@@ -11,6 +11,7 @@ const planetes = [
 ]
 
 export default async function planete(sock, sender, args) {
+  try {
   const p = planetes[Math.floor(Math.random() * planetes.length)]
   const text =
     `☩━━━〔 🌌 *PLANÈTE DÉMONIAQUE* 〕━━━☩\n\n` +
@@ -24,4 +25,10 @@ export default async function planete(sock, sender, args) {
     `☩  _${p.fun}_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

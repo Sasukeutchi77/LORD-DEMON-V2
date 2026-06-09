@@ -9,6 +9,7 @@ const poemes = [
 ]
 
 export default async function poeme(sock, sender, args) {
+  try {
   const p = poemes[Math.floor(Math.random() * poemes.length)]
   const text =
     `☩━━━〔 ✍️ *POÈME DÉMONIAQUE* 〕━━━☩\n\n` +
@@ -17,4 +18,10 @@ export default async function poeme(sock, sender, args) {
     `✝  _— Lord Demon Poetry_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

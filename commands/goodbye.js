@@ -149,8 +149,7 @@ export default async function goodbye(sock, sender, args, msg) {
         `⛧\n` +
         `☩ ${preview}\n` +
         `✝\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── STATUT (défaut) ──────────────────────────────────────────────────────
@@ -163,8 +162,7 @@ export default async function goodbye(sock, sender, args, msg) {
       `⛧ 📝 Message : ${currentMsg}\n` +
       `☩\n` +
       `✝ *.goodbye help* pour les sorts\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
 
   } catch (e) {
     console.error('❌ Erreur goodbye:', e)

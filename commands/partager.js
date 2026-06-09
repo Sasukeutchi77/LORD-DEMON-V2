@@ -60,7 +60,7 @@ export default async function partager(sock, sender, args, msg, ctx = {}) {
 
 ☠ Aucun cercle commun entre toi et le Démon n'a été trouvé.
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── Notification de début ─────────────────────────────
@@ -68,7 +68,7 @@ export default async function partager(sock, sender, args, msg, ctx = {}) {
 
 ⏳ Partage en cours dans *${userGroups.length}* groupe(s)...
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
 
     // ── Envoi dans chaque groupe ──────────────────────────
     let sent   = 0
@@ -109,7 +109,7 @@ export default async function partager(sock, sender, args, msg, ctx = {}) {
 
     console.log(`✅ [PARTAGER] ${sent}/${userGroups.length} groupes | par ${userId}
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
 
   } catch (e) {
     console.error('❌ partager error:', e)
@@ -117,6 +117,6 @@ export default async function partager(sock, sender, args, msg, ctx = {}) {
 
 ☠ rituel échoué: ${e.message || 'rituel échoué inconnue'}
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 }

@@ -4,6 +4,7 @@ import { getSenderJid } from '../lib/ownerSystem.js'
 import { rpgDb, EQUIPMENT, RPG_CLASSES } from '../lib/rpgSystem.js'
 
 export default async function inventaire2(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const hero = rpgDb.getHero(jid)
   if (!hero) return sendMessage(sock, sender, '☠ Creez un heros: .rpg creer <nom> <classe>')
@@ -23,4 +24,9 @@ export default async function inventaire2(sock, sender, args, msg, ctx = {}) {
     '💰 Or: *' + hero.gold + '*\n' +
     '⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸'
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

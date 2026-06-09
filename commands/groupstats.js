@@ -11,7 +11,6 @@ export default async function groupstats(sock, sender, args, msg, ctx = {}) {
     const count = meta.participants?.length || 0
     const admins = meta.participants?.filter(p=>p.admin)?.length || 0
     await sendMessage(sock, sender,
-      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   📊 STATS GROUPE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n🏷️ Nom: *${meta.subject}*\n👥 Membres: *${count}*\n👑 Admins: *${admins}*\n📅 Créé: ${new Date(meta.creation*1000).toLocaleDateString('fr-FR')}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   📊 STATS GROUPE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n🏷️ Nom: *${meta.subject}*\n👥 Membres: *${count}*\n👑 Admins: *${admins}*\n📅 Créé: ${new Date(meta.creation*1000).toLocaleDateString('fr-FR')}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   } catch(e) { await sendMessage(sock, sender, '☠ Erreur: '+e.message) }
 }

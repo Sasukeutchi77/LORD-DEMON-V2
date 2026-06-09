@@ -7,6 +7,7 @@ function code(length) {
 }
 
 export default async function nitro(sock, sender) {
+  try {
   const gift = `discord.gift/${code(16)}`
   const card = `${code(4)}-${code(4)}-${code(4)}-${code(4)}`
 
@@ -20,4 +21,10 @@ export default async function nitro(sock, sender) {
     `☩ Si quelqu'un court dessus, le Démon a gagné.\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

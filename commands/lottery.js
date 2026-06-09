@@ -4,6 +4,7 @@ import { ecoDb, ECONOMY, lotteryDb } from '../lib/economySystem.js'
 import { isOwner, isSudo, cleanNumber } from '../lib/ownerSystem.js'
 
 export default async function lottery(sock, sender, args, msg, ctx) {
+  try {
   const senderJid = ctx?.senderJid || msg.key.participant || msg.key.remoteJid
   const prefix    = process.env.PREFIX || '.'
   const sub       = args[0]?.toLowerCase()
@@ -124,4 +125,10 @@ export default async function lottery(sock, sender, args, msg, ctx) {
   await sendMessage(sock, sender,
     `☩━━━〔 🎟️ *LOTERIE — AIDE* 〕━━━☩\n☠\n⛧  ${prefix}lottery → Statut\n☩  ${prefix}lottery acheter [qté]\n✝  ${prefix}lottery top\n☠  ${prefix}lottery tirage (admin)\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

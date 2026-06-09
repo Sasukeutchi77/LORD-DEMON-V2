@@ -12,6 +12,7 @@ const sorts = [
 ]
 
 export default async function grimoire2(sock, sender, args) {
+  try {
   const sort = sorts[Math.floor(Math.random() * sorts.length)]
   const text =
     `☩━━━〔 📚 *GRIMOIRE DÉMONIAQUE II* 〕━━━☩\n\n` +
@@ -24,4 +25,10 @@ export default async function grimoire2(sock, sender, args) {
     `✝  _${sort.effet}_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

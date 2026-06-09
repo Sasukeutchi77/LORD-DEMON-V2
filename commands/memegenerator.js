@@ -10,6 +10,13 @@ const MEMES = [
   {top:'MOI: JE VAIS DORMIR TÔT',bot:'LE BOT À 2H DU MAT:'}
 ]
 export default async function memegenerator(sock, sender, args, msg, ctx) {
+  try {
   const meme = MEMES[Math.floor(Math.random()*MEMES.length)]
   await sendMessage(sock, sender, `☩━━━〔 😂 *MEME GENERATOR* 〕━━━☩\n☠\n⛧  🔝 ${meme.top}\n☠  ⬇️ ${meme.bot}\n☠\n✝  _LORD DEMON V2 Meme Factory_\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

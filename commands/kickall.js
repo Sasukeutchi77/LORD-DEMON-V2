@@ -15,8 +15,7 @@ export default async function kickall(sock, sender, args, msg, ctx = {}) {
       return await sendMessage(sock, sender,
         `☩━━━〔 ☠ *RITUEL IMPOSSIBLE* 〕━━━☩\n\n` +
         `⛧ Ce sort ne fonctionne que dans les *cercles* (cercles).\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── CTX ──────────────────────────────────────────────────
@@ -29,8 +28,7 @@ export default async function kickall(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ⛔ *ACCÈS REFUSÉ* 〕━━━☩\n\n` +
         `☠ Seuls les *Seigneurs Suprêmes*\n` +
         `☠ peuvent déclencher ce châtiment.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── BOT gardien CHECK ──────────────────────────────────────
@@ -39,8 +37,7 @@ export default async function kickall(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ☠ *DÉMON NON GARDIEN* 〕━━━☩\n\n` +
         `⛧ Je dois être *gardien* (gardien) pour\n` +
         `⛧ exiler les âmes du cercle.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── GROUP META ───────────────────────────────────────────
@@ -68,8 +65,7 @@ export default async function kickall(sock, sender, args, msg, ctx = {}) {
       return await sendMessage(sock, sender,
         `☩━━━〔 👁️ *CERCLE VIDE* 〕━━━☩\n\n` +
         `⛧ Aucune âme à exiler — seuls les gardiens demeurent.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── CONFIRMATION ─────────────────────────────────────────
@@ -135,7 +131,6 @@ export default async function kickall(sock, sender, args, msg, ctx = {}) {
     await sendMessage(sock, sender,
       `☩━━━〔 ☠ *RITUEL ÉCHOUÉ* 〕━━━☩\n\n` +
       `⛧ ${e.message || 'rituel échoué inconnue'}\n\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 }

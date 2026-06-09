@@ -10,6 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const db = new Database(path.join(__dirname, '..', 'data', 'demon.db'))
 
 export default async function job(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const sub = args[0]?.toLowerCase()
   const now = Date.now()
@@ -25,8 +26,7 @@ export default async function job(sock, sender, args, msg, ctx = {}) {
       `${lines}\n\n` +
       `💡 \`.job choisir <métier>\` pour choisir\n` +
       `⚡ \`.job travailler\` pour gagner des 🪙\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 
   if (sub === 'choisir' || sub === 'choose') {
@@ -72,9 +72,13 @@ export default async function job(sock, sender, args, msg, ctx = {}) {
       `💰 Salaire: *+${earned} 🪙*\n` +
       `🎓 Métier XP: +10 (${e.job_xp + 10})\n` +
       `⏱️ Prochain travail dans *${j.cooldown/3600}h*\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 
   await sendMessage(sock, sender, `☠ Sous-commande inconnue. Tapez \`.job\` pour l'aide.`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

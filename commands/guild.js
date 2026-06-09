@@ -4,6 +4,7 @@ import { guildDb } from '../lib/economySystem.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
 
 export default async function guild(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const sub = args[0]?.toLowerCase()
 
@@ -18,8 +19,7 @@ export default async function guild(sock, sender, args, msg, ctx = {}) {
         `💡 \`.guild creer <nom> <tag> <desc>\`\n` +
         `💡 \`.guild rejoindre <nom>\`\n` +
         `💡 \`.guild liste\`\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
     const g = guildDb.get(membership.guild_id)
     const members = guildDb.members(membership.guild_id)
@@ -90,9 +90,13 @@ export default async function guild(sock, sender, args, msg, ctx = {}) {
       `⛧   🏆 *CLASSEMENT GUILDES*        ☩\n` +
       `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
       `${lines || 'Aucune guilde créée.'}\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 
   await sendMessage(sock, sender, `☠ Sous-commande inconnue. Tapez \`.guild\` pour l'aide.`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

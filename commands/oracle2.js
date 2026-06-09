@@ -17,6 +17,7 @@ const reponses = [
 ]
 
 export default async function oracle2(sock, sender, args) {
+  try {
   if (!args.length) return await sendMessage(sock, sender, `☩━━━〔 🔮 *ORACLE II* 〕━━━☩\n\n✝  Usage: *.oracle2 <ta question>*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
   const question = args.join(' ')
   const rep = reponses[Math.floor(Math.random() * reponses.length)]
@@ -27,4 +28,10 @@ export default async function oracle2(sock, sender, args) {
     `✝  _"${rep}"_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

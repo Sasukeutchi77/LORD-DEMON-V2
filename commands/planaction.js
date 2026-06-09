@@ -1,6 +1,7 @@
 // commands/planaction.js — LORD DEMON
 import { sendMessage } from '../lib/sendMessage.js'
 export default async function planaction(sock, sender, args) {
+  try {
   if (!args.length) return await sendMessage(sock, sender, `☩━━━〔 📋 *PLAN D'ACTION* 〕━━━☩\n\n✝  Usage: *.planaction <ton objectif>*\n⛧  Exemple: *.planaction Apprendre le code*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
   const objectif = args.join(' ')
   const text =
@@ -16,4 +17,10 @@ export default async function planaction(sock, sender, args) {
     `☠  _La discipline bat la motivation. Agis même sans envie._\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

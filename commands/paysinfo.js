@@ -5,6 +5,6 @@ export default async function paysinfo(sock, sender, args, msg, ctx = {}) {
     const p = args.join('_').toLowerCase()
     if (!p || !PAYS[p]) return await sendMessage(sock, sender, `☠ Usage: .paysinfo <pays>\nEx: .paysinfo senegal\nDisponibles: ${Object.keys(PAYS).join(', ')}`)
     const i = PAYS[p]
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🌍 *${p.replace(/_/g,' ').toUpperCase()}*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Population : *${i.pop}*\n✝ Superficie : *${i.sup}*\n☠ Langue : *${i.langue}*\n⛧ Monnaie : *${i.monnaie}*\n☩ Continent : *${i.cont}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🌍 *${p.replace(/_/g,' ').toUpperCase()}*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Population : *${i.pop}*\n✝ Superficie : *${i.sup}*\n☠ Langue : *${i.langue}*\n⛧ Monnaie : *${i.monnaie}*\n☩ Continent : *${i.cont}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

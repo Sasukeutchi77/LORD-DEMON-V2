@@ -167,8 +167,7 @@ export default async function fakereac(sock, sender, args, msg, ctx = {}) {
         `✝ ⚠️ Le message doit contenir\n` +
         `☠ le bouton _"Voir la chaîne"_.\n` +
         `☠\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ── 2) Lire le nombre demandé ──────────────────────────────
@@ -185,8 +184,7 @@ export default async function fakereac(sock, sender, args, msg, ctx = {}) {
         `☠\n` +
         `⛧ 📊 Max: *${MAX_REACTIONS}*\n` +
         `☠\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     if (count < MIN_REACTIONS) count = MIN_REACTIONS
@@ -200,8 +198,7 @@ export default async function fakereac(sock, sender, args, msg, ctx = {}) {
       `✝ 📡 Cible: chaîne WhatsApp\n` +
       `☠ ⏳ Patiente quelques secondes...\n` +
       `☠\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
 
     // ── 4) Envoi en boucle ─────────────────────────────────────
     let success = 0
@@ -236,15 +233,13 @@ export default async function fakereac(sock, sender, args, msg, ctx = {}) {
       `☠ 📡 Chaîne ciblée\n` +
       `⛧ 🆔 Msg: \`${channelInfo.serverMessageId}\`\n` +
       `☠\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
 
   } catch (err) {
     console.error('❌ Erreur fakereac:', err)
     await sendMessage(sock, sender,
       `☩━━━〔 ☠ *RITUEL ÉCHOUÉ* 〕━━━☩\n\n` +
       `☩ ${err.message || 'rituel échoué inconnue'}\n\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 }

@@ -11,6 +11,7 @@ const mythes = [
 ]
 
 export default async function mythologie(sock, sender, args) {
+  try {
   const m = mythes[Math.floor(Math.random() * mythes.length)]
   const text =
     `☩━━━〔 🏛️ *MYTHOLOGIE DÉMONIAQUE* 〕━━━☩\n\n` +
@@ -22,4 +23,10 @@ export default async function mythologie(sock, sender, args) {
     `⛧  _${m.mythe}_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

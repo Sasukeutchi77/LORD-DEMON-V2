@@ -133,6 +133,7 @@ export async function checkPenduGuess(sock, groupId, senderJid, text) {
 
 // ── Commande principale ──────────────────────────────────
 export default async function pendu(sock, sender, args, msg, ctx) {
+  try {
   const senderJid = ctx?.senderJid || msg.key.participant || msg.key.remoteJid
   const prefix    = process.env.PREFIX || '.'
   const sub       = args[0]?.toLowerCase()
@@ -213,4 +214,10 @@ export default async function pendu(sock, sender, args, msg, ctx) {
     `☠\n` +
     buildStatus(game)
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

@@ -8,8 +8,7 @@ export default async function hidetag(sock, sender, args, msg, ctx = {}) {
       await sendMessage(sock, sender,
         `☩━━━〔 ☠ *RITUEL IMPOSSIBLE* 〕━━━☩\n\n` +
         `⛧ Ce sort ne fonctionne que dans les *cercles* (cercles).\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
       return
     }
 
@@ -23,8 +22,7 @@ export default async function hidetag(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ⛔ *ACCÈS REFUSÉ* 〕━━━☩\n\n` +
         `☠ 🔒 Seuls les *gardiens* (gardiens)\n` +
         `☠    du cercle peuvent invoquer ce sort.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
       return
     }
 
@@ -53,8 +51,7 @@ export default async function hidetag(sock, sender, args, msg, ctx = {}) {
       `☩ 👻 Mentions : *cachées*\n` +
       `✝ 📜 Message : _${customMessage}_\n` +
       `☠\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
 
     console.log(`⛧ hidetag | ${participants.length} âmes convoquées`)
 
@@ -64,8 +61,7 @@ export default async function hidetag(sock, sender, args, msg, ctx = {}) {
       `☩━━━〔 ☠ *RITUEL ÉCHOUÉ* 〕━━━☩\n\n` +
       `⛧ ${e.message || 'rituel échoué inconnue'}\n` +
       `☩ Vérifiez que le *Démon* est gardien du cercle.\n\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 }
 

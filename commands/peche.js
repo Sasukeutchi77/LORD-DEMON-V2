@@ -7,6 +7,7 @@ const POISSONS = [{"nom":"🐟 Sardine","pts":5,"rare":false},{"nom":"🐠 Poiss
 const cooldowns = new Map()
 
 export default async function peche(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const now = Date.now()
   const cd = cooldowns.get(jid) || 0
@@ -17,6 +18,10 @@ export default async function peche(sock, sender, args, msg, ctx = {}) {
   const caught = pool[Math.floor(Math.random()*pool.length)]
   if (caught.pts > 0) economyDb.addCoins(jid, caught.pts)
   await sendMessage(sock, sender,
-    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   🎣 PÊCHE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n🎣 Vous avez pêché: *${caught.nom}*\n💰 +${caught.pts} 🪙\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-  )
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   🎣 PÊCHE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n🎣 Vous avez pêché: *${caught.nom}*\n💰 +${caught.pts} 🪙\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

@@ -7,6 +7,6 @@ export default async function membercount(sock, sender, args, msg) {
 
 👥 *Membres du groupe:* ${meta.participants?.length || 0}
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   } catch(e) { await sendMessage(sock, sender, '☠ Utilisez dans un groupe.') }
 }

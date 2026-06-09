@@ -5,6 +5,7 @@ import { getSenderJid } from '../lib/ownerSystem.js'
 const LEVELS = ["Maudit par Satan lui-même","Très maudit","Maudit modéré","Légèrement maudit","Presque béni","Béni des dieux ✨"]
 
 export default async function maudit(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || jid
   const num = Math.floor(Math.random() * 101)
@@ -16,4 +17,9 @@ export default async function maudit(sock, sender, args, msg, ctx = {}) {
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠️ NIVEAU DE MALÉDICTION   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n👤 @${target.split('@')[0]}\n\n[${bar}] ${num}%\n\n✨ ${level}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
     mentions.length ? { mentions } : undefined
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

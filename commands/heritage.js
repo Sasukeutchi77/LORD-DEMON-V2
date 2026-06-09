@@ -8,8 +8,15 @@ const heritages = [
   { titre: "Cape de l'Ombre 🌑", rareté: "🟣 Épique", bonus: "Invisibilité permanente, +150 Agilité", histoire: "Tissée à partir de ténèbres pures arrachées au néant" },
 ]
 export default async function heritage(sock, sender, args, msg) {
+  try {
   const name = msg?.pushName || 'Héritier'
   const h = heritages[Math.floor(Math.random() * heritages.length)]
   const text = `☩━━━〔 👑 *HÉRITAGE DÉMONIAQUE* 〕━━━☩\n\n☠  👤 *${name}*, tu hérites de :\n\n⛧  *${h.titre}*\n✝  ${h.rareté}\n\n☩  ⚡ *Bonus:* ${h.bonus}\n☠  📖 *Histoire:*\n⛧  _${h.histoire}_\n\n✝  _Gardez-le précieusement, héritier des ténèbres._\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }

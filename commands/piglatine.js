@@ -8,9 +8,15 @@ function toPigLatin(word) {
   return word.slice(i) + word.slice(0, i) + 'ay'
 }
 export default async function piglatine(sock, sender, args, msg, ctx) {
+  try {
   const text = args.join(' ')
   if (!text.trim()) return await sendMessage(sock, sender, `☠ Usage: ${process.env.PREFIX||'.'}piglatine <texte>`)
   const result = text.split(' ').map(toPigLatin).join(' ')
   await sendMessage(sock, sender,
-    `☩━━━〔 🐷 *PIG LATIN* 〕━━━☩\n☠\n⛧  📝 Original: _${text}_\n☠  🐷 Pig Latin: *${result}*\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    `☩━━━〔 🐷 *PIG LATIN* 〕━━━☩\n☠\n⛧  📝 Original: _${text}_\n☠  🐷 Pig Latin: *${result}*\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
+  }
 }

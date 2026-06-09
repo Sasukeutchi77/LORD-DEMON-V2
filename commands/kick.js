@@ -22,8 +22,7 @@ export default async function kick(sock, sender, args, msg, ctx = {}) {
       return await sendMessage(sock, sender,
         `☩━━━〔 ☠ *RITUEL ÉCHOUÉ* 〕━━━☩\n\n` +
         `⛧ sort *cercle* uniquement.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ────────── CTX ─────────────────────────────────────────
@@ -44,8 +43,7 @@ export default async function kick(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ⛔ *ACCÈS REFUSÉ* 〕━━━☩\n\n` +
         `☩ 🔒 Requis: *gardien* du cercle\n` +
         `✝    ou *Owner/Sudo* du Démon\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ────────── BOT ADMIN CHECK ─────────────────────────────
@@ -56,8 +54,7 @@ export default async function kick(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ☠ *DÉMON NON GARDIEN* 〕━━━☩\n\n` +
         `☠ Je dois être *gardien* pour\n` +
         `⛧ exiler des âmes.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ────────── TARGET ───────────────────────────────────────
@@ -79,8 +76,7 @@ export default async function kick(sock, sender, args, msg, ctx = {}) {
         `☩ • *.kick @âme*\n` +
         `✝ • Répondre + *.kick*\n` +
         `☠ • *.kick 22601234567*\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ────────── EMPÊCHER DE SE KICKER SOI-MÊME ──────────────
@@ -89,8 +85,7 @@ export default async function kick(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ⚠️ *IMPOSSIBLE* 〕━━━☩\n\n` +
         `⛧ Vous ne pouvez pas vous\n` +
         `☩ exiler vous-même.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ────────── EMPÊCHER DE KICKER LE BOT ───────────────────
@@ -100,8 +95,7 @@ export default async function kick(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ⚠️ *IMPOSSIBLE* 〕━━━☩\n\n` +
         `✝ Je ne peux pas m'exiler\n` +
         `☠ moi-même.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ────────── GROUP DATA ───────────────────────────────────
@@ -117,8 +111,7 @@ export default async function kick(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ☠ *ABSENT* 〕━━━☩\n\n` +
         `⛧ Ce âme n'est pas dans\n` +
         `☩ le cercle.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ────────── PROTECTION ADMIN ────────────────────────────
@@ -127,8 +120,7 @@ export default async function kick(sock, sender, args, msg, ctx = {}) {
         `☩━━━〔 ⛔ *INTERDIT* 〕━━━☩\n\n` +
         `✝ Vous ne pouvez pas exiler\n` +
         `☠ un *administrateur* du cercle.\n\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-      )
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
     }
 
     // ────────── KICK ────────────────────────────────────────
@@ -173,7 +165,6 @@ export default async function kick(sock, sender, args, msg, ctx = {}) {
       `☩ • Le âme est-il présent ?\n` +
       `✝ • Est-il gardien ?\n\n` +
       `☠ 📝 _${err.message || 'rituel échoué inconnue'}_\n\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance Démoniaque ☠`)
   }
 }

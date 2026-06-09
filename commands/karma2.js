@@ -9,9 +9,16 @@ const actions = [
   { act: "Tu as menti pour ton profit personnel", karma: "-45 Karma 🌑", niveau: "Mensonge" },
 ]
 export default async function karma2(sock, sender, args, msg) {
+  try {
   const name = msg?.pushName || 'Âme'
   const a = actions[Math.floor(Math.random() * actions.length)]
   const total = Math.floor(Math.random() * 500) - 100
   const text = `☩━━━〔 ☯️ *KARMA COSMIQUE* 〕━━━☩\n\n☠  👤 *${name}*\n\n⛧  📖 *Dernière action:*\n✝  _${a.act}_\n\n☩  ⚡ *Impact:* ${a.karma}\n☠  🏷️ *Type:* ${a.niveau}\n⛧  📊 *Karma total:* ${total > 0 ? '+' : ''}${total}\n\n✝  ${total > 200 ? '🌟 Âme bénie !' : total > 0 ? '✅ Karma positif' : total > -100 ? '⚠️ Karma instable' : '☠️ Âme corrompue'}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
 }
