@@ -3,6 +3,7 @@ import { sendMessage } from '../lib/sendMessage.js'
 import { economyDb } from '../lib/economySystem.js'
 
 export default async function richesse(sock, sender, args, msg) {
+  try {
   const top = economyDb.leaderboard(10)
   if (!top.length) return sendMessage(sock, sender, '📊 Aucune donnee economique.')
   const medals = ['👑','🥈','🥉']
@@ -11,4 +12,10 @@ export default async function richesse(sock, sender, args, msg) {
     '†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   💰 CLASSEMENT RICHESSE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n' +
     lines + '\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸'
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

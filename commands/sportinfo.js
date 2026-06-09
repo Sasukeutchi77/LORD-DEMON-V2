@@ -5,6 +5,6 @@ export default async function sportinfo(sock, sender, args, msg, ctx = {}) {
     const s = args.join(' ').toLowerCase()
     if (!s || !SPORTS[s]) return await sendMessage(sock, sender, `☠ Usage: .sportinfo <sport>\nEx: .sportinfo football\nSports: ${Object.keys(SPORTS).join(', ')}`)
     const i = SPORTS[s]
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  ⚽ *${s.toUpperCase()}*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Joueurs : *${i.joueurs}*\n✝ Terrain : *${i.terrain}*\n☠ Durée : *${i.duree}*\n⛧ Origine : *${i.orig}*\n☩ Stars : *${i.stars}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  ⚽ *${s.toUpperCase()}*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Joueurs : *${i.joueurs}*\n✝ Terrain : *${i.terrain}*\n☠ Durée : *${i.duree}*\n⛧ Origine : *${i.orig}*\n☩ Stars : *${i.stars}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance des Ténèbres ☠`)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

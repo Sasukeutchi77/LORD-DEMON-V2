@@ -2,6 +2,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 
 export default async function speedtest(sock, sender, args) {
+  try {
   const start = Date.now()
   const msg = await sendMessage(sock, sender,
     `☩━━━〔 ⚡ *SPEED TEST* 〕━━━☩\n\n⛧  Test en cours...\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
@@ -22,4 +23,10 @@ export default async function speedtest(sock, sender, args) {
     `☠  ${ping < 300 ? '✅ Le Démon répond rapidement !' : '⚠️ Le Démon est légèrement ralenti...'}\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

@@ -12,6 +12,7 @@ const BLESSINGS = [
 const cooldown = new Map()
 
 export default async function temple(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const hero = rpgDb.getHero(jid)
   if (!hero) return sendMessage(sock, sender, '☠ Pas de heros.')
@@ -29,4 +30,10 @@ export default async function temple(sock, sender, args, msg, ctx = {}) {
     blessing.name + '\n✨ ' + blessing.effect + '\n' +
     '⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸'
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

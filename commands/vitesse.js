@@ -5,6 +5,7 @@ import { getSenderJid } from '../lib/ownerSystem.js'
 const LEVELS = ["Flash dépasse à pied","Supersonique","Très rapide","Normal","Lent","Tortue vieillissante 🐢"]
 
 export default async function vitesse(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || jid
   const num = Math.floor(Math.random() * 101)
@@ -16,4 +17,10 @@ export default async function vitesse(sock, sender, args, msg, ctx = {}) {
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   💨 VITESSE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n👤 @${target.split('@')[0]}\n\n[${bar}] ${num}%\n\n✨ ${level}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
     mentions.length ? { mentions } : undefined
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

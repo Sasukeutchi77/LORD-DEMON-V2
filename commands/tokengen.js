@@ -1,6 +1,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 import { randomBytes } from 'crypto'
 export default async function tokengen(sock, sender, args, msg, ctx) {
+  try {
   const format = args[0]?.toLowerCase() || 'hex'
   const len = Math.min(64, Math.max(8, parseInt(args[1]) || 32))
   let token
@@ -9,4 +10,10 @@ export default async function tokengen(sock, sender, args, msg, ctx) {
   else token = randomBytes(len).toString('hex').slice(0, len)
   await sendMessage(sock, sender,
     `☩━━━〔 🎲 *GÉNÉRATEUR TOKEN* 〕━━━☩\n☠\n⛧  Format: *${format}* | Longueur: *${len}*\n☠\n✝  \`${token}\`\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

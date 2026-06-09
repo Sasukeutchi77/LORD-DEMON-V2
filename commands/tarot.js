@@ -23,6 +23,7 @@ const cartes = [
 ]
 
 export default async function tarot(sock, sender, args) {
+  try {
   const carte = cartes[Math.floor(Math.random() * cartes.length)]
   const inverse = Math.random() < 0.3
   const text =
@@ -33,4 +34,10 @@ export default async function tarot(sock, sender, args) {
     `☩  _${inverse ? carte.inv : carte.sens}_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

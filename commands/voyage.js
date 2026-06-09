@@ -4,6 +4,7 @@ import { rpgDb, DUNGEONS } from '../lib/rpgSystem.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
 
 export default async function voyage(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const hero = rpgDb.getHero(jid)
   const lines = DUNGEONS.map(d => ((!hero || hero.level >= d.minLevel) ? '✅' : '🔒') + ' ' + d.name + ' (Niv.' + d.minLevel + '+) — .rpg explorer ' + d.id).join('\n')
@@ -12,4 +13,10 @@ export default async function voyage(sock, sender, args, msg, ctx = {}) {
     lines + '\n\n' + (hero ? 'Ton niveau: ' + hero.level : 'Pas de heros — .rpg creer') + '\n' +
     '⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸'
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

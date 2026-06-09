@@ -5,6 +5,6 @@ export default async function pyramide(sock, sender, args, msg, ctx = {}) {
     if (isNaN(n) || n < 1 || n > 20) return await sendMessage(sock, sender, '☠ Usage: .pyramide <1-20> [symbole]\nEx: .pyramide 5 🔥')
     let out = ''
     for (let i = 1; i <= n; i++) out += sym.repeat(i) + '\n'
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🔺 *PYRAMIDE*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n${out}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🔺 *PYRAMIDE*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n${out}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance des Ténèbres ☠`)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

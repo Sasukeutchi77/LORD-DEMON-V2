@@ -4,8 +4,7 @@ import { showProgressLoader, deleteLoader } from '../lib/animLoader.js'
 import { ecoDb, ECONOMY } from '../lib/economySystem.js'
 import { cleanNumber } from '../lib/ownerSystem.js'
 
-const JOBS = [
-  { name: 'Hacker', emoji: '💻', desc: 'tu as piraté un serveur', min: 150, max: 300 },
+const JOBS = [{ name: 'Hacker', emoji: '💻', desc: 'tu as piraté un serveur', min: 150, max: 300 },
   { name: 'Dealer', emoji: '💊', desc: 'tu as vendu de la marchandise', min: 100, max: 250 },
   { name: 'Mercenaire', emoji: '⚔️', desc: 'tu as accompli une mission', min: 120, max: 280 },
   { name: 'Braqueur', emoji: '🔫', desc: 'tu as braqué une banque', min: 80, max: 350 },
@@ -16,8 +15,14 @@ const JOBS = [
   { name: 'Livreur', emoji: '🛵', desc: 'tu as fait des livraisons', min: 50, max: 150 },
   { name: 'Influenceur', emoji: '📱', desc: 'un post a explosé', min: 80, max: 250 },
   { name: 'Espion', emoji: '🕵️', desc: 'tu as vendu des infos classifiées', min: 120, max: 320 },
-  { name: 'Mineur crypto', emoji: '⛏️', desc: 'tu as miné des coins', min: 70, max: 280 },
-]
+  { name: 'Mineur crypto', emoji: '⛏️', desc: 'tu as miné des coins', min: 70, max: 280 },,
+    "⛧ Mineur des Abysses — excavation des cristaux maudits",
+    "☠ Forgeron Infernal — création d'armes démoniaques",
+    "✝ Nécromancien Apprenti — rituel de résurrection",
+    "☩ Gardien du Voile — surveillance des frontières",
+    "⸸ Alchimiste Maudit — transmutation de l'obscurité",
+    "💀 Chasseur de Spectres — traque dans les ténèbres",
+    "🔮 Oracle Démoniaque — lecture des destins sombres"]
 
 export default async function work(sock, sender, args, msg, ctx) {
   const senderJid = ctx?.senderJid || msg.key.participant || msg.key.remoteJid

@@ -1,6 +1,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 import { ecoDb, ECONOMY } from '../lib/economySystem.js'
 export default async function roulette2(sock, sender, args, msg, ctx) {
+  try {
   const senderJid = ctx?.senderJid||msg.key.participant||msg.key.remoteJid
   const prefix = process.env.PREFIX||'.'
   const bet = parseInt(args[0])
@@ -26,4 +27,10 @@ export default async function roulette2(sock, sender, args, msg, ctx) {
   const u2 = ecoDb.get(senderJid)
   await sendMessage(sock, sender,
     `☩━━━〔 🎡 *ROULETTE* 〕━━━☩\n☠\n⛧  La boule tombe sur...\n☠\n✝  ${color} *${num}* ${color}\n☠\n⛧  Pari: *${betType}* — Mise: ${bet} ${ECONOMY.SYMBOL}\n☠  ${win ? `✅ GAGNÉ! +${bet*(mult-1)} ${ECONOMY.SYMBOL}` : `❌ PERDU! -${bet} ${ECONOMY.SYMBOL}`}\n✝  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

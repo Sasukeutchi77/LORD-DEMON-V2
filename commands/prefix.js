@@ -45,7 +45,7 @@ export default async function prefix(sock, sender, args, msg) {
 
 🔧 Préfixe actuel: *${p}*\n\nUsage: .prefix set !  |  .prefix reset
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance des Ténèbres ☠`)
         return
     }
 
@@ -67,7 +67,7 @@ export default async function prefix(sock, sender, args, msg) {
 
 🩸 Nouveau préfixe sauvegardé: *${newPrefix}*\nRedémarrez le Démon si le préfixe ne change pas immédiatement.
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance des Ténèbres ☠`)
         return
     }
 

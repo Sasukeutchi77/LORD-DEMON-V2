@@ -12,6 +12,7 @@ const _db = new Database(path.join(__dirname, '..', 'data', 'demon.db'))
 const ROB_COOLDOWN = 3 * 3600 * 1000
 
 export default async function rob(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const now = Date.now()
   const thief = economyDb.ensure(jid)
@@ -61,6 +62,12 @@ export default async function rob(sock, sender, args, msg, ctx = {}) {
     economyDb.removeCoins(jid, penalty)
     return sendMessage(sock, sender,
       `☩━━━〔 🚨 *VOL ÉCHOUÉ !* 〕━━━☩\n⛧ Vous avez été *attrapé* !\n☠ Amende: *${penalty} 🪙*\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
     )
   }
 }

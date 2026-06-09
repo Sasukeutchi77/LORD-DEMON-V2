@@ -5,6 +5,7 @@ import { getSenderJid } from '../lib/ownerSystem.js'
 const deaths = new Map()
 
 export default async function roulette(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const d = deaths.get(jid) || 0
   const survived = Math.random() > 1/6
@@ -19,4 +20,10 @@ export default async function roulette(sock, sender, args, msg, ctx = {}) {
   return sendMessage(sock, sender,
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n🔫   ROULETTE RUSSE   🔫\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n✅ *Click...* Vous avez survécu !\n🏆 Série: ${d+1} survie(s)\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

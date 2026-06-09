@@ -22,6 +22,7 @@ const QUESTIONS = [
 const sessions = new Map()
 
 export default async function vraifaux(sock, sender, args, msg) {
+  try {
     const sub = args[0]?.toLowerCase()
 
     if (sessions.has(sender)) {
@@ -56,4 +57,10 @@ export default async function vraifaux(sock, sender, args, msg) {
         `▶️ Réponds: \`.vraifaux vrai\` ou \`.vraifaux faux\`\n` +
         `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
     )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

@@ -49,6 +49,7 @@ function barreProgres(mult) {
 }
 
 export default async function slot(sock, sender, args, msg) {
+  try {
     const now = Date.now()
     if (cooldowns.has(sender) && now - cooldowns.get(sender) < COOLDOWN) {
         const reste = Math.ceil((COOLDOWN - (now - cooldowns.get(sender))) / 1000)
@@ -86,4 +87,10 @@ export default async function slot(sock, sender, args, msg) {
         `💡 Rejoue dans 15s: \`.slot\``
 
     await sock.sendMessage(sender, { text, edit: loadMsg.key }).catch(() => sendMessage(sock, sender, text))
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

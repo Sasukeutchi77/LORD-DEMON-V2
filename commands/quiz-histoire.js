@@ -5,6 +5,7 @@ const QUESTIONS = [{"q":"En quelle année a eu lieu la Révolution française ?"
 const sessions = new Map()
 
 export default async function quiz_histoire(sock, sender, args, msg) {
+  try {
   const s = sessions.get(sender)
   if (s) {
     const ans = args.join(' ').toLowerCase().trim()
@@ -22,4 +23,10 @@ export default async function quiz_histoire(sock, sender, args, msg) {
   await sendMessage(sock, sender,
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   📜 QUIZ HISTOIRE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n❓ ${q.q}\n\n${opts}\n\n⏱️ 30 secondes ! Répondez avec le texte.\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

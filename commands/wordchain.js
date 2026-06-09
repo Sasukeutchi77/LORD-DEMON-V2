@@ -2,6 +2,7 @@ import { sendMessage } from '../lib/sendMessage.js'
 const games = new Map()
 const STARTER_WORDS = ['LION','NUIT','TIGRE','ENFANT','TRISTE','ETOILE','LUNE','ECLIPSE','EGLISE','SOLEIL']
 export default async function wordchain(sock, sender, args, msg, ctx) {
+  try {
   const prefix = process.env.PREFIX || '.'
   const word = args[0]?.toUpperCase()
   const key = sender
@@ -27,4 +28,10 @@ export default async function wordchain(sock, sender, args, msg, ctx) {
   const botWord = botWords[Math.floor(Math.random()*botWords.length)]
   g.used.add(botWord); g.last = botWord
   await sendMessage(sock, sender, `☩━━━〔 🔗 *CHAÎNE* (${g.count} mots) 〕━━━☩\n☠\n⛧  ✅ *${word}* accepté !\n☠  🤖 Mon mot: *${botWord}*\n✝  (commence par *${botWord[botWord.length-1]}*)\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

@@ -12,6 +12,7 @@ const objets = [
 ]
 
 export default async function portebonheur(sock, sender, args, msg) {
+  try {
   const name = msg?.pushName || 'Âme'
   const obj = objets[Math.floor(Math.random() * objets.length)]
   const text =
@@ -23,4 +24,10 @@ export default async function portebonheur(sock, sender, args, msg) {
     `☠  _Porte-le avec fierté, guerrier !_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

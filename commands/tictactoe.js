@@ -43,6 +43,7 @@ function aiMove(b) {
 }
 
 export default async function tictactoe(sock, sender, args, msg) {
+  try {
     const sub = args[0]?.toLowerCase()
 
     if (sub === 'stop' || sub === 'fin') {
@@ -132,4 +133,10 @@ export default async function tictactoe(sock, sender, args, msg) {
         `💬 Tape le numéro de la case (1-9)\n` +
         `🛑 \`.tictactoe stop\` pour arrêter`
     )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

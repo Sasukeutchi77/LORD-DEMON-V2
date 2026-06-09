@@ -3,6 +3,6 @@ const CARDS = [{n:'Le Mat',s:'Liberté, commencement, aventure',i:'Imprudence, m
 export default async function tarotcard(sock, sender, args, msg, ctx = {}) {
   try {
     const c = CARDS[Math.floor(Math.random() * CARDS.length)]
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🃏 *TAROT DU JOUR*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Carte : *${c.n}*\n\n✝ En lumière:\n_${c.s}_\n\n☠ En ombre:\n_${c.i}_\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🃏 *TAROT DU JOUR*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Carte : *${c.n}*\n\n✝ En lumière:\n_${c.s}_\n\n☠ En ombre:\n_${c.i}_\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance des Ténèbres ☠`)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

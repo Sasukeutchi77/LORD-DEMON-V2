@@ -3,6 +3,7 @@ import { ecoDb, ECONOMY } from '../lib/economySystem.js'
 const ITEMS = ["🧱 Étage 1 (x1.2)","🧱🧱 Étage 2 (x1.5)","⚔️ Étage 3 (x2)","🔥 Étage 4 (x3)","💎 Étage 5 (x5)","☠️ Piège (x0)","👑 Sommet (x8)","🌟 Hors-rang (x0)"]
 const VALS = [1.2,1.5,2,3,5,0,8,0]
 export default async function tower(sock, sender, args, msg, ctx) {
+  try {
   const senderJid = ctx?.senderJid||msg.key.participant||msg.key.remoteJid
   const prefix = process.env.PREFIX||'.'
   const bet = parseInt(args[0])
@@ -16,4 +17,10 @@ export default async function tower(sock, sender, args, msg, ctx) {
   const u2 = ecoDb.get(senderJid)
   const res = prize>bet ? `✅ +${prize-bet}` : prize===bet ? '🤝 Égalité' : `❌ -${bet-prize}`
   await sendMessage(sock, sender, `☩━━━〔 🏰 *TOWER* 〕━━━☩\n☠\n⛧  Résultat: *${ITEMS[idx]}*\n☠\n✝  ${res} ${ECONOMY.SYMBOL}\n☠  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

@@ -4,6 +4,6 @@ export default async function spinner(sock, sender, args, msg, ctx = {}) {
     const outcomes = ['🏆 VICTOIRE!','💀 DÉFAITE!','🤝 ÉGALITÉ!','⚡ CRITIQUE!','🌟 PARFAIT!','🔥 DOMINANT!']
     const out = outcomes[Math.floor(Math.random()*outcomes.length)]
     const score = Math.floor(Math.random()*1000)+100
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  ⚔️ *SPINNER*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n${out}\n☩ Score : *${score} pts*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  ⚔️ *SPINNER*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n${out}\n☩ Score : *${score} pts*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance des Ténèbres ☠`)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

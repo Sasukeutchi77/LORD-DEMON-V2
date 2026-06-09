@@ -24,6 +24,7 @@ export function checkSlowmode(groupId, senderJid) {
 }
 
 export default async function slowmode(sock, sender, args, msg, ctx) {
+  try {
   const senderJid = ctx?.senderJid || msg.key.participant || msg.key.remoteJid
   const prefix    = process.env.PREFIX || '.'
 
@@ -84,4 +85,10 @@ export default async function slowmode(sock, sender, args, msg, ctx) {
     `☠\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

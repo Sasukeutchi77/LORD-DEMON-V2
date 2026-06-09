@@ -6,6 +6,7 @@ const STYLES = {
   flip: s => s.split('').map(c => {const m={'a':'ɐ','b':'q','c':'ɔ','d':'p','e':'ǝ','f':'ɟ','g':'ƃ','h':'ɥ','i':'ı','j':'ɾ','k':'ʞ','l':'l','m':'ɯ','n':'u','o':'o','p':'d','q':'b','r':'ɹ','s':'s','t':'ʇ','u':'n','v':'ʌ','w':'ʍ','x':'x','y':'ʎ','z':'z'};return m[c.toLowerCase()]||c}).reverse().join(''),
 }
 export default async function textstyle2(sock, sender, args, msg, ctx) {
+  try {
   const prefix = process.env.PREFIX || '.'
   const style = args[0]?.toLowerCase()
   const text = args.slice(1).join(' ')
@@ -13,4 +14,10 @@ export default async function textstyle2(sock, sender, args, msg, ctx) {
     `☩━━━〔 ✨ *STYLE TEXTE* 〕━━━☩\n☠\n⛧  ${prefix}textstyle2 <style> <texte>\n☠\n✝  Styles: bold | italic | circle | flip\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
   await sendMessage(sock, sender,
     `☩━━━〔 ✨ *${style.toUpperCase()}* 〕━━━☩\n☠\n⛧  ${STYLES[style](text)}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

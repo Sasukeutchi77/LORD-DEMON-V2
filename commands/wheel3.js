@@ -3,6 +3,7 @@ import { ecoDb, ECONOMY } from '../lib/economySystem.js'
 const ITEMS = ["x2","x3","x5","x10","x0.5","x1","x0","x4"]
 const VALS = [2,3,5,10,0.5,1,0,4]
 export default async function wheel3(sock, sender, args, msg, ctx) {
+  try {
   const senderJid = ctx?.senderJid||msg.key.participant||msg.key.remoteJid
   const prefix = process.env.PREFIX||'.'
   const bet = parseInt(args[0])
@@ -16,4 +17,10 @@ export default async function wheel3(sock, sender, args, msg, ctx) {
   else if (prize < bet) ecoDb.removeCoins(senderJid, bet-prize, 'wheel3')
   const u2 = ecoDb.get(senderJid)
   await sendMessage(sock, sender, `☩━━━〔 🎡 *WHEEL3* 〕━━━☩\n☠\n⛧  Résultat: *${ITEMS[idx]}*\n☠\n✝  ${prize>bet?`✅ +${prize-bet}`:prize===bet?'🤝 Égalité':`❌ -${bet-prize}`} ${ECONOMY.SYMBOL}\n☠  💰 Poche: ${u2.coins} ${ECONOMY.SYMBOL}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

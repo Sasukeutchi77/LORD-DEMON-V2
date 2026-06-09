@@ -1,6 +1,7 @@
 // commands/temperature.js
 import { sendMessage } from '../lib/sendMessage.js'
 export default async function temperature(sock, sender, args, msg) {
+  try {
   const val = parseFloat(args[0]), from = args[1]?.toUpperCase()
   if (!val||!from) return sendMessage(sock, sender, '☠ Usage: .temperature <valeur> <C/F/K>\nEx: .temperature 100 C')
   let c,f,k
@@ -13,4 +14,10 @@ export default async function temperature(sock, sender, args, msg) {
 🌡️ *Conversion température:*\n🔵 ${c.toFixed(2)}°C\n🔴 ${f.toFixed(2)}°F\n⚪ ${k.toFixed(2)}K
 
 ⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

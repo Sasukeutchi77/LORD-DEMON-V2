@@ -4,6 +4,7 @@ import { economyDb, SHOP_ITEMS } from '../lib/economySystem.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
 
 export default async function shop(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const sub = args[0]?.toLowerCase()
 
@@ -68,4 +69,10 @@ export default async function shop(sock, sender, args, msg, ctx = {}) {
   }
 
   await sendMessage(sock, sender, `☠ Sous-commande inconnue. Tapez \`.shop\` pour l'aide.`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

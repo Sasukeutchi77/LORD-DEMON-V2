@@ -1,5 +1,6 @@
 import { sendMessage } from '../lib/sendMessage.js'
 export default async function wordfreq(sock, sender, args, msg, ctx) {
+  try {
   const text = args.join(' ').toLowerCase()
   if (!text.trim()) return await sendMessage(sock, sender, `☠ Usage: ${process.env.PREFIX||'.'}wordfreq <texte>`)
   const words = text.match(/[a-zà-ÿ']+/g) || []
@@ -8,4 +9,10 @@ export default async function wordfreq(sock, sender, args, msg, ctx) {
   let text2 = `☩━━━〔 📊 *FRÉQUENCE MOTS* 〕━━━☩\n☠\n⛧  Total mots: *${words.length}* | Uniques: *${Object.keys(freq).length}*\n☠\n`
   sorted.forEach(([w,n],i)=>{ text2+=`⛧  ${i+1}. *${w}* — ${n}x ${'█'.repeat(Math.min(n,10))}\n` })
   await sendMessage(sock, sender, text2+`☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

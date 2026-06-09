@@ -5,6 +5,7 @@ import { getSenderJid } from '../lib/ownerSystem.js'
 const LEVELS = ["HÉROS CHOISI ⛧","Aura de main character","Figurant principal","Personnage secondaire","NPC de fond","Décor interactif"]
 
 export default async function protagoniste(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || jid
   const num = Math.floor(Math.random() * 101)
@@ -16,4 +17,10 @@ export default async function protagoniste(sock, sender, args, msg, ctx = {}) {
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ⚔️ ÉNERGIE PROTAGONIST   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n👤 @${target.split('@')[0]}\n\n[${bar}] ${num}%\n\n✨ ${level}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
     mentions.length ? { mentions } : undefined
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

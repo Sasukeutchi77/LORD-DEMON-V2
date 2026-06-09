@@ -90,8 +90,7 @@ export default async function promote(sock, sender, args, msg, ctx = {}) {
 
     // ────────── ALREADY ADMIN ───────────────────────────────
     if (isAdminFlag(targetMember.admin)) {
-      return await sendMessage(sock, sender,
-        `👁️ @${targetMember.id.split('@')[0]} est déjà gardien.`,
+      return await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ⚡ *PROMOTE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n👁️ @${targetMember.id.split('@')[0]} est déjà gardien.\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`,
         { mentions: [targetMember.id] }
       )
     }
@@ -102,8 +101,7 @@ export default async function promote(sock, sender, args, msg, ctx = {}) {
     await deleteLoader(sock, sender, loaderKey)
     loaderKey = null
 
-    return await sendMessage(sock, sender,
-      `⬆️ PROMOTION\n\n👤 @${targetMember.id.split('@')[0]}\n🏅 Nouveau rôle : GARDIEN\n🕐 ${formatTime()}`,
+    return await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ⚡ *PROMOTE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n⬆️ PROMOTION\n\n👤 @${targetMember.id.split('@')[0]}\n🏅 Nouveau rôle : GARDIEN\n🕐 ${formatTime()}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`,
       { mentions: [targetMember.id] }
     )
 

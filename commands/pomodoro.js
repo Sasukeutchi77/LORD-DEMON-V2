@@ -1,6 +1,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 const sessions = new Map()
 export default async function pomodoro(sock, sender, args, msg, ctx) {
+  try {
   const prefix = process.env.PREFIX||'.'
   const sub = args[0]?.toLowerCase()
   if (sub==='stop') { const s=sessions.get(sender); if(s){clearTimeout(s.t);sessions.delete(sender)}; return await sendMessage(sock,sender,'🛑 Pomodoro arrêté!') }
@@ -14,4 +15,10 @@ export default async function pomodoro(sock, sender, args, msg, ctx) {
     sessions.set(sender,{...s,t:t2})
   }, work*60000)
   sessions.set(sender,{t,count:(sessions.get(sender)||{count:0}).count})
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

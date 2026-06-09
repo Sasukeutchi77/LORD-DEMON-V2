@@ -29,6 +29,7 @@ const QUESTIONS = [
 const activeSessions = new Map()
 
 export default async function quiz(sock, sender, args, msg) {
+  try {
     const sub = args[0]?.toLowerCase()
 
     // Arrêter le quiz
@@ -100,4 +101,10 @@ export default async function quiz(sock, sender, args, msg) {
         `┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄\n` +
         `_💀 LORD DEMON BOT — Quiz System_`
     )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

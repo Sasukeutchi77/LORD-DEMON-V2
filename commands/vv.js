@@ -127,6 +127,6 @@ export default async function vv(sock, sender, args, msg) {
             `• Réessayez avec un média récent\n` +
             `• Vérifiez que c'est bien une photo/vidéo
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance des Ténèbres ☠`)
     }
 }

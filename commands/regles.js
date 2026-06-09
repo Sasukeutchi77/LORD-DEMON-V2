@@ -2,6 +2,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 import { groupSettingsDb } from '../lib/database.js'
 export default async function regles(sock, sender, args, msg) {
+  try {
   const groupId = msg.key.remoteJid
   const settings = groupSettingsDb.get(groupId)
   const rules = settings?.rules
@@ -11,4 +12,10 @@ export default async function regles(sock, sender, args, msg) {
     )
   }
   await sendMessage(sock, sender, `📋 *Règles du groupe:*\n${rules}`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

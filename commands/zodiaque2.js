@@ -1,6 +1,13 @@
 import { sendMessage } from '../lib/sendMessage.js'
 const DATA = ["♈ Bélier (21 mars-19 avril) — Courageux, impulsif, leadership","♉ Taureau (20 avr-20 mai) — Patient, fiable, aime le luxe","♊ Gémeaux (21 mai-20 juin) — Curieux, adaptable, bavard","♋ Cancer (21 juin-22 juil) — Intuitif, protecteur, émotionnel","♌ Lion (23 juil-22 août) — Charismatique, généreux, théâtral","♍ Vierge (23 août-22 sept) — Analytique, perfectionniste","♎ Balance (23 sept-22 oct) — Équilibré, diplomate, indécis","♏ Scorpion (23 oct-21 nov) — Intense, mystérieux, puissant","♐ Sagittaire (22 nov-21 déc) — Aventureux, philosophe","♑ Capricorne (22 déc-19 jan) — Ambitieux, discipliné","♒ Verseau (20 jan-18 fév) — Innovant, humaniste, rebelle","♓ Poissons (19 fév-20 mars) — Intuitif, artistique, empathique"]
 export default async function zodiaque2(sock, sender, args, msg, ctx) {
+  try {
   const item = DATA[Math.floor(Math.random()*DATA.length)]
   await sendMessage(sock, sender, `☩━━━〔 ♈ *ZODIAQUE2* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

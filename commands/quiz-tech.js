@@ -5,6 +5,7 @@ const QUESTIONS = [{"q":"En quelle année a été créé Internet ?","r":"1969 (
 const sessions = new Map()
 
 export default async function quiz_tech(sock, sender, args, msg) {
+  try {
   const s = sessions.get(sender)
   if (s) {
     const ans = args.join(' ').toLowerCase().trim()
@@ -22,4 +23,10 @@ export default async function quiz_tech(sock, sender, args, msg) {
   await sendMessage(sock, sender,
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   💻 QUIZ TECHNOLOGIE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n❓ ${q.q}\n\n${opts}\n\n⏱️ 30 secondes ! Répondez avec le texte.\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

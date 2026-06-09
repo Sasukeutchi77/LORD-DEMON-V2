@@ -23,7 +23,7 @@ export default async function setdesc(sock, sender, args, msg) {
 
 🩸 Description mise à jour :\n\n${newDesc}
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance des Ténèbres ☠`)
     
     console.log(`✅ setdesc | ${newDesc.substring(0, 30)}...`)
     

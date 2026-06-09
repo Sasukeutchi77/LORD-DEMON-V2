@@ -2,6 +2,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 
 export default async function uwu(sock, sender, args, msg) {
+  try {
   const text = args.join(' ')
   if (!text) return sendMessage(sock, sender, `☠ Usage: \.uwu <texte>`)
   const fn = text => text.replace(/[rl]/gi,'w').replace(/n([aeiou])/gi,'ny$1').replace(/ove/gi,'uv').replace(/!/g,' owo!').replace(/\.$/,'~ uwu~')
@@ -9,4 +10,10 @@ export default async function uwu(sock, sender, args, msg) {
   await sendMessage(sock, sender,
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   🐱 UWUIFY   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n📝 Original: ${text}\n\n✨ Résultat:\n${result}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

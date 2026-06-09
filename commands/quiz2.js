@@ -4,7 +4,7 @@ export default async function quiz2(sock, sender, args, msg, ctx = {}) {
   try {
     const q = QS[Math.floor(Math.random() * QS.length)]
     const shuffled = [...q.c].sort(() => Math.random() - 0.5)
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🧠 *QUIZ*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n❓ ${q.q}\n\n${shuffled.map((c,i) => `${'ABCD'[i]}. ${c}`).join('\n')}\n\n⏳ Réponse dans 30s...\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🧠 *QUIZ*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n❓ ${q.q}\n\n${shuffled.map((c,i) => `${'ABCD'[i]}. ${c}`).join('\n')}\n\n⏳ Réponse dans 30s...\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance des Ténèbres ☠`)
     setTimeout(async () => await sendMessage(sock, sender, `✅ *Bonne réponse: ${q.r}*`), 30000)
   } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
 }

@@ -2,6 +2,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 
 export default async function totem(sock, sender, args, msg) {
+  try {
   const name = msg?.pushName || 'Invocateur'
   const input = args.join(' ') || 'invocation'
   const pool = ['⚡ Invocation réussie', '🔥 Flammes démoniaques', '☠ Ténèbres révélées', '⛧ Rituel accompli', '🌑 Ombre convoquée', '💀 Sort déclenché', '🩸 Pacte activé', '✝ Puissance octroyée']
@@ -16,4 +17,10 @@ export default async function totem(sock, sender, args, msg) {
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
 
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

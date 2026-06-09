@@ -5,6 +5,7 @@ const QUESTIONS = [{"q":"Qui a chante Thriller ?","r":"Michael Jackson","opts":[
 const sessions = new Map()
 
 export default async function cmd_quiz_musique2(sock, sender, args, msg) {
+  try {
   const s = sessions.get(sender)
   if (s && args.length) {
     const ans = args.join(' ').trim()
@@ -17,4 +18,10 @@ export default async function cmd_quiz_musique2(sock, sender, args, msg) {
   setTimeout(() => sessions.delete(sender), 30000)
   const opts = q.opts.map((o, i) => ['A','B','C','D'][i] + '. ' + o).join('\n')
   await sendMessage(sock, sender, 'X┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈X\n⛧   QUIZ MUSIQUE 2   ☩\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n❓ ' + q.q + '\n\n' + opts + '\n\n⏱️ 30 sec ! Tapez la reponse.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

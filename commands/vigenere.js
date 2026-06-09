@@ -1,5 +1,6 @@
 import { sendMessage } from '../lib/sendMessage.js'
 export default async function vigenere(sock, sender, args, msg, ctx) {
+  try {
   const prefix = process.env.PREFIX || '.'
   const sub = args[0]?.toLowerCase()
   const key = args[1]?.toUpperCase()
@@ -17,4 +18,10 @@ export default async function vigenere(sock, sender, args, msg, ctx) {
   }
   await sendMessage(sock, sender,
     `☩━━━〔 🔐 *VIGENÈRE* 〕━━━☩\n☠\n⛧  🔑 Clé: *${key}*\n☩  📝 Original: _${text}_\n☠  ${encode?'🔒':'🔓'} Résultat: *${result}*\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

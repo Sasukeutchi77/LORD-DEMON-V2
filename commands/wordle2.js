@@ -1,5 +1,15 @@
 import { sendMessage } from '../lib/sendMessage.js'
-const WORDS = ['DEMON','MAGIE','FORCE','LUEUR','BRUME','OMBRE','FLAME','CRANE','LANDE','FUITE','MONDE','ARBRE','NUAGE','VAGUE','ECLAT','ORGUE','AMOUR','PLUIE','ROCHE','GLACE']
+const WORDS = ['DEMON','MAGIE','FORCE','LUEUR','BRUME','OMBRE','FLAME','CRANE','LANDE','FUITE','MONDE','ARBRE','NUAGE','VAGUE','ECLAT','ORGUE','AMOUR','PLUIE','ROCHE','GLACE',
+    "⛧ ABYSSAL",
+    "☠ INFERNAL",
+    "✝ SPECTRAL",
+    "☩ DÉMONIAQUE",
+    "⸸ MAUDIT",
+    "💀 NÉCROMANCIE",
+    "🔮 TÉNÈBRES",
+    "👹 CHAOTIQUE",
+    "⚔️ LÉGENDAIRE",
+    "🔥 PRIMORDIAL"]
 const games = new Map()
 function evaluate(guess, target) {
   const result = []
@@ -17,6 +27,7 @@ function evaluate(guess, target) {
   return result.join('')
 }
 export default async function wordle2(sock, sender, args, msg, ctx) {
+  try {
   const prefix = process.env.PREFIX || '.'
   const sub = args[0]?.toUpperCase()
   const key = `${sender}_${ctx?.senderJid||msg.key.participant||msg.key.remoteJid}`
@@ -41,4 +52,10 @@ export default async function wordle2(sock, sender, args, msg, ctx) {
     return await sendMessage(sock, sender, `☩━━━〔 💀 *WORDLE — PERDU* 〕━━━☩\n☠\n${board}\n☠\n⛧  Le mot était: *${g.word}*\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
   }
   await sendMessage(sock, sender, `☩━━━〔 🟩 *WORDLE* (${g.guesses.length}/${g.maxTries}) 〕━━━☩\n☠\n\`\`\`\n${board}\n\`\`\`\n☠\n⛧  ${g.maxTries - g.guesses.length} essai(s) restant(s)\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

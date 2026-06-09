@@ -2,6 +2,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 
 export default async function sondagerapide(sock, sender, args) {
+  try {
   if (!args.length) return await sendMessage(sock, sender,
     `☩━━━〔 📊 *SONDAGE RAPIDE* 〕━━━☩\n\n✝  Usage: *.sondagerapide <question>*\n⛧  Exemple: *.sondagerapide Pizza ou Burger ?*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
   const question = args.join(' ')
@@ -15,4 +16,10 @@ export default async function sondagerapide(sock, sender, args) {
     `⛧  🤷 *Neutre / Sans avis*\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

@@ -23,7 +23,7 @@ export default async function reload(sock, sender, args, msg) {
 
 🩸 sorts rechargées: *${Object.keys(fresh).length}*
 
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`) 
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON — Puissance des Ténèbres ☠`) 
 
     } catch (e) {
         await sendMessage(sock, sender, "☠ rituel échoué reload: " + e.message)

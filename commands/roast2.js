@@ -1,6 +1,13 @@
 import { sendMessage } from '../lib/sendMessage.js'
 const DATA = ["🔥 \"T'es tellement lent que Google t'a référencé comme page 404.\"","😂 \"T'as le QI d'un routeur déconnecté.\"","🔥 \"T'es tellement prévisible que même tes surprises sont ennuyeuses.\"","😏 \"Si la stupidité était un sport, tu aurais 10 médailles.\"","🔥 \"T'arrives en retard partout... même à ta propre naissance tu étais en retard.\"","😂 \"T'es comme une alarme de voiture: tout le monde t'ignore.\"","🔥 \"Ta personnalité est comme un WiFi en zone rurale: quasi inexistante.\"","😏 \"T'es la preuve qu'on peut survivre sans cerveau.\"","🔥 \"Même ton GPS dit 'recalcul...' quand il pense à ta vie.\"","😂 \"T'es comme un spoiler: tu révèles tout avant que ça soit intéressant.\""]
 export default async function roast2(sock, sender, args, msg, ctx) {
+  try {
   const item = DATA[Math.floor(Math.random()*DATA.length)]
   await sendMessage(sock, sender, `☩━━━〔 🔥 *ROAST2* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

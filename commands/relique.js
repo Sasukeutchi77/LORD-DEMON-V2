@@ -10,6 +10,7 @@ const reliques = [
 ]
 
 export default async function relique(sock, sender, args, msg) {
+  try {
   const name = msg?.pushName || 'Gardien'
   const r = reliques[Math.floor(Math.random() * reliques.length)]
   const text =
@@ -23,4 +24,10 @@ export default async function relique(sock, sender, args, msg) {
     `✝  _Une relique unique dans tout l'univers démoniaque._\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

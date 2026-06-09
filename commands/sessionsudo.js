@@ -47,6 +47,7 @@ function extractTarget(args, msg) {
 }
 
 export default async function sessionsudo(sock, sender, args, msg, ctx) {
+  try {
   const send = (text, extra = {}) => sock.sendMessage(sender, { text, ...extra })
 
   // Doit être sur une session secondaire
@@ -124,4 +125,10 @@ export default async function sessionsudo(sock, sender, args, msg, ctx) {
     '   • .sessionsudo add @user\n' +
     '   • .sessionsudo del @user'
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

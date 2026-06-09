@@ -5,6 +5,7 @@ import { rpgDb } from '../lib/rpgSystem.js'
 import { economyDb } from '../lib/economySystem.js'
 
 export default async function taverne(sock, sender, args, msg, ctx = {}) {
+  try {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const hero = rpgDb.getHero(jid)
   if (!hero) return sendMessage(sock, sender, '☠ Pas de heros.')
@@ -21,4 +22,10 @@ export default async function taverne(sock, sender, args, msg, ctx = {}) {
     '💸 Cout: -' + cost + ' 🪙\n' +
     '⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸'
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }

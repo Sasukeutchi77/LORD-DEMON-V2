@@ -50,6 +50,7 @@ function numberOf(jid) {
 }
 
 export default async function ship(sock, sender, args, msg) {
+  try {
   const targets = getTargets(args, msg)
 
   if (targets.length < 2) {
@@ -77,4 +78,10 @@ export default async function ship(sock, sender, args, msg) {
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
     { mentions: targets }
   )
+
+  } catch (e) {
+    await sendMessage(sock, sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ *ERREUR DÉMONIAQUE*   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n⛧ LORD DEMON ☠`
+    )
+  }
 }
