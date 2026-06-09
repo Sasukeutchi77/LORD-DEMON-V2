@@ -1,0 +1,6 @@
+import { sendMessage } from '../lib/sendMessage.js'
+const DATA = ["😄 \"Pourquoi l'avocat ne joue jamais aux cartes? Parce qu'il est toujours dans le guacamole!\"","😂 Père africain: \"Comment s'appelait le crocodile qui lisait?\" Fils: \"... Je sais pas.\" Père: \"Moi non plus.\"","😄 \"Quel est le comble pour un dentiste? D'avoir les dents de la mer.\"","😂 Maman africaine: \"Tu rentres à quelle heure?\" Fils: \"Tard.\" Elle: \"Donc 18h.\"","😄 \"Pourquoi les abeilles font toujours bourdonnement? Parce qu'elles connaissent pas les paroles.\"","😂 \"Un squelette entre dans un bar. Commande une bière et une serpillère.\"","😄 \"C'est l'histoire d'un loup qui apprend à compter: UN loup, DEUX loups...\"","😂 Fils: \"Papa, j'ai eu 6/20.\" Père africain: \"Les 6 appartiennent à qui?\""]
+export default async function dadjokeafrique(sock, sender, args, msg, ctx) {
+  const item = DATA[Math.floor(Math.random()*DATA.length)]
+  await sendMessage(sock, sender, `☩━━━〔 😄 *DADJOKEAFRIQUE* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+}
