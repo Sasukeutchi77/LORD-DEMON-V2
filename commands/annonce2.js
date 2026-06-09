@@ -1,22 +1,20 @@
-// commands/annonce2.js — LORD DEMON
 import { sendMessage } from '../lib/sendMessage.js'
-import { isOwner, isSudo } from '../lib/ownerSystem.js'
-
-export default async function annonce2(sock, sender, args, msg, ctx) {
-  const senderJid = ctx?.senderJid || msg?.key?.participant || msg?.key?.remoteJid
-  if (!isOwner(senderJid) && !isSudo(senderJid)) {
-    return await sendMessage(sock, sender, `☩━━━〔 📢 *ACCÈS REFUSÉ* 〕━━━☩\n\n⛧  Réservé aux Owner/Sudo.\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+import { getSenderJid } from '../lib/ownerSystem.js'
+export default async function annonce2(sock, sender, args, msg, ctx = {}) {
+  const jid = ctx.senderJid || getSenderJid(msg, sock)
+  if (!ctx.isAdmin && !ctx.isOwner && !ctx.isSudo) {
+    return sendMessage(sock, sender, `☠ Cette commande est réservée aux administrateurs.`)
   }
-  if (!args.length) return await sendMessage(sock, sender, `☩━━━〔 📢 *ANNONCE II* 〕━━━☩\n\n✝  Usage: *.annonce2 <message>*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
   const message = args.join(' ')
-  const now = new Date().toLocaleString('fr-FR')
+  if (!message) return sendMessage(sock, sender, `☠ Usage: .annonce2 <message>`)
+  const date = new Date().toLocaleString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })
   const text =
-    `╔════════════════════════════╗\n` +
-    `║  📢  *ANNONCE OFFICIELLE*  ║\n` +
-    `╚════════════════════════════╝\n\n` +
-    `${message}\n\n` +
-    `─────────────────────────────\n` +
-    `🕐 ${now}\n` +
-    `👑 _LORD DEMON Official_`
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   📢 *ANNONCE OFFICIELLE*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  📅 _${date}_\n\n` +
+    `⛧  📢 ${message}\n\n` +
+    `✝  🛡️ _Publié par l'administration_\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
 }
