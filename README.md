@@ -1,102 +1,32 @@
-# ⚡ LORD DEMON V2
+<div align="center">
 
-Bot WhatsApp multi-fonctions basé sur Baileys (Node.js ESM).
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:ff00ff,50:00ffff,100:ff00ff&height=200&section=header&text=⚡%20LORD%20DEMON%20V2&fontSize=50&fontColor=ffffff&animation=fadeIn&fontAlignY=35&desc=Bot%20WhatsApp%20Multi-Fonctions%20•%20Baileys%20ESM&descSize=15&descAlignY=55">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:ff00ff,50:00ffff,100:ff00ff&height=200&section=header&text=⚡%20LORD%20DEMON%20V2&fontSize=50&fontColor=ffffff&animation=fadeIn&fontAlignY=35&desc=Bot%20WhatsApp%20Multi-Fonctions%20•%20Baileys%20ESM&descSize=15&descAlignY=55" alt="header">
+</picture>
 
-## 🚀 Installation
+[![Node.js](https://img.shields.io/badge/Node.js-18+-00ff88?style=for-the-badge&logo=node.js&logoColor=white&labelColor=0d1117)](https://nodejs.org/)
+[![Baileys](https://img.shields.io/badge/@whiskeysockets/baileys-ESM-ff00ff?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=0d1117)](https://github.com/WhiskeySockets/Baileys)
+[![License](https://img.shields.io/badge/License-MIT-00ffff?style=for-the-badge&labelColor=0d1117)](LICENSE)
+[![Commands](https://img.shields.io/badge/Commandes-112+-ff00aa?style=for-the-badge&labelColor=0d1117)](commands/)
 
-```bash
-# 1. Cloner ou extraire le ZIP
-cd lord-demon-v2
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&duration=3000&pause=1000&color=FF00FF&center=true&vCenter=true&width=600&lines=🤖+Bot+WhatsApp+Multi-Session;⚡+112+Commandes+Disponibles;🛡️+Protection+Avancée;🎮+Fun+%2B+Utilitaires;👑+Système+Owner%2FSudo%2FPremium">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&duration=3000&pause=1000&color=FF00FF&center=true&vCenter=true&width=600&lines=🤖+Bot+WhatsApp+Multi-Session;⚡+112+Commandes+Disponibles;🛡️+Protection+Avancée;🎮+Fun+%2B+Utilitaires;👑+Système+Owner%2FSudo%2FPremium" alt="typing">
+</picture>
 
-# 2. Configurer
-cp .env.example .env
-nano .env  # Remplissez OWNER_NUMBER au minimum
-
-# 3. Démarrer
-chmod +x start.sh
-./start.sh
-```
-
-## 📋 Commandes (112)
-
-| Catégorie | Commandes |
-|-----------|-----------|
-| 🛡️ Modération | ban, unban, kick, warn, warnlist, resetwarn, promote, demote, add |
-| 🔒 Protection | antilink, antispam, antitag, antimention, antiflood, antiword, antipurge, antidemote, antipromote |
-| 🏠 Groupe | mute, unmute, tagall, hidetag, link, revoke, groupname, groupdesc, groupphoto, groupinfo, open, close |
-| ℹ️ Infos | ping, uptime, whoami, userinfo, groupinfo, listadmin, stats, info |
-| 🛠️ Outils | calc, style, translate, dictionary, qrcode, shorturl, url, ocr, tts, sticker |
-| 🎵 Médias | song, ytmp4, lyrics, download, image, vv, pp |
-| 🌤️ Utilitaires | weather, horoscope, remind, schedule, notes, rules, poll |
-| 🎮 Fun | joke, quote, fact, coinflip, dice, choose, 8ball, rps, roast, compliment, tictactoe, quiz |
-| 📊 Profil | daily, afk, rank, leaderboard, profile, pseudo |
-| 👑 Owner | broadcast, setsudo, delsudo, listsudo, setpremium, delpremium, dit, setprefix, setmode, botname, maintenance, backup, restore, stop, restart, eval, exec, logs, modlog, clearstats |
-
-## ⚙️ Configuration
-
-Éditez `.env` :
-- `OWNER_NUMBER` — Votre numéro (obligatoire)
-- `PREFIX` — Préfixe (défaut: `.`)
-- `MODE` — public/private/group
-- `MAX_WARNS` — Warns avant expulsion (défaut: 3)
-
-## 🔑 Système de permissions
-
-- 👑 **Owner** — Accès total
-- 🔑 **Sudo** — Quasi-owner (`.setsudo`)
-- 💎 **Premium** — Fonctions premium (`.setpremium`)
-- ⭐ **Admin** — Commandes d'administration groupe
-- 👤 **Membre** — Commandes publiques
-
-## 📁 Structure
-
-```
-lord-demon-v2/
-├── index.js          # Point d'entrée principal
-├── config.js         # Configuration
-├── .env              # Variables d'environnement
-├── commands/         # 112+ commandes
-├── lib/              # Bibliothèques
-│   ├── ownerSystem.js     # Gestion owner/sudo/premium
-│   ├── groupConfig.js     # Config groupes + cache meta
-│   ├── sendMessage.js     # Envoi de messages
-│   ├── animLoader.js      # Loaders animés
-│   ├── spamManager.js     # Anti-spam
-│   ├── antiLinkManager.js # Anti-liens
-│   └── ...
-└── data/             # Données persistantes (JSON)
-```
-
-## 📝 Notes
-
-- Compatible Node.js 18+
-- Basé sur @whiskeysockets/baileys (ESM)
-- Cache groupMetadata 5min (évite rate-limit 429)
-- Système LID pour les comptes liés
-
+</div>
 
 ---
 
-## 🆕 Nouvelles fonctionnalités — Multi-Session v2
+## 🚀 Installation Rapide
 
-### Système Multi-Session (Bot-as-a-Service)
+```bash
+# 1. Cloner le repo
+git clone https://github.com/ton-repo/lord-demon-v2.git && cd lord-demon-v2
 
-Chaque utilisateur peut connecter son propre compte WhatsApp via un code de pairing.
+# 2. Configuration
+cp .env.example .env && nano .env  # Remplissez OWNER_NUMBER
 
-### Commandes ajoutées
-
-| Commande | Description |
-|---|---|
-| `.pairing +226XXXXXXXX` | Générer un code de pairing pour connecter un compte |
-| `.mypair` | Vérifier l'état de votre session active |
-| `.stoppair` | Déconnecter et supprimer votre session |
-
-### Fonctionnalités
-
-- ✅ Multi-session avec `useMultiFileAuthState` par utilisateur
-- ✅ Sessions stockées dans `sessions/{numero}/`
-- ✅ Reconnexion automatique en cas de déconnexion
-- ✅ Cooldown 60 secondes anti-spam
-- ✅ Détection de session dupliquée
-- ✅ Restauration des sessions au redémarrage du bot
-- ✅ Bot principal non affecté
+# 3. Lancement
+chmod +x start.sh && ./start.sh
