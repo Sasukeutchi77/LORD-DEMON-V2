@@ -1,17 +1,25 @@
-// commands/dance.js
 import { sendMessage } from '../lib/sendMessage.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
-
-const ACTIONS = ["*commence à danser comme personne ne regarde* 💃","*moonwalk en cours* 🕺","*danse de la victoire !* 🎉","*moves légendaires déployés* 🔥"]
-
+const DANSES = [
+  { danse: "Azonto 🇬🇭", style: "Afrobeat décontracté, mouvements de bras fluides" },
+  { danse: "Coupé-Décalé 🇨🇮", style: "Mouvement festif ivoirien, bras et hanches" },
+  { danse: "Ndombolo 🇨🇩", style: "Rumba congolaise explosive, hanches et épaules" },
+  { danse: "Gwaragwara 🇿🇦", style: "Hip-hop sud-africain, chaque membre indépendant" },
+  { danse: "Moonwalk 🌙", style: "Glissement mythique à la Michael Jackson" },
+  { danse: "Breaking ⚡", style: "Figures acrobatiques au sol, spinning" },
+  { danse: "Amapiano 🎵", style: "Log drum, vibe sud-africaine moderne" },
+]
 export default async function dance(sock, sender, args, msg, ctx = {}) {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
-  const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || msg.message?.extendedTextMessage?.contextInfo?.participant
-  const action = ACTIONS[Math.floor(Math.random() * ACTIONS.length)]
-  const mentions = target ? [target] : []
-  const targetStr = target ? `@${target.split('@')[0]}` : `vous`
-  await sendMessage(sock, sender,
-    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   💃 DANSE !   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n@${jid.split('@')[0]} → ${targetStr}\n\n${action}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
-    mentions.length ? { mentions: [jid, ...mentions] } : { mentions: [jid] }
-  )
+  const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || jid
+  const d = DANSES[Math.floor(Math.random() * DANSES.length)]
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   💃 *DANSE DÉMONIAQUE*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  👤 @${target.split('@')[0]} danse le...\n\n` +
+    `⛧  💃 *${d.danse}*\n` +
+    `✝  📖 _${d.style}_\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text, target !== jid ? { mentions: [target] } : undefined)
 }
