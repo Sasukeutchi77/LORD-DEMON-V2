@@ -1,28 +1,29 @@
 import { sendMessage } from '../lib/sendMessage.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
-const NIVEAUX = [
-  { label: "HYPERACTIF ⚡", emoji: "🔋" },
-  { label: "Plein d'énergie", emoji: "💪" },
-  { label: "Bien rechargé", emoji: "✅" },
-  { label: "Normal", emoji: "😐" },
-  { label: "Fatigue légère", emoji: "😴" },
-  { label: "Batterie à 1%", emoji: "📵" },
+const NIVEAUX_ENERGIE = [
+  { label: "ÉNERGIE DIVINE ⚡", desc: "Tu traverses les murs avec ta puissance — rien ne peut t'arrêter", emoji: "🌟" },
+  { label: "Énergie Maximale 🔥", desc: "Tu es en feu aujourd'hui — profites-en pleinement", emoji: "🔥" },
+  { label: "Bonne Énergie 💪", desc: "Bien rechargé et prêt pour le défi", emoji: "💪" },
+  { label: "Énergie Correcte 😊", desc: "Moyen mais capable d'accomplir l'essentiel", emoji: "😊" },
+  { label: "Énergie Basse 😴", desc: "Repos nécessaire — recharge tes batteries", emoji: "😴" },
+  { label: "Énergie Vide 💀", desc: "Mode survie activé — mange et dors immédiatement", emoji: "💀" },
 ]
 export default async function energie(sock, sender, args, msg, ctx = {}) {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || jid
-  const num = Math.floor(Math.random() * 101)
-  const idx = Math.min(Math.floor((100 - num) / (100 / NIVEAUX.length)), NIVEAUX.length - 1)
-  const niveau = NIVEAUX[idx]
-  const filled = Math.floor(num / 10)
-  const bar = '█'.repeat(filled) + '░'.repeat(10 - filled)
+  const pct = Math.floor(Math.random() * 101)
+  const idx = Math.min(Math.floor((100-pct) / 17), NIVEAUX_ENERGIE.length-1)
+  const niv = NIVEAUX_ENERGIE[idx]
+  const filled = Math.floor(pct / 10)
+  const bar = '⚡'.repeat(filled) + '░'.repeat(10 - filled)
   const text =
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-    `⛧   ⚡ *ÉNERGIE DU JOUR*   ☩\n` +
+    `⛧   ⚡ *NIVEAU D'ÉNERGIE*   ☩\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
     `☠  👤 @${target.split('@')[0]}\n\n` +
-    `⛧  [${bar}] *${num}%*\n\n` +
-    `✝  ${niveau.emoji} *Statut:* ${niveau.label}\n\n` +
+    `⛧  [${bar}] *${pct}%*\n\n` +
+    `✝  ${niv.emoji} *${niv.label}*\n` +
+    `☩  📖 _${niv.desc}_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text, target !== jid ? { mentions: [target] } : undefined)
 }
