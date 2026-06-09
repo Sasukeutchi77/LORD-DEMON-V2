@@ -1,37 +1,26 @@
-// commands/coinflip.js — PILE OU FACE 🪙
-// commands/rps.js — PIERRE FEUILLE CISEAUX ✊
-// ✅ Jeux fun rapides
-
 import { sendMessage } from '../lib/sendMessage.js'
-
-// ─── PILE OU FACE ─────────────────────────────────────────────────────────────
-export async function coinflip(sock, sender, args, msg) {
-    try {
-        const sides = ['🪙 *PILE !*', '🔰 *FACE !*']
-        const result = sides[Math.floor(Math.random() * 2)]
-
-        const frames = ['🌀 Lancer...', '🌀🌀 En l\'air...', '💫 Retombe...', result]
-
-        let msgKey = null
-        for (let i = 0; i < frames.length; i++) {
-            const text =
-                `☩━━━〔 🪙 *COIN FLIP* 〕━━━☩\n` +
-                `☠\n` +
-                `⛧  ${frames[i]}\n` +
-                `☠\n` +
-                `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-
-            if (i === 0) {
-                const sent = await sock.sendMessage(sender, { text })
-                msgKey = sent.key
-            } else {
-                await new Promise(r => setTimeout(r, 500))
-                await sock.sendMessage(sender, { text, edit: msgKey }).catch(() => {})
-            }
-        }
-    } catch (error) {
-        await sendMessage(sock, sender, `☠ rituel échoué coinflip: ${error.message}`)
-    }
+import { getSenderJid } from '../lib/ownerSystem.js'
+export default async function coinflip(sock, sender, args, msg, ctx = {}) {
+  const jid = ctx.senderJid || getSenderJid(msg, sock)
+  const choix = args[0]?.toLowerCase()
+  const face = Math.random() > 0.5 ? 'pile' : 'face'
+  const emojiFace = face === 'pile' ? '🔵' : '🟡'
+  let result
+  if (!choix) {
+    result = `${emojiFace} La pièce montre : *${face.toUpperCase()}*`
+  } else if (choix !== 'pile' && choix !== 'face') {
+    return sendMessage(sock, sender, `☠ Usage: .coinflip [pile|face]`)
+  } else {
+    result = choix === face
+      ? `${emojiFace} *${face.toUpperCase()}* — 🏆 Tu as gagné !`
+      : `${emojiFace} *${face.toUpperCase()}* — 💀 Tu as perdu...`
+  }
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   🪙 *PILE OU FACE*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  ${choix ? `🎯 *Ton choix:* ${choix}` : '🎲 *Tirage aléatoire*'}\n\n` +
+    `⛧  ${result}\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text)
 }
-
-export default coinflip
