@@ -1,10 +1,12 @@
 import { sendMessage } from '../lib/sendMessage.js'
-export default async function encode64(sock, sender, args, msg, ctx) {
-  const prefix = process.env.PREFIX||'.'
-  const sub = args[0]?.toLowerCase(), text = args.slice(1).join(' ')
-  if (!sub||!text||(sub!=='encode'&&sub!=='decode')) return await sendMessage(sock, sender, `☩━━━〔 🔡 *BASE64* 〕━━━☩\n☠\n⛧  ${prefix}encode64 encode <texte>\n☠  ${prefix}encode64 decode <base64>\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
-  try {
-    const result = sub==='encode' ? Buffer.from(text).toString('base64') : Buffer.from(text,'base64').toString('utf8')
-    await sendMessage(sock, sender, `☩━━━〔 🔡 *BASE64 ${sub.toUpperCase()}* 〕━━━☩\n☠\n⛧  Input: _${text.slice(0,50)}_\n☠\n✝  \`${result}\`\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
-  } catch(e) { await sendMessage(sock, sender, '☠ Erreur de décodage.') }
+export default async function encode64(sock, sender, args, msg, ctx = {}) {
+  const text = args.join(' ').trim()
+  if (!text) return sendMessage(sock, sender, `☠ Usage: .encode64 <texte>`)
+  const encoded = Buffer.from(text, 'utf8').toString('base64')
+  const out =
+    `☩━━━〔 🔒 *BASE64 ENCODE* 〕━━━☩\n\n` +
+    `☠  📥 *Original:* ${text.slice(0,80)}\n` +
+    `⛧  📤 *Encodé:* \`${encoded.slice(0,200)}\`\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, out)
 }
