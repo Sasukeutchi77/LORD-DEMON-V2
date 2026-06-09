@@ -20,7 +20,7 @@ export default async function automod(sock, sender, args, msg, ctx = {}) {
 
     if (!isOp) {
       return await sendMessage(sock, sender,
-        `╭━━━〔 ⛔ *ACCÈS REFUSÉ* 〕━━━╮\n\n┃ Réservé aux admins du groupe.\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+☩━━━〔  ⛔ *ACCÈS REFUSÉ*  〕━━━☩━━━☩\n\n⛧  Réservé aux admins du groupe.\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -35,16 +35,16 @@ export default async function automod(sock, sender, args, msg, ctx = {}) {
     if (action === 'on' || action === 'activer') {
       enableAutoMod(sender)
       return await sendMessage(sock, sender,
-        `╭━━━〔 🛡️ *AUTO-MOD ACTIVÉ* 〕━━━╮\n\n` +
-        `┃ ✅ La modération automatique est *active*.\n\n` +
-        `┃ *Protections activées :*\n` +
-        `┃ • ☠️ Anti-toxicité (insultes, menaces)\n` +
-        `┃ • 🔇 Anti-spam patterns (CAPS, emojis)\n` +
-        `┃ • 🚫 Anti-escroquerie\n\n` +
-        `┃ Actions disponibles :\n` +
-        `┃ • *.automod addword <mot>* — Ajouter mot banni\n` +
-        `┃ • *.automod off* — Désactiver\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `☩━━━〔 🛡️ *AUTO-MOD ACTIVÉ* 〕━━━☩\n\n` +
+        `⛧  ✅ La modération automatique est *active*.\n\n` +
+        `⛧  *Protections activées :*\n` +
+        `⛧  • ☠️ Anti-toxicité (insultes, menaces)\n` +
+        `⛧  • 🔇 Anti-spam patterns (CAPS, emojis)\n` +
+        `⛧  • 🚫 Anti-escroquerie\n\n` +
+        `⛧  Actions disponibles :\n` +
+        `⛧  • *.automod addword <mot>* — Ajouter mot banni\n` +
+        `⛧  • *.automod off* — Désactiver\n\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -52,9 +52,9 @@ export default async function automod(sock, sender, args, msg, ctx = {}) {
     if (action === 'off' || action === 'désactiver') {
       disableAutoMod(sender)
       return await sendMessage(sock, sender,
-        `╭━━━〔 🛡️ *AUTO-MOD DÉSACTIVÉ* 〕━━━╮\n\n` +
-        `┃ ❌ La modération automatique est *désactivée*.\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `☩━━━〔 🛡️ *AUTO-MOD DÉSACTIVÉ* 〕━━━☩\n\n` +
+        `⛧  ❌ La modération automatique est *désactivée*.\n\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -65,9 +65,9 @@ export default async function automod(sock, sender, args, msg, ctx = {}) {
 
       addBannedWord(sender, word)
       return await sendMessage(sock, sender,
-        `╭━━━〔 🔇 *MOT BANNI* 〕━━━╮\n\n` +
-        `┃ ✅ *"${word}"* ajouté à la liste des mots interdits.\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `☩━━━〔 🔇 *MOT BANNI* 〕━━━☩\n\n` +
+        `⛧  ✅ *"${word}"* ajouté à la liste des mots interdits.\n\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -78,9 +78,9 @@ export default async function automod(sock, sender, args, msg, ctx = {}) {
 
       removeBannedWord(sender, word)
       return await sendMessage(sock, sender,
-        `╭━━━〔 🔇 *MOT RETIRÉ* 〕━━━╮\n\n` +
-        `┃ ✅ *"${word}"* retiré de la liste.\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `☩━━━〔 🔇 *MOT RETIRÉ* 〕━━━☩\n\n` +
+        `⛧  ✅ *"${word}"* retiré de la liste.\n\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -108,14 +108,14 @@ export default async function automod(sock, sender, args, msg, ctx = {}) {
 
     // ── AIDE ──────────────────────────────────────
     return await sendMessage(sock, sender,
-      `╭━━━〔 🛡️ *AUTO-MOD* 〕━━━╮\n\n` +
-      `┃ *.automod on* — Activer\n` +
-      `┃ *.automod off* — Désactiver\n` +
-      `┃ *.automod status* — Voir la config\n` +
-      `┃ *.automod addword <mot>* — Bannir un mot\n` +
-      `┃ *.automod removeword <mot>* — Retirer un mot\n` +
-      `┃ *.automod setaction <type> <action>* — Config action\n\n` +
-      `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+      `☩━━━〔 🛡️ *AUTO-MOD* 〕━━━☩\n\n` +
+      `⛧  *.automod on* — Activer\n` +
+      `⛧  *.automod off* — Désactiver\n` +
+      `⛧  *.automod status* — Voir la config\n` +
+      `⛧  *.automod addword <mot>* — Bannir un mot\n` +
+      `⛧  *.automod removeword <mot>* — Retirer un mot\n` +
+      `⛧  *.automod setaction <type> <action>* — Config action\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
     )
 
   } catch (e) {

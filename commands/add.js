@@ -27,7 +27,11 @@ export default async function add(sock, sender, args, msg) {
     // Ajouter le membre
     await sock.groupParticipantsUpdate(sender, [targetId], "add")
     
-    await sendMessage(sock, sender, `🩸 +${number} a été ajouté au cercle.`)
+    await sendMessage(sock, sender, `☩━━━〔 ⛧ *ADD* 〕━━━☩
+
+🩸 +${number} a été ajouté au cercle.
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     
     console.log(`✅ add | ${number}`)
     

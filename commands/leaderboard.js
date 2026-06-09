@@ -18,24 +18,24 @@ export default async function leaderboard(sock, sender, args, msg, ctx = {}) {
 
       if (!top.length) {
         return await sendMessage(sock, sender,
-          `╭━━━〔 📅 *TOP HEBDO* 〕━━━╮\n\n┃ _Aucune activité cette semaine._\n\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+☩━━━〔  📅 *TOP HEBDO*  〕━━━☩━━━☩\n\n⛧  _Aucune activité cette semaine._\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
         )
       }
 
-      let text = `╭━━━〔 📅 *TOP 10 HEBDOMADAIRE* 〕━━━╮\n\n`
+      let text = `☩━━━〔 📅 *TOP 10 HEBDOMADAIRE* 〕━━━☩\n\n`
       top.forEach((u, i) => {
         const lvl    = getLevel(u.xp || 0)
         const emoji  = medals[i] || `${i + 1}.`
         const isSelf = u.jid === userId
-        text += `┃ ${emoji} ${isSelf ? '👉' : ''} @${cleanNumber(u.jid)}\n`
-        text += `┃    ${getLevelEmoji(lvl)} Niv.${lvl} • ${(u.xp || 0).toLocaleString()} XP\n`
-        if (i < top.length - 1) text += `┃\n`
+        text += `⛧  ${emoji} ${isSelf ? '👉' : ''} @${cleanNumber(u.jid)}\n`
+        text += `⛧  ${getLevelEmoji(lvl)} Niv.${lvl} • ${(u.xp || 0).toLocaleString()} XP\n`
+        if (i < top.length - 1) text += `⛧  \n`
       })
 
       text += `\n`
-      if (pos >= 0) text += `┃ 📊 Votre position cette semaine : *#${pos + 1}*\n`
-      text += `┃ _💡 .leaderboard pour le classement global_\n\n`
-      text += `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+      if (pos >= 0) text += `⛧  📊 Votre position cette semaine : *#${pos + 1}*\n`
+      text += `⛧  _💡 .leaderboard pour le classement global_\n\n`
+      text += `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
 
       const mentions = top.map(u => u.jid)
       return await sendMessage(sock, sender, text, { mentions })
@@ -50,27 +50,27 @@ export default async function leaderboard(sock, sender, args, msg, ctx = {}) {
 
     if (!top.length) {
       return await sendMessage(sock, sender,
-        `╭━━━〔 🏆 *CLASSEMENT* 〕━━━╮\n\n┃ _Aucun joueur enregistré._\n\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `☩━━━〔 🏆 *CLASSEMENT* 〕━━━☩\n\n⛧  _Aucun joueur enregistré._\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
-    let text = `╭━━━〔 🏆 *TOP ${limit} GLOBAL* 〕━━━╮\n\n`
+    let text = `☩━━━〔 🏆 *TOP ${limit} GLOBAL* 〕━━━☩\n\n`
     top.forEach((u, i) => {
       const lvl    = getLevel(u.xp || 0)
       const emoji  = medals[i] || `${i + 1}.`
       const isSelf = u.jid === userId
       const badges = JSON.parse(u.badges || '[]')
-      text += `┃ ${emoji} ${isSelf ? '👉 ' : ''}@${cleanNumber(u.jid)}\n`
-      text += `┃    ${getLevelEmoji(lvl)} Niv.${lvl} • ${(u.xp || 0).toLocaleString()} XP`
+      text += `⛧  ${emoji} ${isSelf ? '👉 ' : ''}@${cleanNumber(u.jid)}\n`
+      text += `⛧  ${getLevelEmoji(lvl)} Niv.${lvl} • ${(u.xp || 0).toLocaleString()} XP`
       if (badges.length) text += ` • ${badges[0]}`
       text += `\n`
-      if (i < top.length - 1) text += `┃\n`
+      if (i < top.length - 1) text += `⛧  \n`
     })
 
     text += `\n`
-    if (myPos >= 0 && myPos >= limit) text += `┃ 📊 Votre position : *#${myPos + 1}* / ${posAll.length}\n`
-    text += `┃ _💡 .leaderboard hebdo → Classement semaine_\n\n`
-    text += `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+    if (myPos >= 0 && myPos >= limit) text += `⛧  📊 Votre position : *#${myPos + 1}* / ${posAll.length}\n`
+    text += `⛧  _💡 .leaderboard hebdo → Classement semaine_\n\n`
+    text += `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
 
     const mentions = top.map(u => u.jid)
     return await sendMessage(sock, sender, text, { mentions })

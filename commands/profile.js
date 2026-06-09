@@ -36,8 +36,8 @@ export default async function profile(sock, sender, args, msg, ctx = {}) {
     // Ajouter la position
     if (pos >= 0) {
       profileText = profileText.replace(
-        '╰━━━━━━━━━━━━━━━━━━━━━━╯',
-        `┃\n┃ 🌍 *Rang global :* #${pos + 1} / ${allUsers.length}\n\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        '⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸',
+        `⛧  \n⛧  🌍 *Rang global :* #${pos + 1} / ${allUsers.length}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -45,6 +45,10 @@ export default async function profile(sock, sender, args, msg, ctx = {}) {
 
   } catch (e) {
     console.error('❌ profile.js:', e)
-    await sendMessage(sock, sender, `☠ Rituel échoué profile: ${e.message}`)
+    await sendMessage(sock, sender, `☩━━━〔 ⛧ *PROFILE* 〕━━━☩
+
+☠ Rituel échoué profile: ${e.message}
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
   }
 }

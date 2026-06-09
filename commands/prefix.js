@@ -41,7 +41,11 @@ export default async function prefix(sock, sender, args, msg) {
     const action = (args[0] || '').toLowerCase()
     if (!action || action === 'show' || action === 'status') {
         const p = loadPrefix() || '(défaut: .)'
-        await sendMessage(sock, sender, `🔧 Préfixe actuel: *${p}*\n\nUsage: .prefix set !  |  .prefix reset`)
+        await sendMessage(sock, sender, `☩━━━〔 ⛧ *PREFIX* 〕━━━☩
+
+🔧 Préfixe actuel: *${p}*\n\nUsage: .prefix set !  |  .prefix reset
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
         return
     }
 
@@ -59,7 +63,11 @@ export default async function prefix(sock, sender, args, msg) {
             return
         }
         savePrefix(newPrefix)
-        await sendMessage(sock, sender, `🩸 Nouveau préfixe sauvegardé: *${newPrefix}*\nRedémarrez le Démon si le préfixe ne change pas immédiatement.`)
+        await sendMessage(sock, sender, `☩━━━〔 ⛧ *PREFIX* 〕━━━☩
+
+🩸 Nouveau préfixe sauvegardé: *${newPrefix}*\nRedémarrez le Démon si le préfixe ne change pas immédiatement.
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
         return
     }
 

@@ -20,7 +20,11 @@ export default async function broadcast(sock, sender, args, msg) {
         const chats = await sock.groupFetchAllParticipating()
         const groups = Object.keys(chats)
 
-        await sendMessage(sock, sender, `📢 *Broadcast en cours...*\n\nEnvoi à ${groups.length} cercles.`)
+        await sendMessage(sock, sender, `☩━━━〔 ⛧ *BROADCAST* 〕━━━☩
+
+📢 *Broadcast en cours...*\n\nEnvoi à ${groups.length} cercles.
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
 
         let sent = 0
         for (const groupId of groups) {
@@ -33,7 +37,11 @@ export default async function broadcast(sock, sender, args, msg) {
             }
         }
 
-        await sendMessage(sock, sender, `🩸 *Broadcast terminé*\n\n📤 Envoyé à ${sent}/${groups.length} cercles.`)
+        await sendMessage(sock, sender, `☩━━━〔 ⛧ *BROADCAST* 〕━━━☩
+
+🩸 *Broadcast terminé*\n\n📤 Envoyé à ${sent}/${groups.length} cercles.
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     } catch (e) {
         await sendMessage(sock, sender, "☠ rituel échoué: " + e.message)
     }

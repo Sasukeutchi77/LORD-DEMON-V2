@@ -19,7 +19,11 @@ export default async function setdesc(sock, sender, args, msg) {
     // Changer la description
     await sock.groupUpdateDescription(sender, newDesc)
     
-    await sendMessage(sock, sender, `🩸 Description mise à jour :\n\n${newDesc}`)
+    await sendMessage(sock, sender, `☩━━━〔 ⛧ *SETDESC* 〕━━━☩
+
+🩸 Description mise à jour :\n\n${newDesc}
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     
     console.log(`✅ setdesc | ${newDesc.substring(0, 30)}...`)
     

@@ -7,10 +7,18 @@ export default async function base64(sock, sender, args, msg) {
   try {
     if (sub === 'decode') {
       const result = Buffer.from(text, 'base64').toString('utf8')
-      await sendMessage(sock, sender, `🔓 Décodé:\n${result}`)
+      await sendMessage(sock, sender, `☩━━━〔 ⛧ *BASE64* 〕━━━☩
+
+🔓 Décodé:\n${result}
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     } else {
       const result = Buffer.from(text).toString('base64')
-      await sendMessage(sock, sender, `🔐 Encodé:\n${result}`)
+      await sendMessage(sock, sender, `☩━━━〔 ⛧ *BASE64* 〕━━━☩
+
+🔐 Encodé:\n${result}
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     }
   } catch(e) { await sendMessage(sock, sender, '☠ Erreur: ' + e.message) }
 }

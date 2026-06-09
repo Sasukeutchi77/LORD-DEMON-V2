@@ -1,10 +1,5 @@
 // commands/demon.js — LORD DEMON V3
-// ╔══════════════════════════════════════════════════════╗
-// ║  DEMON A.I — GROQ  •  llama-3.3-70b-versatile       ║
-// ║  IA sans filtre, historique par user, loader animé  ║
-// ║  Accès : Owner/Sudo illimité | Autres : 10 uses     ║
-// ╚══════════════════════════════════════════════════════╝
-
+// 
 import axios from 'axios'
 import { sendMessage } from '../lib/sendMessage.js'
 import { showProgressLoader, deleteLoader } from '../lib/animLoader.js'
@@ -75,8 +70,9 @@ export default async function demon(sock, sender, args, msg, ctx) {
 
     // ─── Aide (sans args) ───────────────────────────────
     if (!args.length) {
-        return await sendMessage(sock, sender,
-            `境 *LORD DEMON XMD* 境\n\n` +
+        return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
             `💀 *L'IA des ténèbres est en ligne.*\n\n` +
             `📌 *Mode IA :*\n` +
             `   ${prefix}demon <ta question>\n\n` +
@@ -92,30 +88,35 @@ export default async function demon(sock, sender, args, msg, ctx) {
             `   ${prefix}demon list — liste les tâches\n` +
             `   ${prefix}demon cancel <id> — annule une tâche\n` +
             `   ${prefix}demon reset — efface l'historique IA\n\n` +
-            `⛓️ *LORD XMD SYSTEM — propulsé par Groq*`
-        )
+            `⛓️ *LORD XMD SYSTEM — propulsé par Groq*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     }
 
     // ─── Reset historique ────────────────────────────────
     if (args[0].toLowerCase() === 'reset') {
         clearSession(senderJid)
-        return await sendMessage(sock, sender,
-            `境 *LORD DEMON XMD* 境\n\n` +
+        return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
             `🩸 *Mémoire effacée.*\n` +
             `Le démon repart de zéro.\n\n` +
-            `⛓️ *LORD XMD SYSTEM*`
-        )
+            `⛓️ *LORD XMD SYSTEM*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     }
 
     // ─── LISTE DES TÂCHES ────────────────────────────────
     if (args[0].toLowerCase() === 'list') {
         const tasks = listPendingTasks()
         if (!tasks.length) {
-            return await sendMessage(sock, sender,
-                `境 *LORD DEMON XMD* 境\n\n` +
+            return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
                 `📭 *Aucune tâche programmée.*\n\n` +
-                `⛓️ *LORD XMD SYSTEM*`
-            )
+                `⛓️ *LORD XMD SYSTEM*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
         }
         const labels = {
             sendMessage:  '✉️  Envoi message',
@@ -138,31 +139,38 @@ export default async function demon(sock, sender, args, msg, ctx) {
             })
             .join('\n☠\n')
 
-        return await sendMessage(sock, sender,
-            `境 *LORD DEMON XMD — TÂCHES* 境\n\n` +
+        return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD — TÂCHES* 境\n\n` +
             `${lines}\n\n` +
             `💡 *${prefix}demon cancel <id>* pour annuler\n` +
-            `⛓️ *LORD XMD SYSTEM*`
-        )
+            `⛓️ *LORD XMD SYSTEM*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     }
 
     // ─── ANNULATION D'UNE TÂCHE ──────────────────────────
     if (args[0].toLowerCase() === 'cancel') {
         const id = parseInt(args[1], 10)
         if (!id || Number.isNaN(id)) {
-            return await sendMessage(sock, sender,
-                `境 *LORD DEMON XMD* 境\n\n` +
+            return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
                 `⚠️ invocation : *${prefix}demon cancel <id>*\n` +
                 `   Exemple : ${prefix}demon cancel 3\n\n` +
-                `⛓️ *LORD XMD SYSTEM*`
-            )
+                `⛓️ *LORD XMD SYSTEM*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
         }
         const ok = cancelTask(id)
-        return await sendMessage(sock, sender,
-            `境 *LORD DEMON XMD* 境\n\n` +
+        return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
             (ok
                 ? `🩸 Tâche *#${id}* annulée.`
-                : `☠ Tâche *#${id}* introuvable ou déjà exécutée.`) +
+                : `☠ Tâche *#${id}* introuvable ou déjà exécutée.
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`) +
             `\n\n⛓️ *LORD XMD SYSTEM*`
         )
     }
@@ -176,11 +184,13 @@ export default async function demon(sock, sender, args, msg, ctx) {
     if (timeInfo) {
         // Seuls owner / sudo peuvent programmer des actions (sécurité)
         if (!isOwner(senderJid) && !isSudo(senderJid)) {
-            return await sendMessage(sock, sender,
-                `境 *LORD DEMON XMD* 境\n\n` +
+            return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
                 `🔒 *Mode automatisation réservé à l'Owner/Sudo.*\n\n` +
-                `⛓️ *LORD XMD SYSTEM*`
-            )
+                `⛓️ *LORD XMD SYSTEM*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
         }
 
         // On retire la portion "temps" pour analyser l'action
@@ -188,21 +198,25 @@ export default async function demon(sock, sender, args, msg, ctx) {
 
         const action = parseAction(actionText, sender)
         if (action.error) {
-            return await sendMessage(sock, sender,
-                `境 *LORD DEMON XMD* 境\n\n` +
+            return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
                 `⚠️ ${action.error}\n\n` +
-                `⛓️ *LORD XMD SYSTEM*`
-            )
+                `⛓️ *LORD XMD SYSTEM*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
         }
 
         // Sécurité : si le délai est trop court (<3 s), on refuse pour éviter
         // les exécutions immédiates accidentelles.
         if (timeInfo.time - Date.now() < 3000) {
-            return await sendMessage(sock, sender,
-                `境 *LORD DEMON XMD* 境\n\n` +
+            return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
                 `⚠️ Délai trop court (< 3 secondes).\n\n` +
-                `⛓️ *LORD XMD SYSTEM*`
-            )
+                `⛓️ *LORD XMD SYSTEM*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
         }
 
         const task = addTask({
@@ -235,16 +249,18 @@ export default async function demon(sock, sender, args, msg, ctx) {
             react: { text: '⏰', key: msg.key }
         }).catch(() => {})
 
-        return await sendMessage(sock, sender,
-            `境 *LORD DEMON XMD* 境\n\n` +
+        return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
             `😈 *Ordre enregistré.*\n\n` +
             `🆔 ID : *#${task.id}*\n` +
             `🎯 Action : ${labelByType[task.type] || task.type}\n` +
             `🕐 Exécution prévue : *${formatDateFr(task.time)}*\n` +
             (detailLine ? `${detailLine}\n` : '') +
             `\n💡 *${prefix}demon list* pour voir toutes les tâches\n` +
-            `⛓️ *LORD XMD SYSTEM*`
-        )
+            `⛓️ *LORD XMD SYSTEM*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     }
 
     // ─── Vérification accès ──────────────────────────────
@@ -253,8 +269,9 @@ export default async function demon(sock, sender, args, msg, ctx) {
     if (!privileged) {
         const { allowed, remaining } = checkUsage(senderJid)
         if (!allowed) {
-            return await sendMessage(sock, sender,
-                `境 *LORD DEMON XMD* 境\n\n` +
+            return await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
                 `🔒 *Accès restreint*\n\n` +
                 `Pour avoir accès aux sorts *demon*, tu dois utiliser la sort *${prefix}partager*.\n\n` +
                 `Une fois le partage effectué, tu obtiendras *10 utilisations* des sorts :\n` +
@@ -262,8 +279,9 @@ export default async function demon(sock, sender, args, msg, ctx) {
                 `   • ${prefix}ai\n` +
                 `   • ${prefix}pairing\n\n` +
                 `💡 Tape *${prefix}partager* pour commencer.\n\n` +
-                `⛓️ *LORD XMD SYSTEM*`
-            )
+                `⛓️ *LORD XMD SYSTEM*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
         }
     }
 
@@ -338,15 +356,17 @@ export default async function demon(sock, sender, args, msg, ctx) {
             react: { text: '✘', key: msg.key }
         }).catch(() => {})
 
-        await sendMessage(sock, sender,
-            `境 *LORD DEMON XMD* 境\n\n` +
+        await sendMessage(sock, sender, `☩━━━〔 ⛧ *DEMON* 〕━━━☩
+
+境 *LORD DEMON XMD* 境\n\n` +
             `✘ *Connexion avec l'enfer interrompue.*\n\n` +
             `⚠️ ${e.message.slice(0, 150)}\n\n` +
             `💡 *Solutions :*\n` +
             `→ Vérifie ta clé CLE_GROQ dans le fichier .env\n` +
             `→ Réessaie dans quelques secondes\n` +
             `→ ${prefix}demon reset si bloqué\n\n` +
-            `⛓️ *LORD XMD SYSTEM*`
-        )
+            `⛓️ *LORD XMD SYSTEM*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     }
 }

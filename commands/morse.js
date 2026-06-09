@@ -5,5 +5,9 @@ export default async function morse(sock, sender, args, msg) {
   const text = args.join(' ').toUpperCase()
   if (!text) return sendMessage(sock, sender, '☠ Usage: .morse <texte>')
   const result = text.split('').map(c=>M[c]||c).join(' ')
-  await sendMessage(sock, sender, `🔤 *Morse:*\n${result}`)
+  await sendMessage(sock, sender, `☩━━━〔 ⛧ *MORSE* 〕━━━☩
+
+🔤 *Morse:*\n${result}
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
 }

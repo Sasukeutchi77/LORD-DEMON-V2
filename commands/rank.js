@@ -41,29 +41,29 @@ export default async function rank(sock, sender, args, msg, ctx = {}) {
     const isSelf = targetJid === userId
 
     await sendMessage(sock, sender,
-      `╭━━━〔 🏆 *CLASSEMENT XP* 〕━━━╮\n\n` +
-      `┃ ${lvlEmoji} *@${cleanNumber(targetJid)}*\n` +
-      `┃\n` +
-      `┃ 🌟 *Niveau :* ${lvl} ${lvlEmoji}\n` +
-      `┃ ✨ *XP :* ${xp.toLocaleString()} / ${xpNext.toLocaleString()}\n` +
-      `┃ ${getXpBar(xp)} → Niv.${lvl + 1}\n` +
-      `┃\n` +
-      `┃ 🌍 *Rang global :* #${rank} / ${all.length}\n` +
-      `┃ 📅 *Rang hebdo :* ${weeklyPos >= 0 ? '#' + (weeklyPos + 1) : '?'}\n` +
-      `┃ 💬 *Messages :* ${(user?.msg_count || 0).toLocaleString()}\n` +
-      `┃\n` +
+☩━━━〔  🏆 *CLASSEMENT XP*  〕━━━☩━━━☩\n\n` +
+      `⛧  ${lvlEmoji} *@${cleanNumber(targetJid)}*\n` +
+      `⛧  \n` +
+      `⛧  🌟 *Niveau :* ${lvl} ${lvlEmoji}\n` +
+      `⛧  ✨ *XP :* ${xp.toLocaleString()} / ${xpNext.toLocaleString()}\n` +
+      `⛧  ${getXpBar(xp)} → Niv.${lvl + 1}\n` +
+      `⛧  \n` +
+      `⛧  🌍 *Rang global :* #${rank} / ${all.length}\n` +
+      `⛧  📅 *Rang hebdo :* ${weeklyPos >= 0 ? '#' + (weeklyPos + 1) : '?'}\n` +
+      `⛧  💬 *Messages :* ${(user?.msg_count || 0).toLocaleString()}\n` +
+      `⛧  \n` +
       (badges.length
-        ? `┃ 🏅 *Badges :* ${badges.slice(0, 4).join(' ')}${badges.length > 4 ? ` +${badges.length - 4}` : ''}\n┃\n`
-        : `┃ 🏅 *Badges :* _aucun pour l'instant_\n┃\n`
+        ? `⛧  🏅 *Badges :* ${badges.slice(0, 4).join(' ')}${badges.length > 4 ? ` +${badges.length - 4}` : ''}\n⛧  \n`
+        : `⛧  🏅 *Badges :* _aucun pour l'instant_\n⛧  \n`
       ) +
       (next && pos > 0
-        ? `┃ 🎯 *Prochain :* @${cleanNumber(next.jid)} (+${((next.xp || 0) - xp).toLocaleString()} XP)\n┃\n`
+        ? `⛧  🎯 *Prochain :* @${cleanNumber(next.jid)} (+${((next.xp || 0) - xp).toLocaleString()} XP)\n⛧  \n`
         : pos === 0
-          ? `┃ 👑 *Leader mondial — Nul ne te dépasse !*\n┃\n`
+          ? `⛧  👑 *Leader mondial — Nul ne te dépasse !*\n⛧  \n`
           : ''
       ) +
-      `┃ _💡 .badge voir${isSelf ? '' : ' @user'} • .leaderboard_\n\n` +
-      `╰━━━━━━━━━━━━━━━━━━━━━━╯`,
+      `⛧  _💡 .badge voir${isSelf ? '' : ' @user'} • .leaderboard_\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
       { mentions: [targetJid, ...(next ? [next.jid] : [])] }
     )
 

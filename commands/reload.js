@@ -19,7 +19,11 @@ export default async function reload(sock, sender, args, msg) {
         const fresh = await loadCommands(true)
         sock.commandsCache = fresh
 
-        await sendMessage(sock, sender, `🩸 sorts rechargées: *${Object.keys(fresh).length}*`) 
+        await sendMessage(sock, sender, `☩━━━〔 ⛧ *RELOAD* 〕━━━☩
+
+🩸 sorts rechargées: *${Object.keys(fresh).length}*
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`) 
 
     } catch (e) {
         await sendMessage(sock, sender, "☠ rituel échoué reload: " + e.message)

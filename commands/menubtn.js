@@ -240,14 +240,16 @@ async function sendMainMenu(sock, sender, ctx) {
   }
 
   const headerText =
-    `╔══〔 ☠ *${botName}* ☠ 〕══╗\n\n` +
-    `┃ 🩸 *${totalCmds}* commandes invoquées\n` +
-    `┃ 📋 *${MENU_CATEGORIES.length}* cercles du grimoire\n\n` +
-    `┃ *Comment utiliser :*\n` +
-    `┃  ① Appuie sur *🩸 Ouvrir le Grimoire* ↓\n` +
-    `┃  ② Sélectionne une catégorie\n` +
-    `┃  ③ Choisis une commande\n` +
-    `┃  ④ Elle s'exécute immédiatement ✅\n\n` +
+☩━━━〔  ☠ *${botName}* ☠  〕━━━☩══╗\n\n
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸` +
+    `⛧  🩸 *${totalCmds}* commandes invoquées\n` +
+    `⛧  📋 *${MENU_CATEGORIES.length}* cercles du grimoire\n\n` +
+    `⛧  *Comment utiliser :*\n` +
+    `⛧  ① Appuie sur *🩸 Ouvrir le Grimoire* ↓\n` +
+    `⛧  ② Sélectionne une catégorie\n` +
+    `⛧  ③ Choisis une commande\n` +
+    `⛧  ④ Elle s'exécute immédiatement ✅\n\n` +
     `╚══════════════════════════╝`
 
   try {
@@ -309,12 +311,12 @@ async function sendCategoryMenu(sock, sender, catId, ctx) {
 
   const legendText =
     `╔══〔 ${cat.icon} *${cat.title}* 〕══╗\n\n` +
-    `┃ *${availCmds.length} commandes disponibles*\n` +
-    `┃ 💡 Appuie sur une commande :\n` +
-    `┃  ⚡ Exécution directe\n` +
-    `┃  ✏️ Demande un argument → affiche l'aide\n` +
-    `┃  🔄 Toggle → boutons ON/OFF\n` +
-    `┃  ⚠️ Danger → demande confirmation\n\n` +
+    `⛧  *${availCmds.length} commandes disponibles*\n` +
+    `⛧  💡 Appuie sur une commande :\n` +
+    `⛧  ⚡ Exécution directe\n` +
+    `⛧  ✏️ Demande un argument → affiche l'aide\n` +
+    `⛧  🔄 Toggle → boutons ON/OFF\n` +
+    `⛧  ⚠️ Danger → demande confirmation\n\n` +
     `╚══════════════════════════╝`
 
   try {
@@ -338,7 +340,7 @@ async function sendCategoryMenu(sock, sender, catId, ctx) {
           `╔══〔 ${cat.icon} *${cat.title}* 〕══╗\n\n` +
           availCmds.map(id => {
             const m = getMeta(id)
-            return `┃ ${m.icon} *${prefix}${id}* — ${m.desc}`
+            return `⛧  ${m.icon} *${prefix}${id}* — ${m.desc}`
           }).join('\n') +
           `\n\n╚══════════════════════════╝`,
         footer: `Boutons rapides ↓`,
@@ -354,7 +356,7 @@ async function sendCategoryMenu(sock, sender, catId, ctx) {
           `╔══〔 ${cat.icon} *${cat.title}* 〕══╗\n\n` +
           availCmds.map(id => {
             const m = getMeta(id)
-            return `┃ ${m.icon} *${prefix}${id}* — ${m.desc}`
+            return `⛧  ${m.icon} *${prefix}${id}* — ${m.desc}`
           }).join('\n') +
           `\n\n╚══════════════════════════╝`
       })
@@ -378,9 +380,9 @@ async function sendCommandPanel(sock, sender, cmdId, ctx) {
       await sock.sendMessage(sender, {
         text:
           `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
-          `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
-          `┃ 📝 *Sortilège :* ${meta.desc}\n\n` +
-          `┃ ⚡ Lancement en cours...\n\n` +
+          `⛧  🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+          `⛧  📝 *Sortilège :* ${meta.desc}\n\n` +
+          `⛧  ⚡ Lancement en cours...\n\n` +
           `╚══════════════════════════╝`,
         footer: `${botName}`
       })
@@ -395,12 +397,12 @@ async function sendCommandPanel(sock, sender, cmdId, ctx) {
         await sock.sendMessage(sender, {
           text:
             `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
-            `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
-            `┃ 📝 *Sortilège :* ${meta.desc}\n\n` +
-            `┃ ✏️ *Cette commande demande des arguments.*\n` +
-            `┃ 📖 *Exemple :*\n` +
-            `┃   \`${meta.example || prefix + cmdId + ' <argument>'}\`\n\n` +
-            `┃ Tape la commande dans le chat ↑\n\n` +
+            `⛧  🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+            `⛧  📝 *Sortilège :* ${meta.desc}\n\n` +
+            `⛧  ✏️ *Cette commande demande des arguments.*\n` +
+            `⛧  📖 *Exemple :*\n` +
+            `⛧  \`${meta.example || prefix + cmdId + ' <argument>'}\`\n\n` +
+            `⛧  Tape la commande dans le chat ↑\n\n` +
             `╚══════════════════════════╝`,
           footer: `${botName}`,
           buttons: [
@@ -413,10 +415,10 @@ async function sendCommandPanel(sock, sender, cmdId, ctx) {
         await sock.sendMessage(sender, {
           text:
             `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
-            `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
-            `┃ 📝 ${meta.desc}\n` +
-            `┃ 📖 *Exemple :* \`${meta.example || prefix + cmdId + ' <argument>'}\`\n\n` +
-            `┃ 💡 Aide : *${prefix}help ${cmdId}*\n\n` +
+            `⛧  🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+            `⛧  📝 ${meta.desc}\n` +
+            `⛧  📖 *Exemple :* \`${meta.example || prefix + cmdId + ' <argument>'}\`\n\n` +
+            `⛧  💡 Aide : *${prefix}help ${cmdId}*\n\n` +
             `╚══════════════════════════╝`
         })
       }
@@ -429,10 +431,10 @@ async function sendCommandPanel(sock, sender, cmdId, ctx) {
         await sock.sendMessage(sender, {
           text:
             `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
-            `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
-            `┃ 📝 *Sortilège :* ${meta.desc}\n\n` +
-            `┃ 🖼️ *Utilisation :*\n` +
-            `┃   ${meta.example || 'Envoie un média + commande'}\n\n` +
+            `⛧  🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+            `⛧  📝 *Sortilège :* ${meta.desc}\n\n` +
+            `⛧  🖼️ *Utilisation :*\n` +
+            `⛧  ${meta.example || 'Envoie un média + commande'}\n\n` +
             `╚══════════════════════════╝`,
           footer: `${botName}`,
           buttons: [
@@ -445,9 +447,9 @@ async function sendCommandPanel(sock, sender, cmdId, ctx) {
         await sock.sendMessage(sender, {
           text:
             `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
-            `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
-            `┃ 📝 ${meta.desc}\n` +
-            `┃ 🖼️ *Usage :* ${meta.example || 'Envoie un média + commande'}\n\n` +
+            `⛧  🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+            `⛧  📝 ${meta.desc}\n` +
+            `⛧  🖼️ *Usage :* ${meta.example || 'Envoie un média + commande'}\n\n` +
             `╚══════════════════════════╝`
         })
       }
@@ -460,11 +462,11 @@ async function sendCommandPanel(sock, sender, cmdId, ctx) {
         await sock.sendMessage(sender, {
           text:
             `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
-            `┃ 🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
-            `┃ 📝 *Sortilège :* ${meta.desc}\n\n` +
-            `┃ 🔄 *Choisis une action :*\n` +
-            `┃  ✅ ON  → Active la protection\n` +
-            `┃  ❌ OFF → Désactive la protection\n\n` +
+            `⛧  🩸 *Invocation :* \`${prefix}${cmdId}\`\n` +
+            `⛧  📝 *Sortilège :* ${meta.desc}\n\n` +
+            `⛧  🔄 *Choisis une action :*\n` +
+            `⛧  ✅ ON  → Active la protection\n` +
+            `⛧  ❌ OFF → Désactive la protection\n\n` +
             `╚══════════════════════════╝`,
           footer: `${botName}`,
           buttons: [
@@ -478,8 +480,8 @@ async function sendCommandPanel(sock, sender, cmdId, ctx) {
         await sock.sendMessage(sender, {
           text:
             `╔══〔 ${meta.icon} *${meta.label.toUpperCase()}* 〕══╗\n\n` +
-            `┃ ✅ *${prefix}${cmdId} on*  → Activer\n` +
-            `┃ ❌ *${prefix}${cmdId} off* → Désactiver\n\n` +
+            `⛧  ✅ *${prefix}${cmdId} on*  → Activer\n` +
+            `⛧  ❌ *${prefix}${cmdId} off* → Désactiver\n\n` +
             `╚══════════════════════════╝`
         })
       }
@@ -493,10 +495,10 @@ async function sendCommandPanel(sock, sender, cmdId, ctx) {
         await sock.sendMessage(sender, {
           text:
             `╔══〔 ⚠️ *CONFIRMATION REQUISE* ⚠️ 〕══╗\n\n` +
-            `┃ ${meta.icon} *${meta.label.toUpperCase()}*\n` +
-            `┃ 📝 ${meta.desc}\n\n` +
-            `┃ ⚠️ *${confirmText}*\n` +
-            `┃ ℹ️ Cette action peut être irréversible.\n\n` +
+            `⛧  ${meta.icon} *${meta.label.toUpperCase()}*\n` +
+            `⛧  📝 ${meta.desc}\n\n` +
+            `⛧  ⚠️ *${confirmText}*\n` +
+            `⛧  ℹ️ Cette action peut être irréversible.\n\n` +
             `╚══════════════════════════╝`,
           footer: `${botName}`,
           buttons: [
@@ -509,9 +511,9 @@ async function sendCommandPanel(sock, sender, cmdId, ctx) {
         await sock.sendMessage(sender, {
           text:
             `╔══〔 ⚠️ *CONFIRMATION* 〕══╗\n\n` +
-            `┃ ${meta.icon} *${meta.label}*\n` +
-            `┃ ⚠️ *${confirmText}*\n` +
-            `┃ Tape : *${prefix}${cmdId}* pour confirmer\n\n` +
+            `⛧  ${meta.icon} *${meta.label}*\n` +
+            `⛧  ⚠️ *${confirmText}*\n` +
+            `⛧  Tape : *${prefix}${cmdId}* pour confirmer\n\n` +
             `╚══════════════════════════╝`
         })
       }
@@ -535,7 +537,7 @@ async function sendQuickMenu(sock, sender) {
     await sock.sendMessage(sender, {
       text:
         `╔══〔 ⚡ *ACCÈS RAPIDE* ⚡ 〕══╗\n\n` +
-        `┃ 🏆 *Stats & Classement*\n\n` +
+        `⛧  🏆 *Stats & Classement*\n\n` +
         `╚══════════════════════════╝`,
       footer: `${botName}`,
       buttons: [
@@ -549,7 +551,7 @@ async function sendQuickMenu(sock, sender) {
     await sock.sendMessage(sender, {
       text:
         `╔══〔 🎮 *JEUX RAPIDES* 〕══╗\n\n` +
-        `┃ Lance un jeu en 1 tap !\n\n` +
+        `⛧  Lance un jeu en 1 tap !\n\n` +
         `╚══════════════════════════╝`,
       footer: `${botName}`,
       buttons: [
@@ -577,12 +579,12 @@ async function sendQuickMenu(sock, sender) {
     await sock.sendMessage(sender, {
       text:
         `╔══〔 ⚡ *ACCÈS RAPIDE* 〕══╗\n\n` +
-        `┃ *${prefix}rank* → Mon rang\n` +
-        `┃ *${prefix}leaderboard* → Classement\n` +
-        `┃ *${prefix}quiz* → Quiz\n` +
-        `┃ *${prefix}coinflip* → Pile ou face\n` +
-        `┃ *${prefix}tagall* → Tag All\n` +
-        `┃ *${prefix}menubtn* → Menu complet\n\n` +
+        `⛧  *${prefix}rank* → Mon rang\n` +
+        `⛧  *${prefix}leaderboard* → Classement\n` +
+        `⛧  *${prefix}quiz* → Quiz\n` +
+        `⛧  *${prefix}coinflip* → Pile ou face\n` +
+        `⛧  *${prefix}tagall* → Tag All\n` +
+        `⛧  *${prefix}menubtn* → Menu complet\n\n` +
         `╚══════════════════════════╝`
     })
   }
@@ -613,16 +615,16 @@ async function _execCommand(sock, sender, cmdId, args, ctx) {
 async function sendFallback(sock, sender, prefix, botName) {
   const cmdFiles = getCommandFiles()
   let text = `╔══〔 ⛧ *${botName}* ⛧ 〕══╗\n\n`
-  text += `┃ ℹ️ _Mode texte (boutons non supportés)_\n`
-  text += `┃ → *${prefix}menu* pour le grimoire complet\n\n`
+  text += `⛧  ℹ️ _Mode texte (boutons non supportés)_\n`
+  text += `⛧  → *${prefix}menu* pour le grimoire complet\n\n`
   MENU_CATEGORIES.slice(0, 3).forEach(cat => {
     const cmds = cat.cmds.filter(c => cmdFiles.has(c))
     if (!cmds.length) return
-    text += `┃ ${cat.icon} *${cat.title}*\n`
-    cmds.slice(0, 4).forEach(c => { text += `┃  • *${prefix}${c}*\n` })
-    text += `┃\n`
+    text += `⛧  ${cat.icon} *${cat.title}*\n`
+    cmds.slice(0, 4).forEach(c => { text += `⛧  • *${prefix}${c}*\n` })
+    text += `⛧  \n`
   })
-  text += `┃ *${prefix}menubtn <cat>* — Sous-menu\n`
+  text += `⛧  *${prefix}menubtn <cat>* — Sous-menu\n`
   text += `╚══════════════════════════╝`
   await sock.sendMessage(sender, { text })
 }
@@ -658,9 +660,9 @@ export default async function menubtn(sock, sender, args, msg, ctx = {}) {
     await sock.sendMessage(sender, {
       text:
         `╔══〔 📋 *CATÉGORIES* 〕══╗\n\n` +
-        MENU_CATEGORIES.map(c => `┃ ${c.icon} *${prefix}menubtn ${c.id}* — ${c.desc}`).join('\n') +
-        `\n\n┃ ⚡ *${prefix}menubtn quick* — Accès rapide\n` +
-        `┃ 📜 *${prefix}menu* — Grimoire texte\n\n` +
+        MENU_CATEGORIES.map(c => `⛧  ${c.icon} *${prefix}menubtn ${c.id}* — ${c.desc}`).join('\n') +
+        `\n\n⛧  ⚡ *${prefix}menubtn quick* — Accès rapide\n` +
+        `⛧  📜 *${prefix}menu* — Grimoire texte\n\n` +
         `╚══════════════════════════╝`
     })
 

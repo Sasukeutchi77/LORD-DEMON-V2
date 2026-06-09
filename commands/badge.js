@@ -18,18 +18,18 @@ export default async function badge(sock, sender, args, msg, ctx = {}) {
         'Spéciaux': Object.entries(BADGES).filter(([, b]) => !['level','messages'].includes(b.trigger))
       }
 
-      let text = `╭━━━〔 🏅 *BADGES DISPONIBLES* 〕━━━╮\n\n`
+☩━━━〔  🏅 *BADGES DISPONIBLES*  〕━━━☩━━━☩\n\n`
       for (const [cat, badges] of Object.entries(categories)) {
         if (!badges.length) continue
-        text += `┃ *${cat} :*\n`
+        text += `⛧  *${cat} :*\n`
         badges.forEach(([name, info]) => {
           const cond = info.trigger === 'level' ? `Niveau ${info.value}` :
                        info.trigger === 'messages' ? `${info.value} messages` : 'Spécial'
-          text += `┃  ${name} — ${info.desc} (${cond})\n`
+          text += `⛧  ${name} — ${info.desc} (${cond})\n`
         })
-        text += `┃\n`
+        text += `⛧  \n`
       }
-      text += `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+      text += `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       return await sendMessage(sock, sender, text)
     }
 
@@ -49,18 +49,18 @@ export default async function badge(sock, sender, args, msg, ctx = {}) {
       const isSelf = targetJid === userId
 
       return await sendMessage(sock, sender,
-        `╭━━━〔 🏅 *BADGES* 〕━━━╮\n\n` +
-        `┃ 👤 @${cleanNumber(targetJid)}\n` +
-        `┃ 🏅 *${badges.length} badge${badges.length > 1 ? 's' : ''} :*\n\n` +
+        `☩━━━〔 🏅 *BADGES* 〕━━━☩\n\n` +
+        `⛧  👤 @${cleanNumber(targetJid)}\n` +
+        `⛧  🏅 *${badges.length} badge${badges.length > 1 ? 's' : ''} :*\n\n` +
         (badges.length
           ? badges.map(b => {
               const info = BADGES[b]
-              return `┃  ${b}\n┃    _${info?.desc || 'Badge spécial'}_`
+              return `⛧  ${b}\n⛧  _${info?.desc || 'Badge spécial'}_`
             }).join('\n')
-          : `┃  _Aucun badge pour l'instant._\n` +
-            `┃  ${isSelf ? 'Envoyez des messages pour en gagner !' : 'Ce membre n\'a pas encore de badge.'}`
+          : `⛧  _Aucun badge pour l'instant._\n` +
+            `⛧  ${isSelf ? 'Envoyez des messages pour en gagner !' : 'Ce membre n\'a pas encore de badge.'}`
         ) +
-        `\n\n╰━━━━━━━━━━━━━━━━━━━━━━╯`,
+        `\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
         { mentions: [targetJid] }
       )
     }

@@ -119,12 +119,14 @@ export default async function vv(sock, sender, args, msg) {
         if (loadingKey) {
             await sock.sendMessage(sender, { delete: loadingKey }).catch(() => {})
         }
-        await sendMessage(sock, sender,
-            `☠ *rituel échoué:* ${error.message}\n\n` +
+        await sendMessage(sock, sender, `☩━━━〔 ⛧ *VV* 〕━━━☩
+
+☠ *rituel échoué:* ${error.message}\n\n` +
             `💡 *Conseils:*\n` +
             `• Le média a peut-être expiré\n` +
             `• Réessayez avec un média récent\n` +
-            `• Vérifiez que c'est bien une photo/vidéo`
-        )
+            `• Vérifiez que c'est bien une photo/vidéo
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     }
 }

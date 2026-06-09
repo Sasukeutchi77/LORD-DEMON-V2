@@ -15,7 +15,7 @@ export default async function plugin(sock, sender, args, msg, ctx = {}) {
 
     if (!isDeployer(userId) && !isSuperAdmin(userId)) {
       return await sendMessage(sock, sender,
-        `╭━━━〔 ⛔ *ACCÈS REFUSÉ* 〕━━━╮\n\n┃ Réservé à l'Owner principal.\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+☩━━━〔  ⛔ *ACCÈS REFUSÉ*  〕━━━☩━━━☩\n\n⛧  Réservé à l'Owner principal.\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -28,25 +28,25 @@ export default async function plugin(sock, sender, args, msg, ctx = {}) {
       const loadedNames = loaded.map(p => p.name)
 
       return await sendMessage(sock, sender,
-        `╭━━━〔 🔌 *PLUGINS* 〕━━━╮\n\n` +
-        `┃ *Disponibles (${available.length}) :*\n` +
+        `☩━━━〔 🔌 *PLUGINS* 〕━━━☩\n\n` +
+        `⛧  *Disponibles (${available.length}) :*\n` +
         (available.length
-          ? available.map(n => `┃ ${loadedNames.includes(n) ? '🟢' : '🔴'} ${n}`).join('\n')
-          : `┃ _Aucun plugin dans /plugins/_`
+          ? available.map(n => `⛧  ${loadedNames.includes(n) ? '🟢' : '🔴'} ${n}`).join('\n')
+          : `⛧  _Aucun plugin dans /plugins/_`
         ) +
-        `\n\n┃ *Chargés (${loaded.length}) :*\n` +
+        `\n\n⛧  *Chargés (${loaded.length}) :*\n` +
         (loaded.length
-          ? loaded.map(p => `┃ ✅ ${p.name} (chargé à ${p.loadedAt})`).join('\n')
-          : `┃ _Aucun plugin chargé_`
+          ? loaded.map(p => `⛧  ✅ ${p.name} (chargé à ${p.loadedAt})`).join('\n')
+          : `⛧  _Aucun plugin chargé_`
         ) +
-        `\n\n┃ *Commandes :*\n` +
-        `┃ • *.plugin load <nom>*\n` +
-        `┃ • *.plugin unload <nom>*\n` +
-        `┃ • *.plugin reload <nom>*\n` +
-        `┃ • *.plugin loadall* — Charger tous\n` +
-        `┃ • *.plugin create <nom>* — Créer template\n` +
-        `┃ • *.plugin run <nom> [args]* — Exécuter\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `\n\n⛧  *Commandes :*\n` +
+        `⛧  • *.plugin load <nom>*\n` +
+        `⛧  • *.plugin unload <nom>*\n` +
+        `⛧  • *.plugin reload <nom>*\n` +
+        `⛧  • *.plugin loadall* — Charger tous\n` +
+        `⛧  • *.plugin create <nom>* — Créer template\n` +
+        `⛧  • *.plugin run <nom> [args]* — Exécuter\n\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -94,7 +94,7 @@ export default async function plugin(sock, sender, args, msg, ctx = {}) {
 
       const text = results.map(r => `${r.ok ? '✅' : '❌'} ${r.name}${r.ok ? '' : ` — ${r.reason}`}`).join('\n')
       return await sendMessage(sock, sender,
-        `╭━━━〔 🔌 *CHARGEMENT AUTO* 〕━━━╮\n\n${text}\n\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `☩━━━〔 🔌 *CHARGEMENT AUTO* 〕━━━☩\n\n${text}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 

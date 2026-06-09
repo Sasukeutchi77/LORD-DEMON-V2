@@ -17,7 +17,7 @@ export default async function webhook(sock, sender, args, msg, ctx = {}) {
 
     if (!isOp) {
       return await sendMessage(sock, sender,
-        `╭━━━〔 ⛔ *ACCÈS REFUSÉ* 〕━━━╮\n\n┃ Réservé aux admins.\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+☩━━━〔  ⛔ *ACCÈS REFUSÉ*  〕━━━☩━━━☩\n\n⛧  Réservé aux admins.\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -27,26 +27,26 @@ export default async function webhook(sock, sender, args, msg, ctx = {}) {
     if (!action || action === 'list' || action === 'liste') {
       const hooks = listWebhooks(sender)
       return await sendMessage(sock, sender,
-        `╭━━━〔 📡 *WEBHOOKS (${hooks.length})* 〕━━━╮\n\n` +
+        `☩━━━〔 📡 *WEBHOOKS (${hooks.length})* 〕━━━☩\n\n` +
         formatWebhookList(hooks) +
-        `\n\n┃ *Commandes :*\n` +
-        `┃ • *.webhook add <url> [events]* — Ajouter\n` +
-        `┃ • *.webhook remove <id>* — Supprimer\n` +
-        `┃ • *.webhook events* — Voir les événements\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `\n\n⛧  *Commandes :*\n` +
+        `⛧  • *.webhook add <url> [events]* — Ajouter\n` +
+        `⛧  • *.webhook remove <id>* — Supprimer\n` +
+        `⛧  • *.webhook events* — Voir les événements\n\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
     // ── VOIR LES ÉVÉNEMENTS ──────────────────────
     if (action === 'events' || action === 'événements') {
       const list = Object.entries(WEBHOOK_EVENTS)
-        .map(([k, v]) => `┃ • *${k}* — ${v}`)
+        .map(([k, v]) => `⛧  • *${k}* — ${v}`)
         .join('\n')
       return await sendMessage(sock, sender,
-        `╭━━━〔 📡 *ÉVÉNEMENTS DISPONIBLES* 〕━━━╮\n\n` +
+        `☩━━━〔 📡 *ÉVÉNEMENTS DISPONIBLES* 〕━━━☩\n\n` +
         list +
-        `\n┃ • *** — Tous les événements\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `\n⛧  • *** — Tous les événements\n\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -65,11 +65,11 @@ export default async function webhook(sock, sender, args, msg, ctx = {}) {
       if (!result.ok) return await sendMessage(sock, sender, `❌ ${result.reason}`)
 
       return await sendMessage(sock, sender,
-        `╭━━━〔 📡 *WEBHOOK AJOUTÉ* 〕━━━╮\n\n` +
-        `┃ ✅ Webhook #${result.id} configuré !\n` +
-        `┃ 📡 Événements : ${result.events.join(', ')}\n\n` +
-        `┃ Le bot notifiera cette URL automatiquement.\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `☩━━━〔 📡 *WEBHOOK AJOUTÉ* 〕━━━☩\n\n` +
+        `⛧  ✅ Webhook #${result.id} configuré !\n` +
+        `⛧  📡 Événements : ${result.events.join(', ')}\n\n` +
+        `⛧  Le bot notifiera cette URL automatiquement.\n\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 

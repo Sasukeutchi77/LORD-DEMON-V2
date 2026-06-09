@@ -37,17 +37,17 @@ export async function sendWelcomeMessage(sock, groupId, participants, meta) {
     }
 
     const defaultMsg =
-      `╭━━━〔 👋 *BIENVENUE !* 〕━━━╮\n\n` +
-      `┃ 🩸 @${cleanNumber(jid)}\n` +
-      `┃ vient de rejoindre *${groupName}* !\n` +
-      `┃\n` +
-      `┃ 👥 *Membre #${memberCount}*\n` +
-      `┃ ${lvlEmoji} *Niveau :* ${lvl}\n` +
-      `┃ ✨ *XP :* ${xp.toLocaleString()}\n` +
-      (badges.length ? `┃ 🏅 *Badges :* ${badges.slice(0, 3).join(' ')}\n` : '') +
-      `┃\n` +
-      `┃ _Bienvenue dans le cercle !_\n\n` +
-      `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+☩━━━〔  👋 *BIENVENUE !*  〕━━━☩━━━☩\n\n` +
+      `⛧  🩸 @${cleanNumber(jid)}\n` +
+      `⛧  vient de rejoindre *${groupName}* !\n` +
+      `⛧  \n` +
+      `⛧  👥 *Membre #${memberCount}*\n` +
+      `⛧  ${lvlEmoji} *Niveau :* ${lvl}\n` +
+      `⛧  ✨ *XP :* ${xp.toLocaleString()}\n` +
+      (badges.length ? `⛧  🏅 *Badges :* ${badges.slice(0, 3).join(' ')}\n` : '') +
+      `⛧  \n` +
+      `⛧  _Bienvenue dans le cercle !_\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
 
     await sock.sendMessage(groupId, {
       text: customMsg || defaultMsg,
@@ -85,7 +85,7 @@ export default async function welcome(sock, sender, args, msg, ctx = {}) {
     const canUse = ctx.isOwner || isDeployer(userId) || isSudo(userId) || ctx.isAdmin || await isGroupAdmin(sock, sender, userId)
     if (!canUse) {
       return await sendMessage(sock, sender,
-        `╭━━━〔 ⛔ *ACCÈS REFUSÉ* 〕━━━╮\n\n┃ 🔒 Requis : admin du groupe.\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `☩━━━〔 ⛔ *ACCÈS REFUSÉ* 〕━━━☩\n\n⛧  🔒 Requis : admin du groupe.\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -97,16 +97,16 @@ export default async function welcome(sock, sender, args, msg, ctx = {}) {
     if (action === 'on') {
       groupSettingsDb.update(sender, { welcome: { ...wcfg, enabled: true } })
       return await sendMessage(sock, sender,
-        `╭━━━〔 👋 *WELCOME ACTIVÉ* 〕━━━╮\n\n` +
-        `┃ ✅ Message de bienvenue *activé* !\n\n` +
-        `┃ Fonctionnalités incluses :\n` +
-        `┃ • 👤 Nom + mention du nouveau membre\n` +
-        `┃ • 📊 Niveau XP et badges\n` +
-        `┃ • 👥 Numéro du membre dans le groupe\n` +
-        `┃ • 🎉 Attribution badge "Nouveau"\n\n` +
-        `┃ 💡 Personnaliser : *.welcome set <msg>*\n` +
-        `┃ Variables : {name} {group} {count} {level} {xp}\n\n` +
-        `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `☩━━━〔 👋 *WELCOME ACTIVÉ* 〕━━━☩\n\n` +
+        `⛧  ✅ Message de bienvenue *activé* !\n\n` +
+        `⛧  Fonctionnalités incluses :\n` +
+        `⛧  • 👤 Nom + mention du nouveau membre\n` +
+        `⛧  • 📊 Niveau XP et badges\n` +
+        `⛧  • 👥 Numéro du membre dans le groupe\n` +
+        `⛧  • 🎉 Attribution badge "Nouveau"\n\n` +
+        `⛧  💡 Personnaliser : *.welcome set <msg>*\n` +
+        `⛧  Variables : {name} {group} {count} {level} {xp}\n\n` +
+        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -114,7 +114,7 @@ export default async function welcome(sock, sender, args, msg, ctx = {}) {
     if (action === 'off') {
       groupSettingsDb.update(sender, { welcome: { ...wcfg, enabled: false } })
       return await sendMessage(sock, sender,
-        `╭━━━〔 👋 *WELCOME DÉSACTIVÉ* 〕━━━╮\n\n┃ ❌ Message de bienvenue désactivé.\n╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        `☩━━━〔 👋 *WELCOME DÉSACTIVÉ* 〕━━━☩\n\n⛧  ❌ Message de bienvenue désactivé.\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       )
     }
 
@@ -142,15 +142,15 @@ export default async function welcome(sock, sender, args, msg, ctx = {}) {
     // ── STATUT (défaut) ──────────────────────────
     const status = wcfg.enabled ? '🟢 *ACTIVÉ*' : '🔴 *DÉSACTIVÉ*'
     await sendMessage(sock, sender,
-      `╭━━━〔 👋 *WELCOME* 〕━━━╮\n\n` +
-      `┃ 📊 Statut : ${status}\n\n` +
-      `┃ 📝 Message : ${wcfg.message ? `_${wcfg.message.slice(0, 80)}..._` : '_Message par défaut (enrichi XP)_'}\n\n` +
-      `┃ *Commandes :*\n` +
-      `┃ • *.welcome on/off*\n` +
-      `┃ • *.welcome set <msg>* — Personnaliser\n` +
-      `┃ • *.welcome reset* — Réinitialiser\n\n` +
-      `┃ 📌 *Variables :* {name} {group} {count} {level} {xp}\n\n` +
-      `╰━━━━━━━━━━━━━━━━━━━━━━╯`
+      `☩━━━〔 👋 *WELCOME* 〕━━━☩\n\n` +
+      `⛧  📊 Statut : ${status}\n\n` +
+      `⛧  📝 Message : ${wcfg.message ? `_${wcfg.message.slice(0, 80)}..._` : '_Message par défaut (enrichi XP)_'}\n\n` +
+      `⛧  *Commandes :*\n` +
+      `⛧  • *.welcome on/off*\n` +
+      `⛧  • *.welcome set <msg>* — Personnaliser\n` +
+      `⛧  • *.welcome reset* — Réinitialiser\n\n` +
+      `⛧  📌 *Variables :* {name} {group} {count} {level} {xp}\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
     )
 
   } catch (e) {

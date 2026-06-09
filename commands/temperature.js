@@ -8,7 +8,9 @@ export default async function temperature(sock, sender, args, msg) {
   else if(from==='F'){f=val;c=(f-32)*5/9;k=c+273.15}
   else if(from==='K'){k=val;c=k-273.15;f=c*9/5+32}
   else return sendMessage(sock, sender, '☠ Unité inconnue (C/F/K)')
-  await sendMessage(sock, sender,
-    `🌡️ *Conversion température:*\n🔵 ${c.toFixed(2)}°C\n🔴 ${f.toFixed(2)}°F\n⚪ ${k.toFixed(2)}K`
-  )
+  await sendMessage(sock, sender, `☩━━━〔 ⛧ *TEMPERATURE* 〕━━━☩
+
+🌡️ *Conversion température:*\n🔵 ${c.toFixed(2)}°C\n🔴 ${f.toFixed(2)}°F\n⚪ ${k.toFixed(2)}K
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
 }

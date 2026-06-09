@@ -8,5 +8,9 @@ export default async function cesar(sock, sender, args, msg) {
     const base = c >= 'a' ? 97 : 65
     return String.fromCharCode(((c.charCodeAt(0) - base + shift) % 26) + base)
   })
-  await sendMessage(sock, sender, `🔐 César (décalage ${shift}):\n${result}`)
+  await sendMessage(sock, sender, `☩━━━〔 ⛧ *CESAR* 〕━━━☩
+
+🔐 César (décalage ${shift}):\n${result}
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
 }

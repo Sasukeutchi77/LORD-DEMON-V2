@@ -56,15 +56,19 @@ export default async function partager(sock, sender, args, msg, ctx = {}) {
     }
 
     if (userGroups.length === 0) {
-      return await sendMessage(sock, sender,
-        `☠ Aucun cercle commun entre toi et le Démon n'a été trouvé.`
-      )
+      return await sendMessage(sock, sender, `☩━━━〔 ⛧ *PARTAGER* 〕━━━☩
+
+☠ Aucun cercle commun entre toi et le Démon n'a été trouvé.
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
     }
 
     // ── Notification de début ─────────────────────────────
-    await sendMessage(sock, sender,
-      `⏳ Partage en cours dans *${userGroups.length}* groupe(s)...`
-    )
+    await sendMessage(sock, sender, `☩━━━〔 ⛧ *PARTAGER* 〕━━━☩
+
+⏳ Partage en cours dans *${userGroups.length}* groupe(s)...
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
 
     // ── Envoi dans chaque groupe ──────────────────────────
     let sent   = 0
@@ -95,17 +99,24 @@ export default async function partager(sock, sender, args, msg, ctx = {}) {
     }
 
     // ── Rapport final ─────────────────────────────────────
-    await sendMessage(sock, sender,
-      `🩸 *Partage terminé!*\n\n` +
+    await sendMessage(sock, sender, `☩━━━〔 ⛧ *PARTAGER* 〕━━━☩
+
+🩸 *Partage terminé!*\n\n` +
       `📤 Envoyé: *${sent}* cercle(s)\n` +
       `☠ Échoué: *${failed}* cercle(s)` +
       usageGrantText
     )
 
-    console.log(`✅ [PARTAGER] ${sent}/${userGroups.length} groupes | par ${userId}`)
+    console.log(`✅ [PARTAGER] ${sent}/${userGroups.length} groupes | par ${userId}
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
 
   } catch (e) {
     console.error('❌ partager error:', e)
-    await sendMessage(sock, sender, `☠ rituel échoué: ${e.message || 'rituel échoué inconnue'}`)
+    await sendMessage(sock, sender, `☩━━━〔 ⛧ *PARTAGER* 〕━━━☩
+
+☠ rituel échoué: ${e.message || 'rituel échoué inconnue'}
+
+⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
   }
 }
