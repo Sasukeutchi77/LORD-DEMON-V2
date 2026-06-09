@@ -1,11 +1,14 @@
-// commands/abandonner.js
 import { sendMessage } from '../lib/sendMessage.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
-
-const ITEMS = ["*jette l epee et part*","Mission echouee on recommence.","Je reviendrai plus prepare.","Strategique retraite !","Parfois reculer c est avancer."]
-
-export default async function cmd_abandonner(sock, sender, args, msg, ctx = {}) {
+export default async function abandonner(sock, sender, args, msg, ctx = {}) {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
-  const item = ITEMS[Math.floor(Math.random() * ITEMS.length)]
-  await sendMessage(sock, sender, 'X┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈X\n⛧   ABANDONNER (FUN)   ☩\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' + item + '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+  const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+  const targetStr = target ? `@${target.split('@')[0]}` : "l'ennemi"
+  const text =
+    `☩━━━〔 ⛧ *ABANDONNER* 〕━━━☩\n\n` +
+    `☠  @${jid.split('@')[0]} abandonne le combat contre ${targetStr}\n\n` +
+    `✝  _"Seul le sage sait quand retraiter..."_\n` +
+    `⛧  _Parfois fuir c'est survivre pour mieux revenir._\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text, { mentions: [jid, ...(target ? [target] : [])] })
 }
