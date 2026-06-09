@@ -1,0 +1,6 @@
+import { sendMessage } from '../lib/sendMessage.js'
+const DATA = ["🚀 Lean Startup — MVP rapide, feedback, itérer avant de construire","💡 Idée validée — 10 entretiens clients, problème réel, willingness to pay","📊 Business Model Canvas — 9 blocs, visualiser la stratégie en 1 page","💰 Financement — Love money, banque, business angels, crowdfunding","🌍 Marché Africain — 1.4Mrd consommateurs, classe moyenne en pleine croissance","📱 Tech Startup — SaaS, marketplace, mobile-first, IA/ML croissance","🏗️ Structure juridique — SARL, SAS, SA, statut autoentrepreneur","📣 Marketing digital — SEO, réseaux sociaux, email, content marketing","🤝 Partenariats — Distributer, co-marketing, partager ressources","🎯 Pivot — Changer direction si modèle ne fonctionne pas, pas échouer"]
+export default async function entrepreunariat(sock, sender, args, msg, ctx) {
+  const item = DATA[Math.floor(Math.random()*DATA.length)]
+  await sendMessage(sock, sender, `☩━━━〔 🚀 *ENTREPREUNARIAT* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+}
