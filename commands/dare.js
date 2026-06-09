@@ -1,233 +1,27 @@
-// commands/dare.js — LORD-DEMON
-// 😈 Défis enrichis avec catégories, niveaux de difficulté et mentions
-
 import { sendMessage } from '../lib/sendMessage.js'
-
-//══════════════════════════════════════
-// BASE DE DÉFIS ÉTENDUE PAR CATÉGORIE
-//══════════════════════════════════════
-
-const DARES = {
-
-  "😂 HUMOUR": [
-    "Envoie une note vocale de 10 secondes en parlant comme un méchant de film.",
-    "Écris une phrase dramatique comme si tu annonçais la fin du monde.",
-    "Réponds aux 3 prochains messages uniquement avec des rimes.",
-    "Imite le style d'écriture d'un âme du cercle pendant 5 messages.",
-    "Envoie un audio de toi en train de freestyler pendant 15 secondes minimum.",
-    "Écris un poème de 4 lignes sur quelqu'un du cercle (bienveillant).",
-    "Envoie un message comme si tu étais un robot en panne.",
-    "Parle en Verlan pendant les 5 prochains messages.",
-    "Commence chaque phrase par 'En tant que âme légendaire...'",
-    "Écris un message en majuscule SEULEMENT avec des points d'exclamation à la fin de chaque mot.",
-    "Envoie un audio en imitant le cri de l'aigle pendant 10 secondes.",
-    "Réponds à tous les messages pendant 10 minutes uniquement avec un seul emoji.",
-    "Raconte une blague tellement mauvaise que tout le monde grogne.",
-    "Imite un journaliste TV en faisant un reportage en direct sur ce qui se passe dans le groupe.",
-    "Envoie un message d'amour excessif à quelqu'un du cercle (non romantique, amitié).",
-    "Fais semblant d'être un détective et analyse le dernier message envoyé dans le cercle comme une preuve criminelle.",
-  ],
-
-  "😳 GÊNANT": [
-    "Change ton nom de groupe pendant 5 minutes avec un surnom choisi par le groupe.",
-    "Laisse le groupe choisir ta photo de profil pendant 10 minutes.",
-    "Raconte une honte légère sans citer de nom.",
-    "Avoue la dernière chose bizarre que tu as cherchée sur Google.",
-    "Envoie le dernier texte copié sur ton téléphone.",
-    "Révèle le titre de la dernière chanson que tu as écoutée.",
-    "Dis à voix haute (vocal) le prénom de ton crush (peut être fictif).",
-    "Révèle combien de temps tu passes sur les réseaux sociaux par jour (sois honnête).",
-    "Montre ta galerie photo (juste le nombre de photos) et explique ta catégorie la plus remplie.",
-    "Avoue la dernière fois que tu as menti dans ce cercle.",
-    "Dis le nom du contact le plus bizarre sauvegardé dans ton téléphone.",
-    "Envoie un selfie les yeux fermés maintenant.",
-    "Révèle la dernière application que tu as téléchargée.",
-    "Avoue quelque chose que tu fais en secret et que personne ne sait.",
-  ],
-
-  "🎭 CRÉATIF": [
-    "Invente une publicité de 30 secondes pour un objet aléatoire que tu as près de toi.",
-    "Écris le synopsis d'un film horrible en 3 lignes.",
-    "Invente un nom de groupe pour votre bande et explique-le.",
-    "Compose une chanson de 8 lignes minimum sur le thème de ce cercle.",
-    "Invente un super-pouvoir absurde et décris comment tu l'utiliserais.",
-    "Écris une lettre de motivation pour être 'meilleur âme du cercle'.",
-    "Invente une excuse créative pour arriver 2 heures en retard à un rendez-vous.",
-    "Crée un menu complet d'un restaurant imaginaire avec des plats loufoques.",
-    "Écris une critique de film de 5 lignes sur un film que tu n'as jamais vu.",
-    "Invente un titre de livre basé sur la vie du cercle.",
-    "Rédige les règles d'un jeu inventé par toi en 5 règles.",
-    "Crée un slogan publicitaire pour toi-même en 10 mots maximum.",
-    "Écris une histoire de 10 lignes où tu es le héros et quelqu'un du cercle est le méchant.",
-  ],
-
-  "🧠 QUIZ EXPRESS": [
-    "Dis 5 pays d'Afrique en moins de 10 secondes (vocal obligatoire).",
-    "Épelle à l'envers le mot 'extraordinaire' en vocal.",
-    "Cite 7 chanteurs francophones en moins de 20 secondes.",
-    "Dis les tables de multiplication de 7 de 1 à 10 en vocal.",
-    "Nomme 5 capitales d'Afrique de l'Ouest en 15 secondes.",
-    "Compte à rebours de 30 à 1 en vocal sans te tromper.",
-    "Dis 10 mots commençant par la lettre 'P' en 15 secondes.",
-    "Cite 6 sports olympiques en 10 secondes.",
-  ],
-
-  "👻 SOCIAL": [
-    "Fais un compliment sincère à la dernière personne qui a envoyé un message.",
-    "Fais une déclaration d'amitié exagérée à quelqu'un du cercle.",
-    "Envoie un GIF ou sticker qui décrit ton humeur actuelle.",
-    "Tague la personne du cercle que tu considères comme la plus drôle.",
-    "Dis quelque chose de positif sur chaque admin du groupe.",
-    "Partage un conseil de vie en 3 phrases maximum.",
-    "Envoie le dernier mème que tu as sauvegardé.",
-    "Raconte en 5 lignes comment tu as rencontré quelqu'un dans ce cercle.",
-    "Donne un surnom à chaque gardien et explique pourquoi.",
-    "Dis honnêtement ce que tu aimes dans ce cercle.",
-    "Envoie un message de motivation pour quelqu'un qui en a besoin dans le groupe.",
-    "Partage le meilleur souvenir que tu as avec quelqu'un de ce groupe.",
-  ],
-
-  "🔥 EXTRÊME": [
-    "Envoie une note vocale de 30 secondes en chantant une chanson populaire.",
-    "Fais une vidéo de 15 secondes en train de danser et envoie-la.",
-    "Change ta bio WhatsApp pendant 1 heure avec un texte choisi par le groupe.",
-    "Envoie un message à une personne en dehors du cercle pour lui dire que tu penses à elle (capture obligatoire).",
-    "Appelle quelqu'un au hasard dans ta liste de contacts et dis 'Bonjour, j'ai gagné un prix !' (raconter la réaction après).",
-    "Laisse le cercle écrire ton prochain statut WhatsApp.",
-    "Envoie une photo de ta main maintenant.",
-    "Fais 20 pompes et envoie un vocal de ta respiration à la fin.",
-    "Dis 3 vérités et 1 mensonge et laisse le cercle deviner.",
-    "Active ton statut en ligne pendant 5 minutes et réponds à tous ceux qui t'écrivent.",
-    "Mets le groupe en mode silencieux sauf pour ce groupe pendant 15 minutes.",
-  ],
-
-  "😈 DÉFI DU DÉMON": [
-    "Le groupe choisit ton prochain statut WhatsApp et tu dois le garder 2 heures.",
-    "Tu dois commencer tes 10 prochains messages par 'Votre seigneur a parlé'.",
-    "Envoie une note vocale de 45 secondes où tu racontes ta pire journée.",
-    "Change ton nom de cercle en 'Nouvelle recrue du Démon' pendant 30 minutes.",
-    "Écris un discours de 15 lignes sur pourquoi tu mérites de survivre à l'apocalypse du Démon.",
-    "Révèle 3 choses que tu n'as jamais osé dire dans ce cercle.",
-    "Demande à un autre âme du cercle de choisir un défi pour toi.",
-    "Envoie un vocal de toi en train de pleurer (fausse larme autorisée) pendant 10 secondes.",
-    "Fais une déclaration publique dans le cercle sur ton pire défaut.",
-    "Lance un sondage dans le groupe sur ta pire habitude.",
-  ]
-}
-
-// Liste plate de tous les défis
-const ALL_DARES = Object.values(DARES).flat()
-
-// Catégories avec leurs emojis
-const CATEGORY_LIST = Object.keys(DARES)
-
-//══════════════════════════════════════
-// UTILITAIRES
-//══════════════════════════════════════
-
-function getRandom(arr) {
-  return arr[Math.floor(Math.random() * arr.length)]
-}
-
-function getRandomDare(category = null) {
-  if (category) {
-    const found = CATEGORY_LIST.find(c =>
-      c.toLowerCase().includes(category.toLowerCase())
-    )
-    if (found && DARES[found]) return { dare: getRandom(DARES[found]), category: found }
-  }
-  const cat  = getRandom(CATEGORY_LIST)
-  return { dare: getRandom(DARES[cat]), category: cat }
-}
-
-const REACTIONS = [
-  "😈 Refuser, c'est offrir ton âme au silence.",
-  "🔥 Le Démon observe. Ne le déçois pas.",
-  "💀 Aucune pitié pour les lâches.",
-  "⚡ Le Démon a choisi. Tu dois obéir.",
-  "🌑 L'heure du jugement a sonné.",
-  "👁️ Le Démon ne pardonne pas les refus.",
-  "🎭 Montre ce que tu vaux vraiment.",
-  "🩸 Seuls les braves survivent.",
+import { getSenderJid } from '../lib/ownerSystem.js'
+const DEFIS = [
+  { defi: "Envoie un message gênant à quelqu'un de ta liste", diff: "🔥 Courageux", pts: 200 },
+  { defi: "Chante une chanson en note vocale maintenant", diff: "😂 Drôle", pts: 150 },
+  { defi: "Imite quelqu'un du groupe pendant 1 minute", diff: "🎭 Créatif", pts: 180 },
+  { defi: "Dis 3 qualités sincères à quelqu'un du groupe", diff: "💙 Doux", pts: 100 },
+  { defi: "Écris une poésie sur toi-même en 2 minutes", diff: "✍️ Artistique", pts: 220 },
+  { defi: "Fais 20 pompes avant de reprendre le téléphone", diff: "💪 Sportif", pts: 250 },
+  { defi: "Appelle quelqu'un au hasard dans tes contacts", diff: "😰 Extrême", pts: 300 },
+  { defi: "Change ta photo de profil pendant 1h en quelque chose d'original", diff: "🎨 Fun", pts: 170 },
 ]
-
-//══════════════════════════════════════
-// COMMANDE PRINCIPALE
-//══════════════════════════════════════
-
 export default async function dare(sock, sender, args, msg, ctx = {}) {
-  try {
-    const prefix = '.'
-    const arg0   = args[0]?.toLowerCase()
-
-    // ── LISTE DES CATÉGORIES ──────────────────────────────────
-    if (arg0 === 'liste' || arg0 === 'list' || arg0 === 'categories') {
-      const total = ALL_DARES.length
-      let txt =
-        `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-        `     ⛧ 😈 *DARE DU DÉMON* ⛧\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-        `☩━━━〔 📂 *CATÉGORIES* 〕━━━☩\n` +
-        `☠\n`
-
-      CATEGORY_LIST.forEach((cat, i) => {
-        txt += `⛧ ${i + 1}. ${cat} *(${DARES[cat].length} défis)*\n`
-      })
-
-      txt +=
-        `☠\n` +
-        `☩ 🎲 Total: *${total} défis disponibles*\n` +
-        `☠\n` +
-        `✝ 💡 *invocation:*\n` +
-        `☠ • \`${prefix}dare\` → Défi aléatoire\n` +
-        `⛧ • \`${prefix}dare humour\` → Catégorie\n` +
-        `☩ • \`${prefix}dare extreme\` → Défis extrêmes\n` +
-        `✝ • \`${prefix}dare liste\` → Cette liste\n` +
-        `☠\n` +
-        `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-
-      return await sendMessage(sock, sender, txt)
-    }
-
-    // ── DÉFI AVEC CATÉGORIE SPÉCIFIQUE ────────────────────────
-    const category = arg0 && arg0 !== 'liste' ? args.join(' ') : null
-    const { dare: selectedDare, category: selectedCat } = getRandomDare(category)
-
-    if (category) {
-      const found = CATEGORY_LIST.find(c => c.toLowerCase().includes(category.toLowerCase()))
-      if (!found) {
-        return await sendMessage(sock, sender,
-          `☠ Catégorie introuvable.\n\n` +
-          `Catégories disponibles :\n` +
-          CATEGORY_LIST.map((c, i) => `${i + 1}. ${c}`).join('\n') +
-          `\n\n💡 \`${prefix}dare liste\` pour les détails`
-        )
-      }
-    }
-
-    const reaction = getRandom(REACTIONS)
-    const total    = ALL_DARES.length
-
-    await sendMessage(sock, sender,
-      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-      `     ⛧ 😈 *DARE DU DÉMON* ⛧\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-      `☩━━━〔 ${selectedCat} 〕━━━☩\n` +
-      `☠\n` +
-      `☠ 🎯 *TON DÉFI:*\n` +
-      `☠\n` +
-      `⛧ ${selectedDare}\n` +
-      `☠\n` +
-      `☩ ${reaction}\n` +
-      `☠\n` +
-      `✝ 🎲 *${total} défis disponibles*\n` +
-      `☠ 💡 \`${prefix}dare liste\` → voir catégories\n` +
-      `☠\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
-
-  } catch (e) {
-    console.error('❌ dare error:', e)
-    await sendMessage(sock, sender, `☠ rituel échoué dare: ${e.message}`)
-  }
+  const jid = ctx.senderJid || getSenderJid(msg, sock)
+  const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || jid
+  const d = DEFIS[Math.floor(Math.random() * DEFIS.length)]
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   😈 *DÉFI OSÉ*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  👤 @${target.split('@')[0]}\n\n` +
+    `⛧  🎯 _${d.defi}_\n\n` +
+    `✝  ${d.diff}\n` +
+    `☩  🏆 *Points si réussi:* ${d.pts}\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text, target !== jid ? { mentions: [target] } : undefined)
 }
