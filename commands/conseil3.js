@@ -1,0 +1,6 @@
+import { sendMessage } from '../lib/sendMessage.js'
+const DATA = ["🧠 Ne compare pas ton chapitre 1 au chapitre 20 de quelqu'un d'autre.","💪 Le succès n'est pas une destination, c'est un voyage permanent.","🌱 Les petites actions quotidiennes créent les grands changements.","⚡ Ta zone de confort est belle, mais tout ce que tu cherches est de l'autre côté.","🎯 Fixe des objectifs SMART: Spécifique, Mesurable, Atteignable, Réaliste, Temporel.","💎 La discipline bât la motivation. La motivation passe, la discipline reste.","🌊 Ne te noie pas dans l'océan de tes problèmes, apprends à surfer les vagues.","🏆 Célèbre chaque petite victoire. Le cerveau associe effort = récompense = recommence.","🔑 L'échec n'est pas l'opposé du succès, il en est une partie intégrante.","✨ La personne la plus importante à impressionner, c'est la version future de toi-même."]
+export default async function conseil3(sock, sender, args, msg, ctx) {
+  const item = DATA[Math.floor(Math.random()*DATA.length)]
+  await sendMessage(sock, sender, `☩━━━〔 🧠 *CONSEIL3* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+}
