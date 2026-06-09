@@ -1,11 +1,23 @@
-// commands/cocktail.js
 import { sendMessage } from '../lib/sendMessage.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
-
-const ITEMS = ["Demon Blood — Vodka grenadine tabasco","Dark Angel — Rhum citron glace pilée","Chaos Storm — Whisky triple sec citron vert","Fire Phoenix — Tequila sauce piquante","Night Poison — Gin limonade sirops noirs"]
-
-export default async function cmd_cocktail(sock, sender, args, msg, ctx = {}) {
+const COCKTAILS = [
+  { nom: "Demon Blood", recette: "Vodka + Grenadine + Tabasco", effet: "Feu dans les veines +50 ATK" },
+  { nom: "Dark Angel", recette: "Rhum + Citron + Glace pilée", effet: "Agilité +30, vision nocturne" },
+  { nom: "Chaos Storm", recette: "Whisky + Triple sec + Citron vert", effet: "Folie contrôlée, dégâts imprévisibles" },
+  { nom: "Fire Phoenix", recette: "Tequila + Sauce piquante + Sel noir", effet: "Régénération 10%/tour pendant 3 tours" },
+  { nom: "Night Poison", recette: "Gin + Limonade + Sirop d'ombre", effet: "Invisibilité 2 tours" },
+  { nom: "Elixir du Démon", recette: "Absinthe + Sang de dragon + Essence noire", effet: "Tous stats +100 temporairement" },
+]
+export default async function cocktail(sock, sender, args, msg, ctx = {}) {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
-  const item = ITEMS[Math.floor(Math.random() * ITEMS.length)]
-  await sendMessage(sock, sender, 'X┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈X\n⛧   COCKTAIL (RP)   ☩\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' + item + '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+  const c = COCKTAILS[Math.floor(Math.random() * COCKTAILS.length)]
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   🍹 *COCKTAIL DÉMONIAQUE (RP)*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  🍹 *Nom:* ${c.nom}\n` +
+    `⛧  📋 *Recette:* ${c.recette}\n` +
+    `✝  ✨ *Effet RP:* ${c.effet}\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text)
 }
