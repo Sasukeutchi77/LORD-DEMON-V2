@@ -1,42 +1,26 @@
-import { sendMessage } from "../lib/sendMessage.js"
-
-export default async function add(sock, sender, args, msg) {
+import { sendMessage } from '../lib/sendMessage.js'
+import { getSenderJid } from '../lib/ownerSystem.js'
+export default async function add(sock, sender, args, msg, ctx = {}) {
+  const jid = ctx.senderJid || getSenderJid(msg, sock)
+  if (!ctx.isAdmin && !ctx.isOwner && !ctx.isSudo) {
+    return sendMessage(sock, sender, `☠ Réservé aux administrateurs.`)
+  }
+  const numero = args[0]?.replace(/[^0-9]/g, '')
+  if (!numero) return sendMessage(sock, sender, `☠ Usage: .add <numéro>\nEx: .add 22123456789`)
+  const groupId = sender.endsWith('@g.us') ? sender : null
+  if (!groupId) return sendMessage(sock, sender, `☠ Cette commande fonctionne uniquement en groupe.`)
   try {
-    // Vérifier si c'est un groupe
-    if (!sender.endsWith('@g.us')) {
-      await sendMessage(sock, sender, "☠ Cette sort ne fonctionne que dans les cercles.")
-      return
-    }
-
-    // Vérifier si un numéro est fourni
-    if (!args[0]) {
-      await sendMessage(sock, sender, "☠ Indiquez un numéro.\n\nExemple: .add 22601234567")
-      return
-    }
-
-    // Nettoyer le numéro
-    const number = args[0].replace(/[^0-9]/g, '')
-    
-    if (number.length < 10) {
-      await sendMessage(sock, sender, "☠ Numéro invalide.")
-      return
-    }
-
-    const targetId = number + '@s.whatsapp.net'
-
-    // Ajouter le membre
-    await sock.groupParticipantsUpdate(sender, [targetId], "add")
-    
-    await sendMessage(sock, sender, `☩━━━〔 ⛧ *ADD* 〕━━━☩
-
-🩸 +${number} a été ajouté au cercle.
-
-⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
-    
-    console.log(`✅ add | ${number}`)
-    
-  } catch (e) {
-    console.error("❌ Erreur add:", e)
-    await sendMessage(sock, sender, "☠ rituel échoué. Vérifiez que:\n• Je suis gardien\n• Le numéro est correct\n• La personne peut être ajoutée")
+    const targetJid = `${numero}@s.whatsapp.net`
+    await sock.groupParticipantsUpdate(groupId, [targetJid], 'add')
+    const text =
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+      `⛧   ➕ *MEMBRE AJOUTÉ*   ☩\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+      `☠  📞 *Numéro:* +${numero}\n` +
+      `⛧  ✅ *Invitation envoyée avec succès*\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    await sendMessage(sock, sender, text)
+  } catch(e) {
+    await sendMessage(sock, sender, `☠ Impossible d'ajouter ce membre: ${e.message}`)
   }
 }
