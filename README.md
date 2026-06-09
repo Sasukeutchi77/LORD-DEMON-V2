@@ -10,13 +10,13 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18+-00ff88?style=for-the-badge&logo=node.js&logoColor=white&labelColor=0d1117)](https://nodejs.org/)
 [![Baileys](https://img.shields.io/badge/@whiskeysockets/baileys-ESM-ff00ff?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=0d1117)](https://github.com/WhiskeySockets/Baileys)
 [![License](https://img.shields.io/badge/License-MIT-00ffff?style=for-the-badge&labelColor=0d1117)](LICENSE)
-[![Commands](https://img.shields.io/badge/Commandes-112+-ff00aa?style=for-the-badge&labelColor=0d1117)](commands/)
+[![Commands](https://img.shields.io/badge/Commandes-694+-ff00aa?style=for-the-badge&labelColor=0d1117)](commands/)
 [![Version](https://img.shields.io/badge/Version-2.0.0-ff6600?style=for-the-badge&labelColor=0d1117)](https://github.com/ton-repo/lord-demon-v2/releases)
 
 <!-- TYPING ANIMATION -->
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=2500&pause=800&color=FF00FF&center=true&vCenter=true&width=700&lines=🤖+Bot+WhatsApp+Multi-Session;⚡+112+Commandes+Disponibles;🛡️+Protection+Avancée+Anti-Spam;🎮+Fun+%2B+Utilitaires+%2B+Médias;👑+Système+Owner%2FSudo%2FPremium;🔐+Sessions+Isolées+par+Utilisateur">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=2500&pause=800&color=FF00FF&center=true&vCenter=true&width=700&lines=🤖+Bot+WhatsApp+Multi-Session;⚡+112+Commandes+Disponibles;🛡️+Protection+Avancée+Anti-Spam;🎮+Fun+%2B+Utilitaires+%2B+Médias;👑+Système+Owner%2FSudo%2FPremium;🔐+Sessions+Isolées+par+Utilisateur" alt="typing">
+  <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=2500&pause=800&color=FF00FF&center=true&vCenter=true&width=700&lines=🤖+Bot+WhatsApp+Multi-Session;⚡+694+Commandes+Disponibles;🛡️+Protection+Avancée+Anti-Spam;🎮+Fun+%2B+Utilitaires+%2B+Médias;👑+Système+Owner%2FSudo%2FPremium;🔐+Sessions+Isolées+par+Utilisateur">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=2500&pause=800&color=FF00FF&center=true&vCenter=true&width=700&lines=🤖+Bot+WhatsApp+Multi-Session;⚡+694+Commandes+Disponibles;🛡️+Protection+Avancée+Anti-Spam;🎮+Fun+%2B+Utilitaires+%2B+Médias;👑+Système+Owner%2FSudo%2FPremium;🔐+Sessions+Isolées+par+Utilisateur" alt="typing">
 </picture>
 
 </div>
@@ -46,7 +46,7 @@
 
 ---
 
-## 📋 Commandes Disponibles <sub><sup>`112+`</sup></sub>
+## 📋 Commandes Disponibles <sub><sup>`694+`</sup></sub>
 
 <details>
 <summary><b>🛡️ Modération</b> <code>9 commandes</code> <img src="https://img.shields.io/badge/Admin-⭐-ff6b6b?style=flat-square&labelColor=0d1117"></summary>
@@ -313,7 +313,7 @@ LOG_FILE=./logs/lord-demon.log    # Fichier de logs
 ├── ⚙️  config.js                  # Configuration centralisée
 ├── 🔐 .env                        # Variables d'environnement
 │
-├── 📂 commands/                   # 112+ commandes modulaires
+├── 📂 commands/                   # 694+ commandes modulaires
 │   ├── 🛡️  moderation/            # Ban, kick, warn, promote...
 │   ├── 🔒 protection/             # Antilink, antispam, antiflood...
 │   ├── 🏠 group/                  # Mute, tagall, groupinfo...
