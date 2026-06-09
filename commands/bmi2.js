@@ -1,11 +1,14 @@
 import { sendMessage } from '../lib/sendMessage.js'
-export default async function bmi2(sock, sender, args, msg, ctx = {}) {
-  try {
-    const [p, t] = args
-    if (!p || !t) return await sendMessage(sock, sender, '☠ Usage: .bmi2 <poids_kg> <taille_cm>\nEx: .bmi2 70 175')
-    const pf = parseFloat(p), tf = parseFloat(t) / 100
-    const bmi = (pf / (tf * tf)).toFixed(1)
-    const cat = bmi < 18.5 ? '🔵 Insuffisance pondérale' : bmi < 25 ? '🟢 Poids normal' : bmi < 30 ? '🟡 Surpoids' : '🔴 Obésité'
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  ⚖️ *IMC — INDICE DE MASSE CORPORELLE*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Poids : *${pf} kg*\n✝ Taille : *${t} cm*\n☠ IMC : *${bmi}*\n⛧ Statut : *${cat}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
-  } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
+export default async function bmi2(sock, sender, args, msg, ctx) {
+  const prefix = process.env.PREFIX||'.'
+  const poids = parseFloat(args[0]), taille = parseFloat(args[1]), age = parseInt(args[2])
+  if (!poids||!taille) return await sendMessage(sock, sender, `☩━━━〔 ⚖️ *SANTÉ* 〕━━━☩\n☠\n⛧  ${prefix}bmi2 <poids> <taille_cm> [age]\n☠  Ex: ${prefix}bmi2 70 175 25\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+  const h = taille>3?taille/100:taille, imcVal = poids/(h*h)
+  let cat, emoji, conseil
+  if(imcVal<18.5){cat='Sous-poids';emoji='⚠️';conseil='Augmente tes apports caloriques'}
+  else if(imcVal<25){cat='Poids idéal';emoji='✅';conseil='Continue ainsi! Tu es en forme'}
+  else if(imcVal<30){cat='Surpoids';emoji='⚠️';conseil='Régime équilibré + sport recommandé'}
+  else{cat='Obésité';emoji='🔴';conseil='Consulte un médecin pour un suivi adapté'}
+  const idealMin = (18.5*h*h).toFixed(1), idealMax = (24.9*h*h).toFixed(1)
+  await sendMessage(sock, sender, `☩━━━〔 ⚖️ *BILAN SANTÉ* 〕━━━☩\n☠\n⛧  Poids: *${poids}kg* | Taille: *${taille}cm*${age?' | Âge: '+age+'ans':''}\n☠\n✝  IMC: *${imcVal.toFixed(1)}* — ${emoji} *${cat}*\n☠  Poids idéal: *${idealMin}-${idealMax}kg*\n⛧  💡 ${conseil}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
 }
