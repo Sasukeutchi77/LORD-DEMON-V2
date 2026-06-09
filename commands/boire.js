@@ -1,12 +1,25 @@
-// commands/boire.js
 import { sendMessage } from '../lib/sendMessage.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
-
-export default async function cmd_boire(sock, sender, args, msg, ctx = {}) {
+const BOISSONS = [
+  { nom: "Café Noir", effet: "Regain d'énergie +50, vigilance accrue" },
+  { nom: "Thé des Anciens", effet: "Sagesse +30, calme l'esprit agité" },
+  { nom: "Potion de Force", effet: "ATK +100 pendant 10 minutes" },
+  { nom: "Élixir Démoniaque", effet: "Tous les stats +50, yeux rouges" },
+  { nom: "Eau Bénite ✝", effet: "Purification totale, annule malédictions" },
+  { nom: "Bubble Tea", effet: "Humeur +100, sourire impossible à cacher" },
+  { nom: "Mead du Valhalla", effet: "Courage maximal, peur de rien" },
+  { nom: "Cocktail Infernal", effet: "Folie contrôlée, dégâts +200% imprévisible" },
+]
+export default async function boire(sock, sender, args, msg, ctx = {}) {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
-  const drinks=['Cafe','The','Jus','Lait','Biere(RP)','Bubble tea','Eau','Cocktail(RP)']; const result='*@'+jid.split('@')[0]+'* boit un(e) '+drinks[Math.floor(Math.random()*drinks.length)]
-  await sendMessage(sock, sender,
-    'X┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈X\n⛧   BOIRE (RP)   ☩\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' + result + '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
-    { mentions: [jid] }
-  )
+  const boisson = BOISSONS[Math.floor(Math.random() * BOISSONS.length)]
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   🍷 *BOIRE (RP)*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  *@${jid.split('@')[0]}* lève son verre de *${boisson.nom}*\n\n` +
+    `⛧  ✨ *Effet:* ${boisson.effet}\n` +
+    `✝  _Sante ! 🥂_\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text, { mentions: [jid] })
 }
