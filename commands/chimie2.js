@@ -1,6 +1,23 @@
 import { sendMessage } from '../lib/sendMessage.js'
-const DATA = ["🧪 Acide chlorhydrique (HCl) — Estomac, pH < 2, corrosif","🧪 Eau oxygénée (H2O2) — Antiseptique, décolorant, décompose","🧪 ADN — Désoxyribose + phosphate + base azotée, double hélice","🧪 Glucose (C6H12O6) — Carburant cellules, glycémie sanguin","🧪 NaCl — Sel table, 7g/L dans mer, ions Na+ et Cl-","🧪 CO2 — Gaz carbonique, respiré out, photosynthèse plantes","🧪 Éthanol (C2H5OH) — Alcool, antiseptique, carburant, 78°C","🧪 Caféine — Antagoniste adénosine, demi-vie 5-6 heures","🧪 Mélatonine — Hormone sommeil, produite dans le noir","🧪 Pénicilline — 1er antibiotique, Fleming 1928, beta-lactamine"]
-export default async function chimie2(sock, sender, args, msg, ctx) {
-  const item = DATA[Math.floor(Math.random()*DATA.length)]
-  await sendMessage(sock, sender, `☩━━━〔 🧪 *CHIMIE2* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+const MOLECULES = [
+  { formule: "H₂O", nom: "Eau", desc: "Molécule essentielle à la vie, solvant universel" },
+  { formule: "CO₂", nom: "Dioxyde de carbone", desc: "Gaz à effet de serre, produit par respiration" },
+  { formule: "NaCl", nom: "Chlorure de sodium", desc: "Sel de table, cristaux cubiques ioniques" },
+  { formule: "C₆H₁₂O₆", nom: "Glucose", desc: "Source d'énergie cellulaire principale" },
+  { formule: "O₃", nom: "Ozone", desc: "Couche protectrice, filtre UV, dangereux à faible altitude" },
+  { formule: "C₂H₅OH", nom: "Éthanol", desc: "Alcool des boissons, antiseptique" },
+  { formule: "NH₃", nom: "Ammoniac", desc: "Fertilisant industriel, gaz piquant" },
+  { formule: "Fe₂O₃", nom: "Rouille", desc: "Oxyde de fer, corrosion naturelle du métal" },
+]
+export default async function chimie2(sock, sender, args, msg, ctx = {}) {
+  const m = MOLECULES[Math.floor(Math.random() * MOLECULES.length)]
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   ⚗️ *MOLÉCULE DU JOUR*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  🔬 *Formule:* ${m.formule}\n` +
+    `⛧  📝 *Nom:* ${m.nom}\n` +
+    `✝  📖 _${m.desc}_\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text)
 }
