@@ -1,9 +1,12 @@
-// commands/encodurl.js
 import { sendMessage } from '../lib/sendMessage.js'
-import { getSenderJid } from '../lib/ownerSystem.js'
-
-export default async function cmd_encodurl(sock, sender, args, msg, ctx = {}) {
-  const jid = ctx.senderJid || getSenderJid(msg, sock)
-  const text=args.join(' '); if(!text) return sendMessage(sock,sender,'Usage: .encodurl <texte>'); const result=encodeURIComponent(text)
-  await sendMessage(sock, sender, 'X┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈X\n⛧   ENCODER URL   ☩\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' + result + '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+export default async function encodurl(sock, sender, args, msg, ctx = {}) {
+  const url = args.join(' ').trim()
+  if (!url) return sendMessage(sock, sender, `☠ Usage: .encodurl <url>`)
+  const encoded = encodeURIComponent(url)
+  const out =
+    `☩━━━〔 🔗 *ENCODAGE URL* 〕━━━☩\n\n` +
+    `☠  📥 *Original:* ${url.slice(0,80)}\n` +
+    `⛧  📤 *Encodé:* ${encoded.slice(0,200)}\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, out)
 }
