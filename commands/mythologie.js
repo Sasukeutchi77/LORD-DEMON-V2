@@ -1,10 +1,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
-const MYTHOS = {'zeus':{orig:'Grec',role:'Roi des dieux',sym:'Foudre ⚡',fon:'Ciel, tonnerre, justice'},'odin':{orig:'Nordique',role:'Roi des Aesir',sym:'Gungnir 🔱',fon:'Guerre, sagesse, mort'},'ra':{orig:'Égyptien',role:'Dieu solaire',sym:'Disque solaire ☀️',fon:'Soleil, création, rois'},'shiva':{orig:'Hindou',role:'Dieu destructeur',sym:'Trident 🔱',fon:'Destruction, transformation'},'thor':{orig:'Nordique',role:'Dieu du tonnerre',sym:'Mjolnir 🔨',fon:'Tonnerre, force, protection'},'anubis':{orig:'Égyptien',role:'Dieu des morts',sym:'Crosse & fléau',fon:'Mort, embaumement, jugement'},'ares':{orig:'Grec',role:'Dieu de la guerre',sym:'Lance & bouclier ⚔️',fon:'Guerre, violence, courage'},'thot':{orig:'Égyptien',role:'Dieu de la sagesse',sym:'Plume d\'ibis 🪶',fon:'Écriture, magie, lune'}}
-export default async function mythologie(sock, sender, args, msg, ctx = {}) {
-  try {
-    const d = args.join(' ').toLowerCase()
-    if (!d || !MYTHOS[d]) return await sendMessage(sock, sender, `☠ Usage: .mythologie <dieu>\nEx: .mythologie zeus\nDieux: ${Object.keys(MYTHOS).join(', ')}`)
-    const i = MYTHOS[d]
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  🏛️ *${d.toUpperCase()}*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n☩ Origine : *${i.orig}*\n✝ Rôle : *${i.role}*\n☠ Symbole : *${i.sym}*\n⛧ Fonction : *${i.fon}*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
-  } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
+const MYTHES = [{god:'Zeus',myth:'grec',role:'Dieu des dieux, du ciel et du tonnerre',symbol:'⚡ Foudre, aigle, chêne'},{god:'Anubis',myth:'égyptien',role:'Dieu des morts et de l\'embaumement',symbol:'🐺 Tête de chacal, balance'},{god:'Thor',myth:'nordique',role:'Dieu du tonnerre et de la force',symbol:'🔨 Marteau Mjöllnir'},{god:'Anansi',myth:'africain (Akan)',role:'Dieu des histoires et de la sagesse',symbol:'🕷️ Araignée'},{god:'Shiva',myth:'hindou',role:'Dieu de la destruction et de la transformation',symbol:'🔱 Trident, croissant de lune'},{god:'Quetzalcoatl',myth:'aztèque',role:'Dieu du vent, de la sagesse',symbol:'🐍 Serpent à plumes'},{god:'Oya',myth:'yoruba',role:'Déesse des vents, tempêtes et transformations',symbol:'🌪️ Vent, buffle'},{god:'Loki',myth:'nordique',role:'Dieu espiègle de la ruse et du chaos',symbol:'🔥 Feu, serpent'},{god:'Osiris',myth:'égyptien',role:'Dieu de l\'au-delà et de la résurrection',symbol:'🌿 Crosse et fléau'},{god:'Athéna',myth:'grec',role:'Déesse de la sagesse et de la guerre',symbol:'🦉 Chouette, olivier'}]
+export default async function mythologie(sock, sender, args, msg, ctx) {
+  const m = MYTHES[Math.floor(Math.random()*MYTHES.length)]
+  await sendMessage(sock, sender,
+    `☩━━━〔 ⚡ *MYTHOLOGIE* 〕━━━☩\n☠\n⛧  🏛️ *${m.god}* — Mythologie *${m.myth}*\n☠\n☩  📜 *Rôle:*\n✝  ${m.role}\n☠\n⛧  🔱 *Symboles:*\n☠  ${m.symbol}\n☠\n✝  _Connais-tu d'autres dieux? .mythologie_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
 }
