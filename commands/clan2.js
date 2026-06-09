@@ -1,19 +1,23 @@
-// commands/clan2.js — LORD DEMON
 import { sendMessage } from '../lib/sendMessage.js'
-
-export default async function clan2(sock, sender, args, msg) {
-  const name = msg?.pushName || 'Invocateur'
-  const input = args.join(' ') || 'invocation'
-  const pool = ['⚡ Invocation réussie', '🔥 Flammes démoniaques', '☠ Ténèbres révélées', '⛧ Rituel accompli', '🌑 Ombre convoquée', '💀 Sort déclenché', '🩸 Pacte activé', '✝ Puissance octroyée']
-  const result = pool[Math.floor(Math.random() * pool.length)]
-
+import { getSenderJid } from '../lib/ownerSystem.js'
+const CLANS2 = [
+  { nom: "Cercle de l'Éternité", rang: "Légendaire", territoire: "7 régions conquises", alliance: "Ordre des Cendres" },
+  { nom: "Pacte Infernal", rang: "Mythique", territoire: "12 régions conquises", alliance: "Légion Noire" },
+  { nom: "Confrérie des Ombres", rang: "Épique", territoire: "4 régions conquises", alliance: "Fraternité Sombre" },
+  { nom: "Ligue des Démons", rang: "Rare", territoire: "2 régions conquises", alliance: "Aucune" },
+  { nom: "Ordre Primordial", rang: "Divin", territoire: "20 régions conquises", alliance: "Toutes les factions" },
+]
+export default async function clan2(sock, sender, args, msg, ctx = {}) {
+  const jid = ctx.senderJid || getSenderJid(msg, sock)
+  const c = CLANS2[Math.floor(Math.random() * CLANS2.length)]
   const text =
-    `☩━━━〔 ⛧ *CLAN2* 〕━━━☩\n\n` +
-    `☠  👤 *${name}*\n` +
-    `⛧  📝 *Entrée :* ${input}\n` +
-    `✝  ✨ *Résultat :* ${result}\n` +
-    `☩  ⏰ *${new Date().toLocaleString('fr-FR')}*\n\n` +
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   🏴 *CLAN AVANCÉ*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  🏴 *Nom:* ${c.nom}\n` +
+    `⛧  👑 *Rang:* ${c.rang}\n` +
+    `✝  🗺️ *Territoire:* ${c.territoire}\n` +
+    `☩  🤝 *Alliance:* ${c.alliance}\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-
   await sendMessage(sock, sender, text)
 }
