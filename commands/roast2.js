@@ -1,17 +1,6 @@
-// commands/roast2.js
 import { sendMessage } from '../lib/sendMessage.js'
-import { getSenderJid } from '../lib/ownerSystem.js'
-
-const ACTIONS = ["Ton style vestimentaire fait pleurer des inconnus 😂","Tu spawnes dans un donjon sans quête 💀","Même ton téléphone rit de toi 📱","Ta vie est en mode tutorial mais sans fin 😭"]
-
-export default async function roast_v2(sock, sender, args, msg, ctx = {}) {
-  const jid = ctx.senderJid || getSenderJid(msg, sock)
-  const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || msg.message?.extendedTextMessage?.contextInfo?.participant
-  const action = ACTIONS[Math.floor(Math.random() * ACTIONS.length)]
-  const mentions = target ? [target] : []
-  const targetStr = target ? `@${target.split('@')[0]}` : `vous`
-  await sendMessage(sock, sender,
-    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   🔥 ROAST   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n@${jid.split('@')[0]} → ${targetStr}\n\n${action}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
-    mentions.length ? { mentions: [jid, ...mentions] } : { mentions: [jid] }
-  )
+const DATA = ["🔥 \"T'es tellement lent que Google t'a référencé comme page 404.\"","😂 \"T'as le QI d'un routeur déconnecté.\"","🔥 \"T'es tellement prévisible que même tes surprises sont ennuyeuses.\"","😏 \"Si la stupidité était un sport, tu aurais 10 médailles.\"","🔥 \"T'arrives en retard partout... même à ta propre naissance tu étais en retard.\"","😂 \"T'es comme une alarme de voiture: tout le monde t'ignore.\"","🔥 \"Ta personnalité est comme un WiFi en zone rurale: quasi inexistante.\"","😏 \"T'es la preuve qu'on peut survivre sans cerveau.\"","🔥 \"Même ton GPS dit 'recalcul...' quand il pense à ta vie.\"","😂 \"T'es comme un spoiler: tu révèles tout avant que ça soit intéressant.\""]
+export default async function roast2(sock, sender, args, msg, ctx) {
+  const item = DATA[Math.floor(Math.random()*DATA.length)]
+  await sendMessage(sock, sender, `☩━━━〔 🔥 *ROAST2* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
 }
