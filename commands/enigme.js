@@ -1,33 +1,41 @@
 import { sendMessage } from '../lib/sendMessage.js'
-const Q = [
-  { q: "J'ai des villes, mais pas de maisons. J'ai des montagnes, mais pas d'arbres. J'ai de l'eau, mais pas de poissons. Qu'est-ce que je suis ?", r: "Une carte géographique 🗺️" },
-  { q: "Plus je sèche, plus je suis mouillée. Qu'est-ce que je suis ?", r: "Une serviette 🏊" },
-  { q: "Je parle sans bouche, j'entends sans oreilles. Je n'ai pas de corps mais je prends vie avec le vent. Qu'est-ce que je suis ?", r: "Un écho 📢" },
-  { q: "Je suis toujours devant vous mais ne peut pas être vu. Qu'est-ce que je suis ?", r: "L'avenir 🔮" },
-  { q: "Plus vous en prenez, plus vous en laissez. Qu'est-ce que c'est ?", r: "Des pas 👣" },
-  { q: "J'ai des dents mais ne mords pas. Qu'est-ce que je suis ?", r: "Un peigne 🪮" },
-  { q: "Je peux voler sans ailes, pleurer sans yeux. Qu'est-ce que je suis ?", r: "Un nuage ☁️" },
-  { q: "Je commence la nuit, termine le matin, et suis au milieu du lit. Qu'est-ce que je suis ?", r: "La lettre 'i'" },
+import { getSenderJid } from '../lib/ownerSystem.js'
+const ENIGMES = [
+  { q: "J'ai des villes, mais pas de maisons. Des montagnes, mais pas d'arbres. De l'eau, mais pas de poissons. Qu'est-ce que je suis ?", r: "Une carte géographique 🗺️" },
+  { q: "Plus je sèche, plus je suis mouillée. Qui suis-je ?", r: "Une serviette 🏊" },
+  { q: "Je parle sans bouche, j'entends sans oreilles. Qui suis-je ?", r: "Un écho 🔊" },
+  { q: "Je cours mais n'ai pas de jambes, j'ai un lit mais ne dors pas. Qui suis-je ?", r: "Une rivière 🌊" },
+  { q: "Plus je grandis, plus je diminue. Qu'est-ce que je suis ?", r: "Une bougie 🕯️" },
+  { q: "Je suis plein de trous mais je retiens l'eau. Qui suis-je ?", r: "Une éponge 🧽" },
+  { q: "Je n'ai pas de vie mais je peux mourir. Qui suis-je ?", r: "Une batterie 🔋" },
+  { q: "On me jette quand on en a besoin, on me reprend quand on n'en a plus besoin. Qu'est-ce que je suis ?", r: "Une ancre ⚓" },
 ]
-let current = null
+const sessions = new Map()
 export default async function enigme(sock, sender, args, msg, ctx = {}) {
-  if (args[0] === 'reponse' || args[0] === 'réponse') {
-    if (!current) return sendMessage(sock, sender, `☠ Aucune énigme en cours. Lance .enigme d'abord !`)
+  const jid = ctx.senderJid || getSenderJid(msg, sock)
+  if (sessions.has(sender)) {
+    const s = sessions.get(sender)
+    const userAnswer = args.join(' ').toLowerCase()
+    const correct = s.reponse.toLowerCase().split(' ')[0]
+    sessions.delete(sender)
+    const ok = userAnswer.includes(correct.replace(/[^a-zàéêèùçôî]/g,''))
     return sendMessage(sock, sender,
       `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
-      `⛧   💡 *RÉPONSE DE L'ÉNIGME*   ☩\n` +
+      `⛧   🧩 *RÉSULTAT*   ☩\n` +
       `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-      `☠  ✅ *Réponse:* ${current.r}\n\n` +
-      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
+      `☠  ${ok ? '✅ *BONNE RÉPONSE !*' : '❌ *MAUVAISE RÉPONSE !*'}\n` +
+      `⛧  💡 *Réponse:* ${s.reponse}\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
   }
-  current = Q[Math.floor(Math.random() * Q.length)]
+  const e = ENIGMES[Math.floor(Math.random() * ENIGMES.length)]
+  sessions.set(sender, { reponse: e.r })
+  setTimeout(() => sessions.delete(sender), 60000)
   const text =
     `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
     `⛧   🧩 *ÉNIGME DÉMONIAQUE*   ☩\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
-    `☠  🤔 ${current.q}\n\n` +
-    `⛧  💡 _.enigme réponse_ pour la solution\n\n` +
+    `☠  ❓ _${e.q}_\n\n` +
+    `⛧  _Réponds dans ce chat (60 sec)_\n\n` +
     `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
   await sendMessage(sock, sender, text)
 }
