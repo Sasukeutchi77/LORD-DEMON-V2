@@ -1,15 +1,28 @@
 import { sendMessage } from '../lib/sendMessage.js'
-const MOVES = ['Attaque Éclair ⚡','Coup Critique 🗡️','Parade 🛡️','Magie Noire 🔥','Esquive 💨','Combo Infernal 💀','Contre-attaque ⚔️','Drain Vie 🌑']
-export default async function bataille2(sock, sender, args, msg, ctx) {
-  const senderJid = ctx?.senderJid||msg.key.participant||msg.key.remoteJid
-  const prefix = process.env.PREFIX||'.'
-  const mentions = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
-  const target = mentions?.[0]
-  if (!target) return await sendMessage(sock, sender, `☩━━━〔 ⚔️ *BATAILLE* 〕━━━☩\n☠\n⛧  Usage: ${prefix}bataille2 @adversaire\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
-  const atk1 = MOVES[Math.floor(Math.random()*MOVES.length)], atk2 = MOVES[Math.floor(Math.random()*MOVES.length)]
-  const hp1 = Math.floor(Math.random()*500)+500, hp2 = Math.floor(Math.random()*500)+500
-  const dmg1 = Math.floor(Math.random()*300)+100, dmg2 = Math.floor(Math.random()*300)+100
-  const winner = hp1-dmg2 > hp2-dmg1 ? senderJid : target
-  const from = senderJid.replace('@s.whatsapp.net',''), to = target.replace('@s.whatsapp.net','')
-  await sock.sendMessage(sender, { text:`☩━━━〔 ⚔️ *BATAILLE ÉPIQUE* 〕━━━☩\n☠\n⛧  @${from} (${hp1} PV) vs @${to} (${hp2} PV)\n☠\n✝  ⚔️ @${from}: ${atk1} (-${dmg1} PV)\n☠  ⚔️ @${to}: ${atk2} (-${dmg2} PV)\n☠\n⛧  🏆 VAINQUEUR: @${winner.replace('@s.whatsapp.net','')}\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`, mentions:[senderJid,target] }).catch(()=>sendMessage(sock,sender,'⚔️ Bataille terminée!'))
+import { getSenderJid } from '../lib/ownerSystem.js'
+const MOVES = [
+  { nom: 'Attaque Éclair ⚡', dmg: () => Math.floor(Math.random()*300)+200, type: 'Physique' },
+  { nom: 'Coup Critique 🗡️', dmg: () => Math.floor(Math.random()*500)+300, type: 'Précision' },
+  { nom: 'Magie Noire 🔥', dmg: () => Math.floor(Math.random()*700)+400, type: 'Magique' },
+  { nom: 'Combo Infernal 💀', dmg: () => Math.floor(Math.random()*600)+500, type: 'Combo' },
+  { nom: 'Drain de Vie 🌑', dmg: () => Math.floor(Math.random()*400)+300, type: 'Sombre' },
+  { nom: 'Invocation ⛧', dmg: () => Math.floor(Math.random()*900)+600, type: 'Démoniaque' },
+]
+export default async function bataille2(sock, sender, args, msg, ctx = {}) {
+  const jid = ctx.senderJid || getSenderJid(msg, sock)
+  const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+  if (!target) return sendMessage(sock, sender, `☠ Usage: .bataille2 @adversaire`)
+  const m1 = MOVES[Math.floor(Math.random() * MOVES.length)]
+  const m2 = MOVES[Math.floor(Math.random() * MOVES.length)]
+  const d1 = m1.dmg(), d2 = m2.dmg()
+  const winner = d1 >= d2 ? jid : target
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   ⚔️ *BATAILLE ÉPIQUE*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  ⚡ @${jid.split('@')[0]}: *${m1.nom}* — ${d1} dégâts\n` +
+    `⛧  🗡️ @${target.split('@')[0]}: *${m2.nom}* — ${d2} dégâts\n\n` +
+    `✝  🏆 *VAINQUEUR: @${winner.split('@')[0]}*\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text, { mentions: [jid, target] })
 }
