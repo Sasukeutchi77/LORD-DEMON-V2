@@ -1,5 +1,5 @@
 import { sendMessage } from '../lib/sendMessage.js'
-const QAS = [{"q":"Quel est le plus grand mammifère terrestre?","a":"éléphant"},{"q":"Quel animal dort debout?","a":"cheval,girafe"},{"q":"Combien de pattes a une araignée?","a":"8,huit"},{"q":"Quel oiseau ne peut pas voler?","a":"autruche,manchot,pingouin"},{"q":"Quel est le seul mammifère capable de voler?","a":"chauve-souris"},{"q":"Combien de ventricules a le coeur humain?","a":"4,quatre"},{"q":"Quel animal a le plus grand cerveau?","a":"baleine bleue,cachalot"},{"q":"Quel insecte produit le miel?","a":"abeille"}]
+const QAS = [{"q":"Quel est le plus grand mammifère terrestre?","a":"éléphant"},{"q":"Quel oiseau ne peut pas voler?","a":"autruche,manchot,pingouin"},{"q":"Combien de pattes a une araignée?","a":"8,huit"},{"q":"Quel animal a la gestation la plus longue?","a":"éléphant"},{"q":"Quel est le seul mammifère capable de voler?","a":"chauve-souris"},{"q":"Quel insecte produit le miel?","a":"abeille"},{"q":"Quel animal est le plus rapide du monde?","a":"guépard,cheetah"},{"q":"Quel animal a 3 coeurs et 9 cerveaux?","a":"pieuvre,poulpe"}]
 const games = new Map()
 export default async function quiz_animaux(sock, sender, args, msg, ctx) {
   const prefix = process.env.PREFIX||'.'
