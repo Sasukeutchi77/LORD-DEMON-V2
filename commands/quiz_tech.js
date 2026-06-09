@@ -1,5 +1,5 @@
 import { sendMessage } from '../lib/sendMessage.js'
-const QAS = [{"q":"Qui a fondé Apple?","a":"Steve Jobs,Jobs"},{"q":"En quelle année Internet a-t-il été inventé?","a":"1969,1991"},{"q":"Quel langage de programmation a été créé pour le web?","a":"javascript,java script"},{"q":"Que signifie HTML?","a":"HyperText Markup Language,hypertext markup language"},{"q":"Quel est le système d'exploitation le plus utilisé au monde?","a":"Windows"},{"q":"Qui a inventé le téléphone?","a":"Bell,Alexander Graham Bell,Graham Bell"},{"q":"Combien de bits dans un byte?","a":"8,huit"},{"q":"Que signifie CPU?","a":"Central Processing Unit,processeur central"}]
+const QAS = [{"q":"Qui a fondé Apple?","a":"Steve Jobs,Jobs"},{"q":"Que signifie HTML?","a":"HyperText Markup Language"},{"q":"Combien de bits dans un byte?","a":"8,huit"},{"q":"Quel est le système d'exploitation le plus utilisé?","a":"Windows"},{"q":"Que signifie CPU?","a":"Central Processing Unit"},{"q":"En quelle année le premier iPhone est sorti?","a":"2007"},{"q":"Quel langage est utilisé pour les pages web?","a":"HTML,CSS,JavaScript"},{"q":"Qui a inventé le World Wide Web?","a":"Tim Berners-Lee,Berners-Lee"}]
 const games = new Map()
 export default async function quiz_tech(sock, sender, args, msg, ctx) {
   const prefix = process.env.PREFIX||'.'
