@@ -1,5 +1,5 @@
 import { sendMessage } from '../lib/sendMessage.js'
-const QAS = [{"q":"Qui est le \"King of Pop\"?","a":"Michael Jackson,MJ"},{"q":"De quel pays vient le reggae?","a":"Jamaïque,Jamaica"},{"q":"Qui a composé la Symphonie n°5?","a":"Beethoven,Ludwig van Beethoven"},{"q":"Quel artiste africain a eu le plus de streams en 2023?","a":"Burna Boy,Wizkid"},{"q":"Quel instrument a 88 touches?","a":"piano"},{"q":"Que signifie \"Do Re Mi Fa Sol La Si\"?","a":"solfège,notes,gamme"},{"q":"Combien de cordes a une guitare classique?","a":"6,six"},{"q":"Qui a inventé le phonographe?","a":"Edison,Thomas Edison"}]
+const QAS = [{"q":"Qui est surnommé le \"King of Pop\"?","a":"Michael Jackson,MJ"},{"q":"De quel pays vient le reggae?","a":"Jamaïque,Jamaica"},{"q":"Qui a composé la Symphonie n°5?","a":"Beethoven"},{"q":"Quel instrument a 88 touches?","a":"piano"},{"q":"Combien de cordes a une guitare classique?","a":"6,six"},{"q":"Quel artiste a vendu le plus d'albums de tous les temps?","a":"Michael Jackson,Beatles"},{"q":"De quel pays vient l'afrobeat?","a":"Nigeria"},{"q":"Quel chanteur a chanté \"Thriller\"?","a":"Michael Jackson"}]
 const games = new Map()
 export default async function quiz_music(sock, sender, args, msg, ctx) {
   const prefix = process.env.PREFIX||'.'
