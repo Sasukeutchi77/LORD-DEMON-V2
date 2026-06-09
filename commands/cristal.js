@@ -1,16 +1,22 @@
 import { sendMessage } from '../lib/sendMessage.js'
+const CRISTAUX = [
+  { nom: "Cristal de Sang", couleur: "Rouge sang", propriete: "Amplifie les pouvoirs offensifs", valeur: 1200, rareté: "Épique" },
+  { nom: "Cristal des Ombres", couleur: "Noir absolu", propriete: "Canalise l'énergie des ténèbres", valeur: 2500, rareté: "Légendaire" },
+  { nom: "Cristal Spectral", couleur: "Violet fantôme", propriete: "Ouvre un portail vers l'au-delà", valeur: 3000, rareté: "Mythique" },
+  { nom: "Cristal de Feu", couleur: "Orange brûlant", propriete: "Dégâts de feu +300%", valeur: 800, rareté: "Rare" },
+  { nom: "Cristal de Glace", couleur: "Bleu glacial", propriete: "Gèle les ennemis au contact", valeur: 900, rareté: "Rare" },
+  { nom: "Cristal Doré", couleur: "Or pur", propriete: "Multiplie les récompenses x3", valeur: 5000, rareté: "Divin" },
+]
 export default async function cristal(sock, sender, args, msg, ctx = {}) {
-  try {
-    const emojis = ['⚔️','🛡️','🏆','💎','🔥','⚡','🌟','💫','🎯','👑','🌑','☠️','⛧','✝️','☩']
-    const emoji = emojis[Math.floor(Math.random()*emojis.length)]
-    const msgs = [
-      'Action accomplie avec succès! ✅',
-      'Puissance débloquée! ⚡',
-      'Résultat légendaire obtenu! 👑',
-      'Mission réussie! 🏆',
-      'Niveau maximum atteint! 🌟'
-    ]
-    const score = Math.floor(Math.random()*2000)+500
-    await sendMessage(sock, sender, `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧  ${emoji} *CRISTAL*  ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n${msgs[Math.floor(Math.random()*msgs.length)]}\n\n☩ XP gagné : *+${score}*\n✝ Rang : *LORD DEMON*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
-  } catch(e) { await sendMessage(sock, sender, `☠ Erreur: ${e.message}`) }
+  const c = CRISTAUX[Math.floor(Math.random() * CRISTAUX.length)]
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   💎 *CRISTAL DÉMONIAQUE*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  💎 *Nom:* ${c.nom}\n` +
+    `⛧  🎨 *Couleur:* ${c.couleur}\n` +
+    `✝  ✨ *Propriété:* ${c.propriete}\n` +
+    `☩  💰 *Valeur:* ${c.valeur.toLocaleString()} 🪙 | *Rareté:* ${c.rareté}\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text)
 }
