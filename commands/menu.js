@@ -22,6 +22,8 @@ let channelJidCache = null
 // ═════════════════════════════════════════════════════════════════
 
 const CATEGORIES = {
+  "🆕 𝗡𝗢𝗨𝗩𝗘𝗔𝗨𝗫 𝗥𝗜𝗧𝗘𝗦 ⛧"      : ["bibliotheque","meteo2","blason","combat2","numerologie","tarot","oracle2","devinette","dicepoker","lancement","confiance","element3","portebonheur","dicton","planete","poeme","mythologie","grimoire2","monstre2","cryptage","generateur","sondagerapide","rappelsemaine","identite","challenge2","speedtest","citation4","destinsombre","planaction","karma2","enigme2","heritage","contrat","relique","annonce2"],
+  "🎲 𝗝𝗢𝗨𝗘𝗧𝗦 𝗗𝗘𝗠𝗢𝗡𝗜𝗔𝗤𝗨𝗘𝗦 ☠"   : ["compteur","tonpouvoir","totem","legendaire","futur","passe","tresormystique","demonday","sondage2","vote2","reaction2","emoji2","palette2","couleur2","typobold","typeitalic","typeflip","symbole2","monnaie2","temperature2","solarsystem","arcane2","lore2","clan2","badge2","talisman2"],
   "☩ 𝗚𝗘́𝗡𝗘́𝗥𝗔𝗟 ⛧"          : ["menu","help","ping","info","uptime","whoami","vv","url","style","partager"],
   "𖤐 𝗠𝗘́𝗗𝗜𝗔𝗦 ♱"             : ["song","image","sticker","ytmp4","lyrics","download"],
   "🜏 𝗨𝗧𝗜𝗟𝗜𝗧𝗔𝗜𝗥𝗘𝗦 ⸸"         : ["weather","translate","calc","quote","joke","horoscope","qrcode","tts","remind","schedule","poll","summarize","ocr","transcribe","ascii"],
@@ -65,7 +67,22 @@ const CMD_ICONS = {
   eval:"💻", exec:"⌨️", dit:"💬", send:"📤", pack:"📦",
   addpremium:"💎", removepremium:"💎",
   ship:"🔥", gay:"🌈", ascii:"🔤", nitro:"💎", apkinfo:"📦", dare:"🎲",
-  antichannel:"📡", fakereac:"🎭"
+  antichannel:"📡", fakereac:"🎭",
+  // Nouvelles commandes
+  bibliotheque:"📚", meteo2:"🌍", blason:"🛡️", combat2:"⚔️", numerologie:"🔢",
+  tarot:"🃏", oracle2:"🔮", devinette:"🧩", compteur:"🔢", dicepoker:"🎲",
+  lancement:"🚀", confiance:"🤝", element3:"🌌", portebonheur:"🍀",
+  dicton:"📜", planete:"🌍", poeme:"✍️", mythologie:"🏛️", grimoire2:"📚",
+  monstre2:"👹", cryptage:"🔐", annonce2:"📢", generateur:"🎲",
+  sondagerapide:"📊", rappelsemaine:"📅", identite:"🪪", challenge2:"🎯",
+  speedtest:"⚡", citation4:"💬", destinsombre:"🌑", planaction:"📋",
+  karma2:"☯️", enigme2:"🧠", heritage:"👑", contrat:"📜", relique:"💎",
+  tonpouvoir:"⚡", totem:"🦁", legendaire:"🌟", futur:"🔮", passe:"⏮️",
+  tresormystique:"🎁", demonday:"😈", sondage2:"📊", vote2:"🗳️",
+  reaction2:"😮", emoji2:"😈", palette2:"🎨", couleur2:"🎨",
+  typobold:"𝗕", typeitalic:"𝘐", typeflip:"🔄", symbole2:"⛧",
+  monnaie2:"💰", temperature2:"🌡️", solarsystem:"🌌", arcane2:"🔮",
+  lore2:"📖", clan2:"⚔️", badge2:"🏅", talisman2:"🧿"
 }
 
 const CMD_DESCRIPTIONS = {
@@ -123,7 +140,9 @@ const CMD_DESCRIPTIONS = {
   ascii:"Art ASCII premium", nitro:"Générateur Nitro fake",
   apkinfo:"Analyseur APK détaillé", dare:"Défi du Démon",
   antichannel:"Bloquer transferts de chaînes",
-  fakereac:"Réactions emoji fake sur chaîne"
+  fakereac:"Réactions emoji fake sur chaîne",
+  // Nouvelles invocations
+  bibliotheque:"Livre aléatoire à découvrir",meteo2:"Météo améliorée par ville",blason:"Blason de votre maison",combat2:"Combat démoniaque rapide",numerologie:"Votre nombre de vie",tarot:"Tirage de carte de tarot",oracle2:"Oracle des ténèbres II",devinette:"Devinette démoniaque",compteur:"Compteur personnel",dicepoker:"Poker aux dés",lancement:"Choisir parmi des options",confiance:"Indice de confiance",element3:"Votre élément primordial",portebonheur:"Porte-bonheur du Démon",dicton:"Dicton du jour",planete:"Infos sur une planète",poeme:"Poème démoniaque",mythologie:"Dieu mythologique",grimoire2:"Sort du grimoire II",monstre2:"Combat contre monstre",cryptage:"Encoder/décoder texte",annonce2:"Annonce officielle stylée",generateur:"Générateur démoniaque",sondagerapide:"Sondage rapide",rappelsemaine:"Info semaine actuelle",identite:"Identité démoniaque",challenge2:"Défi quotidien",speedtest:"Test vitesse du bot",citation4:"Citation premium",destinsombre:"Destin sombre révélé",planaction:"Plan en 5 étapes",karma2:"Karma cosmique",enigme2:"Énigme II",heritage:"Héritage légendaire",contrat:"Pacte démoniaque",relique:"Relique ancienne",tonpouvoir:"Ton pouvoir démoniaque",totem:"Animal totem",legendaire:"Statut légendaire",futur:"Voir ton futur",passe:"Explorer ton passé",tresormystique:"Trésor mystérieux",demonday:"Journée démoniaque",sondage2:"Sondage II",vote2:"Vote démoniaque",reaction2:"Réaction démoniaque",emoji2:"Emoji personnalisé",palette2:"Palette de couleurs",couleur2:"Couleur aléatoire",typobold:"Texte gras stylé",typeitalic:"Texte italique stylé",typeflip:"Texte renversé",symbole2:"Symbole démoniaque",monnaie2:"Monnaie du monde",temperature2:"Conversion température",solarsystem:"Système solaire",arcane2:"Arcane II",lore2:"Lore II univers",clan2:"Clan démoniaque",badge2:"Badge démoniaque",talisman2:"Talisman protecteur"
 }
 
 // ═════════════════════════════════════════════════════════════════
