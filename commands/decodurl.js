@@ -1,9 +1,16 @@
-// commands/decodurl.js
 import { sendMessage } from '../lib/sendMessage.js'
-import { getSenderJid } from '../lib/ownerSystem.js'
-
-export default async function cmd_decodurl(sock, sender, args, msg, ctx = {}) {
-  const jid = ctx.senderJid || getSenderJid(msg, sock)
-  const text=args.join(' '); if(!text) return sendMessage(sock,sender,'Usage: .decodurl <texte>'); try { const result=decodeURIComponent(text) } catch(e) { const result='Erreur: '+e.message }
-  await sendMessage(sock, sender, 'X┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈X\n⛧   DECODER URL   ☩\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' + result + '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+export default async function decodurl(sock, sender, args, msg, ctx = {}) {
+  const url = args.join(' ').trim()
+  if (!url) return sendMessage(sock, sender, `☠ Usage: .decodurl <url_encodée>`)
+  try {
+    const decoded = decodeURIComponent(url)
+    const out =
+      `☩━━━〔 🔗 *DÉCODAGE URL* 〕━━━☩\n\n` +
+      `☠  📥 *Entrée:* ${url.slice(0,60)}${url.length>60?'…':''}\n` +
+      `⛧  📤 *Décodé:* ${decoded.slice(0,200)}${decoded.length>200?'…':''}\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    await sendMessage(sock, sender, out)
+  } catch {
+    await sendMessage(sock, sender, `☠ URL invalide ou impossible à décoder.`)
+  }
 }
