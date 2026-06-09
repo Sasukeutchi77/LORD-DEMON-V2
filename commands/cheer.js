@@ -1,17 +1,26 @@
-// commands/cheer.js
 import { sendMessage } from '../lib/sendMessage.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
-
-const ACTIONS = ["*acclame avec enthousiasme !* 🎉🎊","*YOU CAN DO IT !* 💪✨","*hourra !* 🙌","*encourage de tout son coeur* ❤️🔥"]
-
+const ENCOURAGEMENTS = [
+  "Tu es plus fort que tu ne le penses — chaque épreuve te forge.",
+  "L'échec n'est qu'une leçon déguisée. Reprends-toi et recommence.",
+  "Ta valeur ne se mesure pas aux obstacles — elle se mesure à ta résilience.",
+  "Les ténèbres les plus profondes précèdent toujours l'aube la plus lumineuse.",
+  "Continue. La persévérance brise même la pierre la plus dure.",
+  "Tu n'as pas besoin de leur validation — ta propre conviction suffit.",
+  "Chaque pas en avant, aussi petit soit-il, est une victoire sur l'inertie.",
+  "Le monde appartient à ceux qui se lèvent quand tout le monde reste couché.",
+]
 export default async function cheer(sock, sender, args, msg, ctx = {}) {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
-  const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || msg.message?.extendedTextMessage?.contextInfo?.participant
-  const action = ACTIONS[Math.floor(Math.random() * ACTIONS.length)]
-  const mentions = target ? [target] : []
-  const targetStr = target ? `@${target.split('@')[0]}` : `vous`
-  await sendMessage(sock, sender,
-    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   🎉 ENCOURAGEMENT   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n@${jid.split('@')[0]} → ${targetStr}\n\n${action}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`,
-    mentions.length ? { mentions: [jid, ...mentions] } : { mentions: [jid] }
-  )
+  const target = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || jid
+  const msg_cheer = ENCOURAGEMENTS[Math.floor(Math.random() * ENCOURAGEMENTS.length)]
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   🌟 *ENCOURAGEMENT DIVIN*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  👤 @${target.split('@')[0]}\n\n` +
+    `⛧  💪 _"${msg_cheer}"_\n\n` +
+    `✝  🌅 _Les ténèbres se dissipent pour ceux qui avancent._\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text, target !== jid ? { mentions: [target] } : undefined)
 }
