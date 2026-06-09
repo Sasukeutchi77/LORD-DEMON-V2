@@ -1,10 +1,21 @@
 import { sendMessage } from '../lib/sendMessage.js'
-export default async function cipher3(sock, sender, args, msg, ctx) {
-  const prefix = process.env.PREFIX||'.'
-  const sub = args[0]?.toLowerCase(), n = parseInt(args[1])
+export default async function cipher3(sock, sender, args, msg, ctx = {}) {
+  const sub = args[0]?.toLowerCase()
+  const n = parseInt(args[1])
   const text = args.slice(2).join(' ')
-  if (!sub||!text||isNaN(n)||(sub!=='encode'&&sub!=='decode')) return await sendMessage(sock, sender, `☩━━━〔 🔐 *CHIFFRE CÉSAR* 〕━━━☩\n☠\n⛧  ${prefix}cipher3 encode <décalage> <texte>\n☠  ${prefix}cipher3 decode <décalage> <texte>\n✝  Ex: ${prefix}cipher3 encode 3 BONJOUR\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
-  const shift = ((sub==='decode'?26-n%26:n%26)+26)%26
-  const result = text.toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0)-65+shift)%26+65))
-  await sendMessage(sock, sender, `☩━━━〔 🔐 *CÉSAR ${sub.toUpperCase()}* 〕━━━☩\n☠\n⛧  Décalage: *${n}*\n☠  Original: _${text}_\n☠\n✝  Résultat: *${result}*\n☠\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+  if (!sub || !text || isNaN(n) || (sub !== 'encode' && sub !== 'decode')) {
+    return sendMessage(sock, sender, `☠ Usage: .cipher3 encode|decode <décalage> <texte>\nEx: .cipher3 encode 13 BONJOUR`)
+  }
+  const shift = sub === 'decode' ? (26 - (n % 26)) : n % 26
+  const result = text.split('').map(c => {
+    if (/[a-z]/.test(c)) return String.fromCharCode((c.charCodeAt(0) - 97 + shift) % 26 + 97)
+    if (/[A-Z]/.test(c)) return String.fromCharCode((c.charCodeAt(0) - 65 + shift) % 26 + 65)
+    return c
+  }).join('')
+  const out =
+    `☩━━━〔 🔐 *CHIFFRE CÉSAR AVANCÉ* 〕━━━☩\n\n` +
+    `☠  📝 *${sub === 'encode' ? 'Original' : 'Chiffré'}:* ${text}\n` +
+    `⛧  🔒 *${sub === 'encode' ? 'Encodé' : 'Décodé'} (+${n}):* ${result}\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, out)
 }
