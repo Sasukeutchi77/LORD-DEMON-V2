@@ -1,39 +1,44 @@
-// commands/numerologie.js — LORD DEMON
+// commands/numerologie.js — NUMÉROLOGIE DÉMONIAQUE
 import { sendMessage } from '../lib/sendMessage.js'
-
-const signifs = {
-  1: "Leader né, indépendant et ambitieux ♾️",
-  2: "Diplomate sensible, recherche l'harmonie 🌙",
-  3: "Créatif expressif, plein de joie 🎭",
-  4: "Travailleur discipliné, très stable 🏛️",
-  5: "Aventurier libre, aime le changement 🌍",
-  6: "Protecteur aimant, très responsable 💖",
-  7: "Mystique analytique, cherche la vérité 🔮",
-  8: "Ambitieux puissant, succès matériel 👑",
-  9: "Humaniste sage, grande compassion 🌟"
+import { getSenderJid } from '../lib/ownerSystem.js'
+const SIGNIFICATIONS = {
+  1:{nom:'L\'Initiateur',    desc:'Force de volonté, leadership, départ nouveau. Les ténèbres voient un pionnier.',            demon:'Baal'},
+  2:{nom:'Le Gardien',       desc:'Équilibre, dualité, mystère. Vous êtes le pont entre deux mondes.',                         demon:'Astaroth'},
+  3:{nom:'Le Créateur',      desc:'Créativité démoniaque, expression, magie. Vos paroles ont un pouvoir réel.',                demon:'Asmodée'},
+  4:{nom:'Le Bâtisseur',     desc:'Structure, discipline infernale, fondations solides pour l\'ascension.',                    demon:'Belzébuth'},
+  5:{nom:'L\'Aventurier',    desc:'Liberté chaotique, changement, exploration des abysses.',                                   demon:'Méphistophélès'},
+  6:{nom:'Le Protecteur',    desc:'Responsabilité, harmonie, gardien de la légion. Vos alliés vous font confiance.',           demon:'Mammon'},
+  7:{nom:'Le Mystique',      desc:'Spiritualité sombre, intuition profonde, recherche des vérités cachées.',                   demon:'Léviathan'},
+  8:{nom:'L\'Ambitieux',     desc:'Pouvoir, succès, abondance démoniaque. Le matériel est votre domaine.',                    demon:'Azazel'},
+  9:{nom:'Le Sage des Abysses',desc:'Humanité universelle, compassion démoniaque, fin d\'un cycle et renaissance.',           demon:'Samael'},
 }
-
-export default async function numerologie(sock, sender, args) {
+function calculerNombre(texte) {
+  const vals = {a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,s:1,t:2,u:3,v:4,w:5,x:6,y:7,z:8}
+  const sum = texte.toLowerCase().replace(/[^a-z]/g,'').split('').reduce((s,c)=>s+(vals[c]||0),0)
+  let n=sum; while(n>9&&n!==11&&n!==22){const d=n.toString().split('');n=d.reduce((s,x)=>s+parseInt(x),0)} return n
+}
+export default async function numerologie(sock, sender, args, msg, ctx={}) {
   try {
-  if (!args.length) return await sendMessage(sock, sender, `☩━━━〔 🔢 *NUMÉROLOGIE* 〕━━━☩\n\n✝  Usage: *.numerologie <votre prénom>*\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
-  const nom = args.join(' ').toUpperCase()
-  const valeurs = { A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8 }
-  let somme = 0
-  for (const c of nom) if (valeurs[c]) somme += valeurs[c]
-  while (somme > 9) { somme = String(somme).split('').reduce((a,b) => a + parseInt(b), 0) }
-  const signif = signifs[somme] || "Être unique hors des normes ✨"
-  const text =
-    `☩━━━〔 🔢 *NUMÉROLOGIE DÉMONIAQUE* 〕━━━☩\n\n` +
-    `☠  👤 *Prénom:* ${nom}\n` +
-    `⛧  🔢 *Nombre de vie:* ${somme}\n` +
-    `✝  📖 *Signification:*\n` +
-    `☩  _${signif}_\n\n` +
-    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-  await sendMessage(sock, sender, text)
-
-  } catch (e) {
-    await sendMessage(sock, sender,
-      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
-  }
+    const jid = ctx.senderJid || getSenderJid(msg, sock)
+    const input = args.join(' ').trim() || msg?.pushName || 'LORD DEMON'
+    const nombre = calculerNombre(input)
+    const sig = SIGNIFICATIONS[Math.min(9,Math.max(1,nombre))]
+    const dateNum = new Date().getDate()+new Date().getMonth()+1
+    const numDestin = Math.floor(Math.random()*9)+1
+    const compatibilite = numDestin===nombre?'☠ PARFAITE':Math.abs(numDestin-nombre)<=2?'⛧ ÉLEVÉE':'⚪ Neutre'
+    await sendMessage(sock,sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+      `⛧   🔢 *NUMÉROLOGIE DÉMONIAQUE*   ☩\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+      `📝 Analyse de : *"${input}"*\n\n` +
+      `🔢 *Nombre de Vie :* ${nombre}\n` +
+      `👑 *Archétype :* ${sig.nom}\n` +
+      `👹 *Démon Tutélaire :* ${sig.demon}\n\n` +
+      `⸸─────────────────────────────────⸸\n` +
+      `📖 *Signification :*\n_${sig.desc}_\n\n` +
+      `🎲 Nombre du Destin (aujourd\'hui) : *${numDestin}*\n` +
+      `💫 Compatibilité : *${compatibilite}*\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n` +
+      `⛧ LORD DEMON — Science des Nombres ☠`)
+  } catch(e){await sendMessage(sock,sender,`☠ Erreur: ${e.message}`)}
 }

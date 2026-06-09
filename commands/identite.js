@@ -1,33 +1,38 @@
-// commands/identite.js — LORD DEMON
+// commands/identite.js — GÉNÉRATEUR D'IDENTITÉ DÉMONIAQUE
 import { sendMessage } from '../lib/sendMessage.js'
-
-const prenoms = ['Zephyr', 'Draven', 'Morgana', 'Vesper', 'Lucian', 'Seraphina', 'Raven', 'Damian', 'Lyra', 'Orion']
-const noms = ['Blackwood', 'Shadowmere', 'Voidwalker', 'Duskborn', 'Hellfire', 'Darkbloom', 'Grimshaw', 'Nightfall']
-const ages = () => Math.floor(Math.random() * 30) + 18
-const professions = ['Chasseur de primes ⚔️', 'Sorcier noir 🔮', 'Assassin de l\'ombre ☠️', 'Chevalier maudit 🛡️', 'Alchimiste démoniaque ⚗️', 'Nécromancien 💀']
-const villes = ['Nécropolys 🌑', 'Abyssoria ⛧', 'Ténèbropolis ☠️', 'Limborgh ✝', 'Sombrevil 🌙']
-
-export default async function identite(sock, sender, args, msg) {
+import { getSenderJid } from '../lib/ownerSystem.js'
+const rand = arr => arr[Math.floor(Math.random()*arr.length)]
+const PRENOM_DEMON = ['Zar\'ak','Beloth','Mordecai','Azraith','Khal\'vor','Seraphex','Nethrix','Vorn\'ul','Dread\'ax','Sorn\'eth','Velar','Xanoth','Grimthorn','Shaedrik','Morvaine']
+const NOM_DEMON    = ['des Ombres Éternelles','du Chaos Primordial','l\'Annihilateur','le Dévastateur','Porteur de Malédictions','Briseur de Sceaux','l\'Implacable','du Voile Brisé','Seigneur Abyssal','le Transcendant']
+const TITRES_D     = ['Grand Archidémon','Gardien du Neuvième Cercle','Exécuteur d\'Azrael','Seigneur de la Légion Noire','Champion du Chaos','Porteur du Sceau Maudit','Maître du Voile']
+const ORIGINES_D   = ['Forêts Maudites de l\'Abîsse','Ruines du Premier Enfer','Tour des Neuf Sceaux','Catacombes du Néant','Volcan Infernal de Baal','Sanctuaire Maudit d\'Azazel']
+const EMBLEMES     = ['Serpent dévorant sa queue','Crâne entouré de flammes','Épée traversant un crâne','Dragon aux yeux rouges','Lune noire avec trois étoiles']
+const LANGUES      = ['Infernal Ancien','Abyssal','Draconic Démoniaque','Langue du Voile','Chaos Primordial']
+export default async function identite(sock, sender, args, msg, ctx={}) {
   try {
-  const prenom = prenoms[Math.floor(Math.random() * prenoms.length)]
-  const nom = noms[Math.floor(Math.random() * noms.length)]
-  const age = ages()
-  const prof = professions[Math.floor(Math.random() * professions.length)]
-  const ville = villes[Math.floor(Math.random() * villes.length)]
-  const text =
-    `☩━━━〔 🪪 *IDENTITÉ DÉMONIAQUE* 〕━━━☩\n\n` +
-    `☠  👤 *Nom complet:* ${prenom} ${nom}\n` +
-    `⛧  🎂 *Âge:* ${age} ans\n` +
-    `✝  💼 *Profession:* ${prof}\n` +
-    `☩  🏙️ *Ville:* ${ville}\n` +
-    `☠  🔑 *ID:* ${Math.random().toString(36).substr(2,8).toUpperCase()}\n\n` +
-    `⛧  _Cette identité vous a été assignée par les Ténèbres._\n\n` +
-    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-  await sendMessage(sock, sender, text)
-
-  } catch (e) {
-    await sendMessage(sock, sender,
-      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
-  }
+    const jid = ctx.senderJid || getSenderJid(msg, sock)
+    const nom    = `${rand(PRENOM_DEMON)} ${rand(NOM_DEMON)}`
+    const titre  = rand(TITRES_D)
+    const age    = Math.floor(Math.random()*9000)+500
+    const niveau = Math.floor(Math.random()*100)+1
+    const origine= rand(ORIGINES_D)
+    const embleme= rand(EMBLEMES)
+    const langue = rand(LANGUES)
+    const pouvoir= Math.floor(Math.random()*1000)+200
+    await sendMessage(sock,sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+      `⛧   🪪 *IDENTITÉ DÉMONIAQUE*   ☩\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+      `☠ *Nom :* ${nom}\n` +
+      `👑 *Titre :* ${titre}\n` +
+      `⏳ *Âge :* ${age.toLocaleString()} ans\n` +
+      `📊 *Niveau :* ${niveau}/100\n` +
+      `⚡ *Puissance :* ${pouvoir.toLocaleString()}\n\n` +
+      `⸸─────────────────────────────────⸸\n` +
+      `🗺️ *Origine :* ${origine}\n` +
+      `🛡️ *Emblème :* ${embleme}\n` +
+      `🗣️ *Langue parlée :* ${langue}\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n` +
+      `⛧ LORD DEMON — Registre des Démons ☠`)
+  } catch(e){await sendMessage(sock,sender,`☠ Erreur: ${e.message}`)}
 }

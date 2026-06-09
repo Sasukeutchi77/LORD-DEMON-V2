@@ -1,32 +1,31 @@
-// commands/mythologie.js — LORD DEMON
+// commands/mythologie.js — MYTHOLOGIE DÉMONIAQUE
 import { sendMessage } from '../lib/sendMessage.js'
-
-const mythes = [
-  { dieu: "⚡ Zeus", origine: "Grèce", domaine: "Tonnerre & Ciel", symbole: "Foudre, Aigle", mythe: "Roi de l'Olympe, il régnait sur dieux et mortels depuis le Mont Olympe." },
-  { dieu: "🌊 Poséidon", origine: "Grèce", domaine: "Mers & Tremblements de terre", symbole: "Trident, Cheval", mythe: "Maître des océans, il provoquait tempêtes et raz-de-marée de son trident." },
-  { dieu: "🌑 Anubis", origine: "Égypte", domaine: "Mort & Momification", symbole: "Tête de chacal", mythe: "Gardien des morts, il pesait les âmes avec une plume de Maât." },
-  { dieu: "🔥 Loki", origine: "Norrois", domaine: "Ruse & Magie", symbole: "Flammes, Serpent", mythe: "Dieu espiègle et trompeur qui causait autant de problèmes qu'il en résolvait." },
-  { dieu: "☀️ Ra", origine: "Égypte", domaine: "Soleil & Création", symbole: "Disque solaire, Faucon", mythe: "Dieu solaire suprême, il traversait le ciel chaque jour dans sa barque dorée." },
-  { dieu: "⚔️ Ares", origine: "Grèce", domaine: "Guerre & Violence", symbole: "Épée, Lance, Casque", mythe: "Dieu de la guerre brutale, redouté même des autres dieux olympiens." },
+const rand = arr => arr[Math.floor(Math.random()*arr.length)]
+const MYTHES = [
+  { entite:'⚰️ AZRAEL',        origine:'Ancien Testament & Islam', rang:'Ange de la Mort',       pouvoir:'Récolter les âmes des mourants', domaine:'Mort & Transition', symbole:'Balance dorée & épée noire' },
+  { entite:'👹 BAAL',          origine:'Phénicie antique',         rang:'Seigneur de l\'Enfer',   pouvoir:'Commande 66 légions de démons', domaine:'Pouvoir & Luxure',  symbole:'Taureau à tête d\'homme' },
+  { entite:'🐍 LÉVIATHAN',     origine:'Hébraïque',                rang:'Prince des Eaux',        pouvoir:'Maître des mers et du chaos',   domaine:'Envie & Destruction',symbole:'Serpent de mer cosmique' },
+  { entite:'🦂 ASMODÉE',       origine:'Avestique & Hébraïque',    rang:'Roi des Démons',         pouvoir:'Corruption du cœur humain',     domaine:'Colère & Luxure',   symbole:'Dragon à trois têtes' },
+  { entite:'🦇 BELZÉBUTH',     origine:'Philistine',               rang:'Seigneur des Mouches',   pouvoir:'Commande toutes les plagues',   domaine:'Dégoût & Putréfaction',symbole:'Mouche dorée géante' },
+  { entite:'💀 SAMAEL',        origine:'Kabbale juive',            rang:'Ange de la Mort',        pouvoir:'Empoisonner et détruire',       domaine:'Mort & Venin',      symbole:'Serpent ailé rouge' },
+  { entite:'🌑 LILITH',        origine:'Mésopotamie & Hébraïque',  rang:'Première Femme / Démon', pouvoir:'Séduction et corruption des âmes',domaine:'Nuit & Liberté',   symbole:'Chouette noire & serpent' },
+  { entite:'🔥 MOLOCH',        origine:'Cananéen',                 rang:'Dieu du Feu',            pouvoir:'Consumer et transformer',        domaine:'Sacrifice & Pouvoir',symbole:'Taureau de bronze ardent' },
 ]
-
-export default async function mythologie(sock, sender, args) {
+export default async function mythologie(sock, sender, args, msg) {
   try {
-  const m = mythes[Math.floor(Math.random() * mythes.length)]
-  const text =
-    `☩━━━〔 🏛️ *MYTHOLOGIE DÉMONIAQUE* 〕━━━☩\n\n` +
-    `☠  ${m.dieu}\n` +
-    `⛧  🌍 *Origine:* ${m.origine}\n` +
-    `✝  ⚡ *Domaine:* ${m.domaine}\n` +
-    `☩  🔱 *Symboles:* ${m.symbole}\n\n` +
-    `☠  📖 *Mythe:*\n` +
-    `⛧  _${m.mythe}_\n\n` +
-    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-  await sendMessage(sock, sender, text)
-
-  } catch (e) {
-    await sendMessage(sock, sender,
-      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   ☠ ERREUR DÉMONIAQUE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n💀 ${e.message}\n\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-    )
-  }
+    const m = rand(MYTHES)
+    await sendMessage(sock,sender,
+      `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+      `⛧   📚 *MYTHOLOGIE DÉMONIAQUE*   ☩\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+      `${m.entite}\n` +
+      `📍 Origine : *${m.origine}*\n` +
+      `👑 Rang : *${m.rang}*\n\n` +
+      `⸸─────────────────────────────────⸸\n` +
+      `⚡ *Pouvoir :* ${m.pouvoir}\n` +
+      `🌀 *Domaine :* ${m.domaine}\n` +
+      `🔮 *Symbole :* ${m.symbole}\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n` +
+      `⛧ LORD DEMON — Connaissance des Abysses ☠`)
+  } catch(e){await sendMessage(sock,sender,`☠ Erreur: ${e.message}`)}
 }
