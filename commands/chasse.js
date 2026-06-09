@@ -1,21 +1,43 @@
-// commands/chasse.js — CHASSE 🏹
 import { sendMessage } from '../lib/sendMessage.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
 import { economyDb } from '../lib/economySystem.js'
 
-const PROIES = [{"nom":"🐇 Lapin","pts":8},{"nom":"🦊 Renard","pts":20},{"nom":"🐺 Loup","pts":35},{"nom":"🦌 Cerf","pts":25},{"nom":"🐗 Sanglier","pts":30},{"nom":"🦁 Lion","pts":80},{"nom":"💨 Rien","pts":0},{"nom":"💨 Raté","pts":0}]
+const PROIES = [
+  { nom: "🐇 Lapin des ombres", pts: 8, desc: "Petite prise, mais c'est un début" },
+  { nom: "🦊 Renard argenté", pts: 20, desc: "Pelage précieux, vendu cher" },
+  { nom: "🐺 Loup solitaire", pts: 35, desc: "Dangereux mais très rentable" },
+  { nom: "🦌 Cerf légendaire", pts: 25, desc: "Bois magiques très recherchés" },
+  { nom: "🐗 Sanglier infernal", pts: 30, desc: "Crocs empoisonnés, viande rare" },
+  { nom: "🦁 Lion des steppes", pts: 80, desc: "Roi de la savane démoniaque !" },
+  { nom: "🐉 Dragon miniature", pts: 150, desc: "Exceptionnel ! Une trouvaille légendaire !" },
+  { nom: "💨 Rien", pts: 0, desc: "La forêt était vide aujourd'hui..." },
+  { nom: "💨 Raté", pts: 0, desc: "L'animal a déjoué le piège" },
+]
 const cooldowns = new Map()
 
 export default async function chasse(sock, sender, args, msg, ctx = {}) {
   const jid = ctx.senderJid || getSenderJid(msg, sock)
   const now = Date.now()
   const cd = cooldowns.get(jid) || 0
-  if (now - cd < 45000) return sendMessage(sock, sender, `⏳ Rechargez votre arc ! ${Math.ceil((45000-(now-cd))/1000)}s`)
+  const restant = 45000 - (now - cd)
+  if (restant > 0) {
+    return sendMessage(sock, sender,
+      `☩━━━〔 🏹 *CHASSE* 〕━━━☩\n\n` +
+      `☠  ⏳ *Rechargez votre arc !*\n` +
+      `⛧  Prêt dans *${Math.ceil(restant/1000)}s*\n\n` +
+      `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+    )
+  }
   cooldowns.set(jid, now)
-  const proie = PROIES[Math.floor(Math.random()*PROIES.length)]
+  const proie = PROIES[Math.floor(Math.random() * PROIES.length)]
   if (proie.pts > 0) economyDb.addCoins(jid, proie.pts)
-  const msg2 = proie.pts > 0 ? `🏹 Vous avez chassé: *${proie.nom}*\n💰 +${proie.pts} 🪙` : `🏹 *Raté !* L'animal s'est enfui 💨`
-  await sendMessage(sock, sender,
-    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n⛧   🏹 CHASSE   ☩\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n${msg2}\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
-  )
+  const text =
+    `†┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈†\n` +
+    `⛧   🏹 *CHASSE DÉMONIAQUE*   ☩\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸\n\n` +
+    `☠  🎯 *Proie:* ${proie.nom}\n` +
+    `⛧  📖 _${proie.desc}_\n` +
+    `✝  ${proie.pts > 0 ? `💰 *Gain:* +${proie.pts} 🪙` : `💀 *Rentré bredouille...*`}\n\n` +
+    `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
+  await sendMessage(sock, sender, text)
 }
