@@ -1,0 +1,6 @@
+import { sendMessage } from '../lib/sendMessage.js'
+const DATA = ["📜 \"Un homme avisé ne fait pas deux fois la même erreur — mais trois fois, c'est la tradition.\"","🌍 \"Quand tu manges avec le diable, prends une longue cuillère.\"","💡 \"La forêt serait silencieuse si aucun oiseau ne chantait sauf le meilleur.\"","🌱 \"Quand les racines sont profondes, il n'y a pas à craindre le vent.\"","🦁 \"Il faut toute une tribu pour élever un enfant.\"","⚡ \"Si tu veux aller vite, marche seul. Si tu veux aller loin, marche ensemble.\"","🌊 \"Les eaux calmes sont profondes.\"","🎯 \"Un lion ne craint pas d'être seul. Ce sont les moutons qui restent en troupeau.\"","🌿 \"Le bois coupé peut repousser, mais pas les paroles dites.\"","🙏 \"Dieu peut protéger quelqu'un qui n'a pas de maison mais pas quelqu'un sans famille.\""]
+export default async function pronoverbe(sock, sender, args, msg, ctx) {
+  const item = DATA[Math.floor(Math.random()*DATA.length)]
+  await sendMessage(sock, sender, `☩━━━〔 📜 *PRONOVERBE* 〕━━━☩\n☠\n⛧  ${item}\n☠\n✝  _Tape encore pour un autre!_\n⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`)
+}
