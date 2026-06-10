@@ -50,11 +50,11 @@ export default async function shop(sock, sender, args, msg, ctx = {}) {
     economyDb.removeCoins(jid, item.price)
     // Effets spéciaux
     if (itemId === 'capacite_banque') {
-      const db = (await import('node-sqlite3-wasm')).default
+      const db = (await import('node:sqlite')).DatabaseSync
       const path = (await import('path')).default
       const { fileURLToPath } = await import('url')
       const __dirname = path.dirname(fileURLToPath(import.meta.url))
-      const dbConn = db(path.join(__dirname, '..', 'data', 'demon.db'))
+      const dbConn = new db(path.join(__dirname, '..', 'data', 'demon.db'))
       dbConn.prepare(`UPDATE economy SET bank_capacity = bank_capacity + 5000 WHERE jid = ?`).run(jid)
     } else if (itemId === 'pack_cartes') {
       const { cardDb } = await import('../lib/economySystem.js')
