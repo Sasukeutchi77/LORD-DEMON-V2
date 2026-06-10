@@ -8,7 +8,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 import { showProgressLoader, deleteLoader } from '../lib/animLoader.js'
 import { isOwner, isSudo, cleanNumber } from '../lib/ownerSystem.js'
-import Database from 'node-sqlite3-wasm'
+import { DatabaseSync as Database } from 'node:sqlite'
 import fs   from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
