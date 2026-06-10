@@ -1,7 +1,7 @@
 // commands/report.js — LORD DEMON (Système de signalement)
 import { sendMessage } from '../lib/sendMessage.js'
 import { isOwner, isSudo, cleanNumber } from '../lib/ownerSystem.js'
-import Database from 'node-sqlite3-wasm'
+import { DatabaseSync as Database } from 'node:sqlite'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -127,13 +127,13 @@ export default async function report(sock, sender, args, msg, ctx) {
     const admins    = groupMeta.participants.filter(p => p.admin).map(p => p.id)
     if (admins.length) {
       const notif =
-        `☩━━━〔 🚨 *SIGNALEMENT #${r.lastInsertRowid}* 〕━━━☩\n` +
+        `☩━━━〔 🚨 *SIGNALEMENT #${Number(r.lastInsertRowid)}* 〕━━━☩\n` +
         `☠\n` +
         `⛧  👤 *Par:* @${cleanNumber(senderJid)}\n` +
         (targetJid ? `☩  🎯 *Cible:* @${cleanNumber(targetJid)}\n` : '') +
         `✝  📝 *Raison:* ${reason}\n` +
         `☠\n` +
-        `⛧  Traiter avec: ${process.env.PREFIX || '.'}report resolve ${r.lastInsertRowid}\n` +
+        `⛧  Traiter avec: ${process.env.PREFIX || '.'}report resolve ${Number(r.lastInsertRowid)}\n` +
         `⸸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━⸸`
       await sock.sendMessage(sender, { text: notif, mentions: [senderJid, ...(targetJid ? [targetJid] : [])] }).catch(() => {})
     }
@@ -142,7 +142,7 @@ export default async function report(sock, sender, args, msg, ctx) {
   await sendMessage(sock, sender,
     `☩━━━〔 ✅ *SIGNALEMENT ENVOYÉ* 〕━━━☩\n` +
     `☠\n` +
-    `⛧  🚨 *#${r.lastInsertRowid}* enregistré\n` +
+    `⛧  🚨 *#${Number(r.lastInsertRowid)}* enregistré\n` +
     `☠  📝 ${reason}\n` +
     `☠\n` +
     `☩  Les admins ont été notifiés.\n` +
