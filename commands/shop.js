@@ -50,7 +50,7 @@ export default async function shop(sock, sender, args, msg, ctx = {}) {
     economyDb.removeCoins(jid, item.price)
     // Effets spéciaux
     if (itemId === 'capacite_banque') {
-      const db = (await import('better-sqlite3')).default
+      const db = (await import('node-sqlite3-wasm')).default
       const path = (await import('path')).default
       const { fileURLToPath } = await import('url')
       const __dirname = path.dirname(fileURLToPath(import.meta.url))
