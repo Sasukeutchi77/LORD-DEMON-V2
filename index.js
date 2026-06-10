@@ -101,55 +101,72 @@ async function main() {
 
   sock.ev.on('creds.update', saveCreds)
 
+  // ── Pairing code — NON-BLOQUANT ────────────────────────────────────────
+  // CORRECTIF CRITIQUE : l'ancien code utilisait "await setTimeout(3000)"
+  // ce qui BLOQUAIT l'enregistrement des listeners (connection.update etc.)
+  // Résultat : le socket pouvait changer d'état sans qu'aucun handler ne soit
+  // actif, et requestPairingCode était appelé sur un socket dans un mauvais état
+  // → le code généré était invalide ou rejeté par WhatsApp.
+  //
+  // Solution : setTimeout() non-bloquant → tous les listeners s'enregistrent
+  // IMMÉDIATEMENT (synchrone), puis le code est demandé 3s après.
   if (!sock.authState.creds.registered) {
     const phoneNumber = getOwnerNumber()
+    console.log('\n⏳ En attente de connexion WS avant demande du code...')
 
-    console.log('\n⏳ Connexion au serveur WhatsApp...')
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    let pairingDone = false
 
-    let pairingAttempt = 0
-    const maxAttempts  = 3
+    const doPairing = async () => {
+      if (pairingDone) return
+      let pairingAttempt = 0
+      const maxAttempts  = 3
 
-    while (pairingAttempt < maxAttempts) {
-      pairingAttempt++
-      try {
-        const code      = await sock.requestPairingCode(phoneNumber)
-        const formatted = code?.match(/.{1,4}/g)?.join('-') || code
+      while (pairingAttempt < maxAttempts) {
+        pairingAttempt++
+        try {
+          const code      = await sock.requestPairingCode(phoneNumber)
+          const formatted = code?.match(/.{1,4}/g)?.join('-') || code
+          pairingDone = true
 
-        console.log('\n╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮')
-        console.log('┃      ⚡ LORD DEMON V2 — PAIRING       ┃')
-        console.log('╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯')
-        console.log('┃')
-        console.log('┃  📱 Numéro: +' + phoneNumber)
-        console.log('┃')
-        console.log('┃  🔑 CODE DE COUPLAGE:')
-        console.log('┃')
-        console.log('┃        ' + formatted)
-        console.log('┃')
-        console.log('┃  📋 Comment entrer le code:')
-        console.log('┃  1. Ouvrez WhatsApp sur votre téléphone')
-        console.log('┃  2. Paramètres > Appareils liés')
-        console.log('┃  3. Appuyez "Lier un appareil"')
-        console.log('┃  4. Choisissez "Lier avec numéro de téléphone"')
-        console.log('┃  5. Entrez le code ci-dessus')
-        console.log('┃')
-        console.log('┃  ⏱️  Ce code est valide ~60 secondes')
-        console.log('╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯\n')
-        break
-      } catch (e) {
-        console.error(`\n❌ Échec génération code (tentative ${pairingAttempt}/${maxAttempts}):`, e.message)
-        if (pairingAttempt < maxAttempts) {
-          console.log('🔄 Nouvel essai dans 5s...')
-          await new Promise(r => setTimeout(r, 5000))
-        } else {
-          console.log('💡 Solutions possibles:')
-          console.log('   → Supprimez le dossier auth_info_baileys et redémarrez')
-          console.log('   → Vérifiez OWNER_NUMBER dans .env (avec indicatif pays)')
-          console.log('   → Vérifiez votre connexion internet')
-          process.exit(1)
+          console.log('\n╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮')
+          console.log('┃      ⚡ LORD DEMON V2 — PAIRING       ┃')
+          console.log('╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯')
+          console.log('┃')
+          console.log('┃  📱 Numéro: +' + phoneNumber)
+          console.log('┃')
+          console.log('┃  🔑 CODE DE COUPLAGE:')
+          console.log('┃')
+          console.log('┃        ' + formatted)
+          console.log('┃')
+          console.log('┃  📋 Comment entrer le code:')
+          console.log('┃  1. Ouvrez WhatsApp sur votre téléphone')
+          console.log('┃  2. Paramètres > Appareils liés')
+          console.log('┃  3. Appuyez "Lier un appareil"')
+          console.log('┃  4. Choisissez "Lier avec numéro de téléphone"')
+          console.log('┃  5. Entrez le code ci-dessus')
+          console.log('┃')
+          console.log('┃  ⏱️  Ce code est valide ~60 secondes')
+          console.log('╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯\n')
+          break
+        } catch (e) {
+          console.error(`\n❌ Échec génération code (tentative ${pairingAttempt}/${maxAttempts}):`, e.message)
+          if (pairingAttempt < maxAttempts) {
+            console.log('🔄 Nouvel essai dans 5s...')
+            await new Promise(r => setTimeout(r, 5000))
+          } else {
+            console.log('💡 Solutions possibles:')
+            console.log('   → Supprimez le dossier auth_info_baileys et redémarrez')
+            console.log('   → Vérifiez OWNER_NUMBER dans .env (avec indicatif pays)')
+            console.log('   → Vérifiez votre connexion internet')
+            process.exit(1)
+          }
         }
       }
     }
+
+    // Demander le code après 3s — non-bloquant, les listeners s'enregistrent
+    // normalement dans la suite de cette fonction (synchrone).
+    setTimeout(doPairing, 3000)
   }
 
   sock.ev.on('connection.update', async ({ connection, lastDisconnect }) => {
