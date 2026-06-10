@@ -2,7 +2,7 @@
 import { sendMessage } from '../lib/sendMessage.js'
 import { economyDb, JOBS } from '../lib/economySystem.js'
 import { getSenderJid } from '../lib/ownerSystem.js'
-import Database from 'node-sqlite3-wasm'
+import { DatabaseSync as Database } from 'node:sqlite'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
