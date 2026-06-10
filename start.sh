@@ -23,9 +23,9 @@ fi
 
 echo "✅ Node.js $(node -v) détecté"
 
-if [ ! -d "node_modules" ]; then
+if [ ! -d "node_modules" ] || [ ! -d "node_modules/@whiskeysockets" ]; then
   echo "📦 Installation des dépendances..."
-  npm install
+  npm install --legacy-peer-deps --no-audit --no-fund
 fi
 
 mkdir -p data auth_info_baileys
