@@ -1,7 +1,7 @@
 // commands/report.js — LORD DEMON (Système de signalement)
 import { sendMessage } from '../lib/sendMessage.js'
 import { isOwner, isSudo, cleanNumber } from '../lib/ownerSystem.js'
-import Database from 'better-sqlite3'
+import Database from 'node-sqlite3-wasm'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -10,7 +10,7 @@ const DB_PATH   = path.join(__dirname, '..', 'data', 'demon.db')
 
 function getDb() {
   const db = new Database(DB_PATH)
-  db.pragma('journal_mode = WAL')
+  db.exec('PRAGMA journal_mode = WAL')
   db.exec(`
     CREATE TABLE IF NOT EXISTS reports (
       id          INTEGER PRIMARY KEY AUTOINCREMENT,
